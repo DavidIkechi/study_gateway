@@ -1,5 +1,5 @@
 from .session import Base
-from sqlalchemy import Column, Enum, Integer, String, Boolean, TIMESTAMP, ForeignKey, Float, JSON, TEXT
+from sqlalchemy import Column, Enum, Integer, String, Boolean, BigInteger, TIMESTAMP, ForeignKey, Float, JSON, TEXT, LargeBinary, DateTime
 from sqlalchemy.orm import Session, load_only, relationship
 import uuid
 from datetime import datetime
@@ -11,8 +11,10 @@ sys.path.append("..")
 class UserModel(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    password = Column(String(30), nullable=False)
-    email_address = Column(String(20), nullable=False, unique=True)
+    password = Column(String(255), nullable=False)
+    email_address = Column(String(100), nullable=False, unique=True, index=True)
+    code = Column(String(255), nullable=False)
+
     is_mentor = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     is_verified = Column(Boolean, default=False)
@@ -20,7 +22,8 @@ class UserModel(Base):
     status = Column(Boolean, default=True)
     is_setup = Column(Boolean, default=False)
     lock_count = Column(Integer, default=0)
-    
+    last_login = Column(DateTime, nullable=True)
+    login_count = Column(BigInteger, default = 0)
     created_at = Column(TIMESTAMP(timezone=True),
                         default = datetime.now(), nullable=False)
     updated_at = Column(TIMESTAMP(timezone=True),

@@ -15,6 +15,12 @@ class UserSchema(BaseModel):
     def check_confirm_passwords(cls, v):
         return v.strip()
     
+class CodeSchema(BaseModel):
+    email_address: EmailStr
+    otp: str
+
+class refreshTokenSchema(BaseModel):
+    refresh_token: str
     
     
     
