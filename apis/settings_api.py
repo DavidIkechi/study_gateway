@@ -49,3 +49,13 @@ async def get_cities(country_slug: str, db: Session = Depends(get_db)):
     
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+    
+@settings_router.get('/gender', summary="Get all Genders", status_code=200)
+async def get_genders(db: Session = Depends(get_db)):
+    from crud.settings import get_gender
+    try:
+        return success_response.success_message(get_gender(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))

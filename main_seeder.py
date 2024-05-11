@@ -11,7 +11,7 @@ def run_seeder():
     db = Session()
     if not os.environ['TESTING']:
         seed_disciplines(db)
-        # seed_country_and_nationality(db)
+        seed_country_and_nationality(db)
         seed_cities_prod(db)
         seed_gender_prod(db)
     db.close()

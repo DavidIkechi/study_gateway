@@ -37,7 +37,7 @@ class GenderModel(Base):
 
     @staticmethod
     def get_all_gender(db: Session):
-        return GenderModel.create_gender_object(db).all()
+        return GenderModel.create_gender_object(db)
         
     @staticmethod
     def get_gender_by_id(db: Session, gender_id: int):
