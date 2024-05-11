@@ -10,7 +10,11 @@ from db.session import Base
 from db import (
    main_model,
    discipline_model,
-   user_model
+   user_model,
+   country_model,
+   nationality_model,
+   gender_model,
+   cities_model
 )
 
 from db.connection import get_db_conn_string

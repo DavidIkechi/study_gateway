@@ -22,3 +22,30 @@ async def get_settings_frequencies(db: Session = Depends(get_db)):
     
     except Exception as e:
         return exceptions.server_error(str(e))
+
+@settings_router.get('/countries', summary="Get all countries", status_code=200)
+async def get_country(db: Session = Depends(get_db)):
+    from crud.settings import get_countries
+    try:
+        return success_response.success_message(get_countries(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+
+@settings_router.get('/nationalities', summary="Get all Nationalities", status_code=200)
+async def get_nationality(db: Session = Depends(get_db)):
+    from crud.settings import get_nationalities
+    try:
+        return success_response.success_message(get_nationalities(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+
+@settings_router.get('/cities/{country_slug}', summary="Get all cities in a country", status_code=200)
+async def get_cities(country_slug: str, db: Session = Depends(get_db)):
+    from crud.settings import country_cities
+    try:
+        return success_response.success_message(country_cities(db, country_slug))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from utils import seed_model
+from utils import seed_model, get_unique_value
 import sys
 sys.path.append("..")
 from argon2 import PasswordHasher
@@ -128,3 +128,45 @@ def seed_disciplines(db:Session):
     ]
     
     seed_model(db, DisciplineModel, data)
+
+def seed_country_and_nationality(db: Session):
+    from db.main_model import CountryModel
+    from db.main_model import NationalityModel
+    from py_countries_states_cities_database import get_all_countries
+
+    get_countries = get_all_countries()
+
+    country_data = [
+        {'country_name': country['name']} for country in get_countries
+    ]
+
+    nationality_data = [
+        {'nationality': country['nationality']} for country in get_countries
+    ]
+
+    seed_model(db, CountryModel, country_data, [])
+    seed_model(db, NationalityModel, nationality_data, [])
+
+def seed_gender_prod(db: Session):
+    from db.main_model import GenderModel
+    gender_data = [
+        {'id': 1, 'name': 'Male', 'slug': 'male', 'status': True},
+        {'id': 2, 'name': 'Female', 'slug': 'female', 'status': True}
+    ]
+
+    seed_model(db, GenderModel, gender_data)
+
+def seed_cities_prod(db: Session):
+    from db.main_model import CityModel
+    from crud.settings import check_country_by_name
+    from py_countries_states_cities_database import get_all_countries_and_cities_nested
+
+    data = get_all_countries_and_cities_nested()
+
+    city_data  = [
+        {'name': city['name'], 'country_id': check_country_by_name(db, country['name']).id}
+        for country in data
+        for city in country['cities']
+    ]
+
+    seed_model(db, CityModel, city_data, [])

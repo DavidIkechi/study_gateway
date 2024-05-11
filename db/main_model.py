@@ -7,7 +7,10 @@ from sqlalchemy.sql import text
 
 from .discipline_model import DisciplineModel
 from .user_model import UserModel
-
+from .country_model import CountryModel
+from .nationality_model import NationalityModel
+from .gender_model import GenderModel
+from .cities_model import CityModel
 
 
 import sys
