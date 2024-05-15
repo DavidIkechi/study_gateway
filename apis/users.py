@@ -68,7 +68,7 @@ async def login_user(login_data: OAuth2PasswordRequestForm = Depends(), db: Sess
     except Exception as e:
         return exceptions.server_error(detail=str(e))
 
-@user_router.get('/forget-password', summary="Forget user's password", status_code=200)
+@user_router.get('/forgot-password', summary="Forget user's password", status_code=200)
 async def send_password(email: str, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
         await user_crud.send_code(db, email, backtask)
