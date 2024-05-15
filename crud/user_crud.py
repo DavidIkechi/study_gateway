@@ -63,7 +63,7 @@ async def create_user(db, user, backtasks):
     user_dict = user.dict(exclude_unset = True)
     user_dict['password'] = hasher.hash(user_dict['password'])
     user_dict['code'] = pyotp.random_base32()
-    user_dict['is_verified'] = True
+    # user_dict['is_verified'] = True
 
     
     user_dict.pop('confirm_password')
