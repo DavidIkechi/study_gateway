@@ -6,7 +6,7 @@ from db.main_model import UserModel
 from jose import jwt
 from response_handler import error_response
 from fastapi.security import OAuth2PasswordBearer
-from crud.user_crud import check_password_stat
+# from crud.user_crud import check_password_stat
 from datetime import datetime, timedelta
 
 import os
@@ -55,7 +55,7 @@ async def validate_active_client(db: Session = Depends(get_db), token:str = Depe
         
         payload = jwt.decode(token, ACCESS_SECRET_KEY, algorithms=["HS256"])
         # get username, client_id.
-        username = payload.get("sub")
+        email_address = payload.get("sub")
         # check if the client mail exist for that user.
         get_user = UserModel.check_email(db, email_address)
         if get_user is None:

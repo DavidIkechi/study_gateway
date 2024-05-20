@@ -23,13 +23,13 @@ async def send_verification_email(email_address: str, background_tasks: Backgrou
     url = os.getenv("HOST_URL")
     emails: EmailSchema = {
         "body": {
-            "url": f"{url}verify_mail?token={token}",
+            "url": f"{url}verify-user/{token}",
             "email_address": "Esteem User"
         } 
     }
     # Define message structure
     message = MessageSchema(
-        subject="Email Verification",
+        subject="Account Verification",
         recipients=[email_address],  # Send to single address
         template_body=emails.get('body'),
         subtype=MessageType.html
@@ -48,7 +48,7 @@ async def send_verification_code(email_address: str, code: str, background_tasks
     url = os.getenv("HOST_URL")
     emails: EmailSchema  = {
         "body": {
-            "sent_code": code,
+            "sent_code": list(code),
             "email_address": "Esteem User"
         } 
     }
@@ -63,5 +63,28 @@ async def send_verification_code(email_address: str, code: str, background_tasks
     # Send email in background task
     fm = FastMail(conf)
     background_tasks.add_task(fm.send_message, message=message, template_name='verification_code.html')
+
+    return token
+
+async def welcome_email(email_address: str, background_tasks: BackgroundTasks):
+    # Prepare email details
+    url = os.getenv("HOST_URL")
+    emails: EmailSchema  = {
+        "body": {
+            "url": url,
+            "email_address": "Esteem User"
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject="Welcome",
+        recipients=[email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='welcome.html')
 
     return token

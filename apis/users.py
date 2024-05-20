@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import sys
 sys.path.append("..")
 from db.session import get_db 
-# from auth import validate_active_client
+from auth import validate_active_client
 from response_handler import error_response as exceptions
 from argon2.exceptions import VerifyMismatchError
 from response_handler import success_response
@@ -156,11 +156,23 @@ async def create_user(user: str, backtask: BackgroundTasks, db: Session = Depend
         return exceptions.server_error(str(e))
 
 @user_router.post("/verify-email-token", summary="Verify Token from Email Verification Link.", status_code=200)
-async def refresh_token(refresh_token: refreshTokenSchema, db: Session = Depends(get_db)):
+async def refresh_token(refresh_token: refreshTokenSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
-        user_account = user_crud.verify_token(db, refresh_token.refresh_token)
+        await user_crud.verify_token(db, refresh_token.refresh_token, backtask)
         db.commit()
         return success_response.success_message([], f"Account has been successfully verified")
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@user_router.get('', summary="Get active user", status_code=200)
+async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = user_crud.get_user_detail(db, current_user)
+        return success_response.success_message(user_detail)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)

@@ -184,14 +184,23 @@ async def resend_link(db, user, backtasks):
     
     return check_user
 
-def verify_token(db, token):
+async def verify_token(db, token, backtask):
     # decode token.
     bool_result, token_data = password_verif_token(token)
 
     if not bool_result:
         raise BadExceptions(token_data)
 
-    check_user =  check_mail(db, toekn_data)
+    check_user =  check_mail(db, token_data)
+    await welcome_email(check_user.email_address, backtask)
     check_user.is_verified = True
     
     return check_user
+
+def get_user_by_email(db, email_address):
+    get_email = check_mail(db, email_address)
+    return UserModel.get_user_by_email(db, email_address)
+
+def get_user_detail(db, user_dict):
+    email_address = user_dict.get('sub')
+    return get_user_by_email(db, email_address)

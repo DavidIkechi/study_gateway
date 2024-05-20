@@ -8,12 +8,11 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
       rel="stylesheet"
     />
-    <title>Forgot Password OTP</title>
+    <title>Welcome to StudyGateway</title>
     <style>
       * {
         box-sizing: border-box;
       }
-
       body {
         margin: 0;
         padding: 0;
@@ -36,6 +35,7 @@
       }
 
       /* TABLE HEAD STYLES*/
+
       .headerClass {
         width: 100%;
         display: table-cell;
@@ -46,14 +46,14 @@
       }
 
       /* TABLE CONTENT STYLES*/
+
       .content {
         width: 100%;
         padding: 2rem 1.5rem;
       }
 
       .headingText {
-        color: #081C29;
-        text-align: center;
+        color: #081c29;
         font-family: Manrope, sans-serif;
         font-size: 30px;
         font-style: normal;
@@ -63,7 +63,6 @@
 
       .defaultP {
         color: #525557;
-        text-align: center;
         font-family: Manrope, sans-serif;
         font-size: 16px;
         font-style: normal;
@@ -71,39 +70,44 @@
         line-height: 24px; /* 150% */
       }
 
-      .passwordResetLabelText {
-        color: #2EB79C;
-        text-align: center;
+      .boldP {
+        color: #3c3d3e;
+        font-family: Manrope, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+      }
+
+      .divider-cell {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .divider {
+        max-width: 96px;
+        height: 1px;
+        background: #dfdfdf;
+        display: block;
+      }
+
+      .button {
+        display: inline-block;
+        outline: none;
+        border: none;
+        border-radius: 0.5rem;
+        background: #2eb79c;
+        box-shadow: 0rem 0.25rem 0.5rem 0rem rgba(0, 0, 0, 0.1);
+        padding: 0.625rem 1rem;
+        text-decoration: none;
+        gap: 0.5rem;
+
+        color: #fff;
         font-family: Manrope, sans-serif;
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 24px; /* 150% */
-      }
-
-      .optBoxParentLayout {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-
-      .otpBox {
-        padding: 0.625rem 0.5rem;
-        gap: 0.5rem;
-        border-radius: 0.5rem;
-        border: 0.0625rem solid #c5e9e2;
-        background: #fff;
-        font-family: Manrope, sans-serif;
-        box-shadow: 0rem 0.0625rem 0.125rem 0rem rgba(16, 24, 40, 0.05);
-
-        color: #2eb79c;
-        text-align: center;
-        font-family: Manrope, sans-serif;
-        font-size: 3rem;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 3.75rem; /* 125% */
-        letter-spacing: -0.06rem;
       }
 
       /* FOOTER STYLES*/
@@ -112,6 +116,7 @@
         padding: 32px 24px;
         flex-direction: column;
         align-items: center;
+        /* gap: 32px; */
         margin-top: 32px;
         align-self: stretch;
         border-top: 1px solid #ECECEC;
@@ -143,7 +148,7 @@
             <td>
               <img
                 src="https://studygate.tech/images/study-gateway-logo.svg"
-                alt="welcome"
+                alt="study_gateway_logo"
                 width="100%"
                 height="100%"
                 style="
@@ -160,56 +165,95 @@
         <tbody>
           <td class="container">
             <tr class="" style="padding-top: 24px">
-                <td>
-                  <img
-                    src="https://studygate.tech/images/forgot-password.png"
-                    alt="welcome"
-                    width="100%"
-                    height="100%"
-                    style="
-                      border: 0;
-                      outline: none;
-                      text-decoration: none;
-                      display: block;
-                    "
-                  />
-                </td>
+              <td>
+                <img
+                  src="https://studygate.tech/images/welcome.png"
+                  alt="welcome"
+                  width="100%"
+                  height="100%"
+                  style="
+                    border: 0;
+                    outline: none;
+                    text-decoration: none;
+                    display: block;
+                  "
+                />
+              </td>
             </tr>
 
             <tr>
               <td style="padding-top: 24px">
-                <p class="headingText">Forgot your password?</p>
+                <p class="headingText">Hi there,</p>
 
                 <p class="defaultP">
-                    Hi there, <br> <br> To reset your password, copy the reset verification code and paste in the input field of forgot password.
+                  We’re excited to welcome you to StudyGateway and we’re even
+                  more excited about what we’ve got planned. You’re already on
+                  your way to
+                  <span class="boldP">Studying Your Dream Course</span>. <br />
+                  <br />
+                  If you would like to connect with our success coaches, login
+                  and head over to your profile page, your mentors await you. If
+                  there’s anything you need, we’ll be here every step of the
+                  way.
                 </p>
               </td>
             </tr>
 
             <tr>
-                <td style="padding-top: 24px;">
-                    <tr>
-                        <td style="padding-bottom: 16px;">
-                            <p class="passwordResetLabelText">
-                                Password Reset Code
-                            </p>
-                        </td> 
-                    </tr>
-    
-                    <tr class="optBoxParentLayout">
-                      {% for item in sent_code %}
-                        <td class="otpBox">{{item}}</td>
-                      {% endfor %}
-                    </tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <p class="defaultP">
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >Follow us on Linkedin →</a
+                  >
+                </p>
+                <p class="defaultP">
+                  Stay up-to-date with the latest announcements and jobs.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding-bottom: 32px">
+                <p class="defaultP">
+                  Thanks for signing up. If you have any questions, send us a
+                  message at
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >hello@studygateway.io</a
+                  >
+                  or on
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >Linkedin</a
+                  >. We’d love to hear from you.
+                </p>
+
+                <p class="defaultP">— The team</p>
+              </td>
+            </tr>
+
+            <tr>
+                <td style="padding-top: 24px; padding-bottom: 24px;">
+                    <span>
+                        <a href="{{url}}" class="button"> Get Started → </a>
+                    </span>
                 </td>
-            </tr>
-            
-            <tr>
-              <td style="padding-top: 56px; padding-bottom: 32px;">
-                <p class="defaultP">
-                    If you do not want to change your password or didn't request a reset, you can ignore and delete this email.
-                </p>
-              </td>
             </tr>
           </td>
         </tbody>

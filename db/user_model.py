@@ -1,6 +1,7 @@
 from .session import Base
 from sqlalchemy import Column, Enum, Integer, String, Boolean, BigInteger, TIMESTAMP, ForeignKey, Float, JSON, TEXT, LargeBinary, DateTime
-from sqlalchemy.orm import Session, load_only, relationship
+from sqlalchemy.orm import Session, load_only, relationship, joinedload
+
 import uuid
 from datetime import datetime
 from sqlalchemy.sql import text
@@ -58,4 +59,16 @@ class UserModel(Base):
             setattr(user, key, value)
         return user
     
+    @staticmethod
+    def get_user_by_email(db: Session, email:str):
+        query = UserModel.get_user_object(db)
+        query = query.with_entities(
+            UserModel.id,
+            UserModel.email_address,
+            UserModel.is_verified,
+            UserModel.is_setup
+        )
+        # filter out centers
+        query = query.filter(UserModel.email_address == email)
+        return query.first()
     
