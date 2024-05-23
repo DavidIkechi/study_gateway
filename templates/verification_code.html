@@ -16,6 +16,7 @@
       }
 
       body {
+        
         margin: 0;
         padding: 0;
       }
@@ -201,7 +202,6 @@
                             </p>
                         </td> 
                     </tr>
-    
                     <tr class="optBoxParentLayout">
                       <td class="otpBox">3</td>
                       <td class="otpBox">0</td>
@@ -209,6 +209,9 @@
                       <td class="otpBox">6</td>
                       <td class="otpBox">6</td>
                       <td class="otpBox">6</td>                      
+                    {% for item in sent_code %}
+                      <td class="otpBox">{{item}}</td>
+                    {% endfor %}                      
                     </tr>
                 </td>
             </tr>

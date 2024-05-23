@@ -56,6 +56,10 @@ async def main() -> None:
 
 study_gate_app.mount("/static", StaticFiles(directory="static"), name="static")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff7792b112a6e7ba3f314b460586976730b051e2
 # include client router.
 study_gate_app.include_router(
     settings_router
