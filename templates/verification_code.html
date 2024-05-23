@@ -15,6 +15,7 @@
       }
 
       body {
+        
         margin: 0;
         padding: 0;
       }
@@ -99,6 +100,7 @@
 
       .otpBox {
         padding: 0.625rem 1.35rem;
+        margin: 0.2rem;
         border-radius: 0.5rem;
         border: 0.0625rem solid #c5e9e2;
         background: #fff;
@@ -146,7 +148,7 @@
           <tr class="headerClass">
             <td>
               <img
-                src="https://studygate.tech/images/study-gateway-logo.svg"
+                src="https://studygate.tech/static/images/study-gateway-logo.svg"
                 alt="welcome"
                 width="100%"
                 height="100%"
@@ -166,7 +168,7 @@
             <tr class="" style="padding-top: 24px">
                 <td>
                   <img
-                    src="https://studygate.tech/images/forgot-password.png"
+                    src="https://studygate.tech/static/images/forgot-password.png"
                     alt="welcome"
                     width="100%"
                     height="100%"
@@ -199,7 +201,6 @@
                             </p>
                         </td> 
                     </tr>
-    
                     <tr class="optBoxParentLayout">
                       <td class="otpBox">3</td>
                       <td class="otpBox">0</td>
@@ -207,6 +208,9 @@
                       <td class="otpBox">6</td>
                       <td class="otpBox">6</td>
                       <td class="otpBox">6</td>                      
+                    {% for item in sent_code %}
+                      <td class="otpBox">{{item}}</td>
+                    {% endfor %}                      
                     </tr>
                 </td>
             </tr>
