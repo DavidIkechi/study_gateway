@@ -42,9 +42,8 @@
         width: 100%;
         display: table-cell;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
+        padding: 0 35%;
+        text-align: center;
       }
 
       /* TABLE CONTENT STYLES*/
@@ -125,10 +124,14 @@
       }
 
       .footer-media-layout {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        margin: 0.5rem;
+        padding: 0 35%;
+      }
+      .footer-media-layout td{
+        padding: 0.7em;
       }
 
       .footerP {
@@ -221,7 +224,7 @@
         </tbody>
 
         <tfoot>
-          <td class="footer">
+          <td class="footer" style='text-align: center !important;'>
             <tr class="footer-media-layout">
               <td>
                 <a href="/">
