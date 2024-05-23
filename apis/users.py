@@ -14,7 +14,7 @@ from exceptions import (
     NotAuthorizedException,
     ForbiddenException
 )
-from schemas.user_schema import UserSchema, CodeSchema, refreshTokenSchema
+from schemas.user_schema import UserSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud import user_crud
@@ -140,11 +140,11 @@ async def refresh_token(refresh_token: refreshTokenSchema, db: Session = Depends
 
 
 @user_router.post('/resend-verification-link', summary="Resend Verification Link", status_code=200)
-async def create_user(user: str, backtask: BackgroundTasks, db: Session = Depends(get_db)):
+async def resend_email(user: ResendEmailSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
         await user_crud.resend_link(db, user, backtask)
         db.commit()
-        return success_response.success_message([], f"A link has been sent to {user.email_address}", 201)
+        return success_response.success_message([], f"A link has been sent to {user.email_address}", 200)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)

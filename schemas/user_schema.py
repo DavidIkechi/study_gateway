@@ -22,8 +22,8 @@ class CodeSchema(BaseModel):
 class refreshTokenSchema(BaseModel):
     refresh_token: str
     
-    
-    
+class ResendEmailSchema(BaseModel):
+    email_address: EmailStr
     
     
     

@@ -64,8 +64,6 @@ async def create_user(db, user, backtasks):
     user_dict['password'] = hasher.hash(user_dict['password'])
     user_dict['code'] = pyotp.random_base32()
     # user_dict['is_verified'] = True
-
-    
     user_dict.pop('confirm_password')
     
     create_new_user = UserModel.create_user(user_dict)
@@ -175,12 +173,12 @@ def refresh_token(db, token):
 
 async def resend_link(db, user, backtasks):
     # check to see if the email address already exists
-    check_user =  check_mail(db, user)
+    check_user =  check_mail(db, user.email_address)
 
     if check_user.is_verified:
         raise BadExceptions(detail="Account already verified")
     # send verification mail notification
-    await send_verification_email(user, backtasks)
+    await send_verification_email(user.email_address, backtasks)
     
     return check_user
 
