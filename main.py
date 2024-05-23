@@ -7,7 +7,7 @@ from db import main_model as models
 # from apis.client import client_router
 from apis.settings_api import settings_router
 from apis.users import user_router
-
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, asyncio
 import os
@@ -53,6 +53,8 @@ async def main() -> None:
     
     server = uvicorn.Server(config)
     await server.serve()
+
+study_gate_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # include client router.
 study_gate_app.include_router(
