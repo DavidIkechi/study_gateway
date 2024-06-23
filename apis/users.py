@@ -159,9 +159,9 @@ async def resend_email(user: ResendEmailSchema, backtask: BackgroundTasks, db: S
         return exceptions.server_error(str(e))
 
 @user_router.post("/verify-email-token", summary="Verify Token from Email Verification Link.", status_code=200)
-async def refresh_token(refresh_token: refreshTokenSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
+async def refresh_token(token: refreshTokenSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
-        await user_crud.verify_token(db, refresh_token.refresh_token, backtask)
+        await user_crud.verify_token(db, token.refresh_token, backtask)
         db.commit()
         return success_response.success_message([], f"Account has been successfully verified")
     

@@ -90,4 +90,4 @@ async def welcome_email(user: UserModel, background_tasks: BackgroundTasks):
     fm = FastMail(conf)
     background_tasks.add_task(fm.send_message, message=message, template_name='welcome.html')
 
-    return token
+    return

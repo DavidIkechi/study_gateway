@@ -193,7 +193,10 @@ async def verify_token(db, token, backtask):
         raise BadExceptions(token_data)
 
     check_user =  check_mail(db, token_data)
-    await welcome_email(check_user, backtask)
+    if check_user.is_verified:
+        raise BadExceptions(detail="Account already verified")
+    
+    await welcome_email(check_user.email_address, backtask)
     check_user.is_verified = True
     
     return check_user
