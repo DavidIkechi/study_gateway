@@ -2,7 +2,7 @@ import sys
 sys.path.append("..")
 from utils import *
 from db.session import Session
-from sqlalchemy.orm import Session, load_only, relationship
+from sqlalchemy.orm import Session, load_only, relationship, joinedload
 from exceptions import (
     BadExceptions, 
     NotFoundException, 
@@ -10,7 +10,11 @@ from exceptions import (
     NotAuthorizedException,
     ForbiddenException
 )
-from db.main_model import ProfileModel, AdditionalUserDetails, UserModel
+from db.main_model import (
+    ProfileModel, AdditionalUserDetails, UserModel,
+    GenderModel
+)
+
 from argon2 import PasswordHasher
 from send_mail import *
 from auth_token import *
@@ -20,6 +24,8 @@ from simpleotp import OTP
 from schemas.user_schema import NameSchema
 from schemas.profile_schema import ExtraSchema
 import os
+
+hasher = PasswordHasher()
 
 def create_user_profile(db, user_id: int):
     user_profile = ProfileModel.create_profile({'user_id': user_id})
@@ -110,3 +116,43 @@ def update_degree_info(db, profile_info, current_user):
     update_user = AdditionalUserDetails.update_user_details(db, details_id, extra_record)
     db.flush()
     return check_profile(db, user_id)
+
+def change_password(db, profile_info, current_user):
+    # check to see if the email address already exists
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+
+    # check passwords.
+    get_password = profile_info.current_password
+    new_password = profile_info.new_password
+    
+    if hasher.verify(get_user.password, get_password):
+        bool, message = check_password(new_password)
+        if not bool:
+            raise BadExceptions(detail=message)
+        
+        get_user.password = hasher.hash(new_password)
+    
+    return get_user
+
+def get_user_profile(db, current_user):
+    user_id = current_user.get('user_id')
+    query = UserModel.get_user_object(db).filter_by(id=user_id)
+    
+    query = query.options(
+        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name),
+        joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
+                                                      ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.genders).load_only('id','slug','name'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.countries).load_only('id', 'country_name', 'slug'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.states).load_only('id', 'name', 'slug'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.degrees).load_only('id', 'degree_name', 'slug'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.degree_soughts).load_only('id', 'degree_name', 'slug'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.nationalities).load_only('id', 'nationality', 'slug'),
+        joinedload(UserModel.user_profiles).joinedload(ProfileModel.courses).load_only('id','course_name', 'slug'),
+        joinedload(UserModel.user_details).load_only('id', 'email_address2', 'address2', 
+                                                     'course_extra', 'highest_degree_extra')
+    )
+
+    return query.first()
