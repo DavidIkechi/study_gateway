@@ -33,12 +33,15 @@ async def create_user(user: UserSchema, backtask: BackgroundTasks, db: Session =
         return success_response.success_message([], f"User {user.email_address} created successfully., A verification mail has been sent to you. In case you didn't receive it, click on button below to resend ", 201)
     
     except BadExceptions as e:
+        db.rollback()
         return exceptions.bad_request_error(detail = e.detail)
     
     except NotFoundException as e:
+        db.rollback()
         return exceptions.not_found_error(detail = e.detail)
         
     except Exception as e:
+        db.rollback()
         return exceptions.server_error(str(e))
 
 @user_router.post('/login', summary="Login a user", status_code=200)

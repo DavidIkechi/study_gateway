@@ -21,7 +21,8 @@ class CountryModel(Base):
                         onupdate=datetime.now(), nullable=False)
 
     cities = relationship('CityModel', back_populates="countries")
-
+    states = relationship('StateModel', back_populates="countries")
+    user_profiles = relationship('ProfileModel', back_populates="countries")
     
     #define the static methods
     @staticmethod

@@ -20,6 +20,9 @@ class GenderModel(Base):
     updated_at = Column(TIMESTAMP(timezone=True),
                         default=datetime.now(), 
                         onupdate=datetime.now(), nullable=False)
+    
+    user_profiles = relationship('ProfileModel', back_populates='genders')
+
                         
     # define the static methods here.
     @staticmethod

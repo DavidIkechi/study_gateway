@@ -16,21 +16,22 @@ def generate_verification_token(email: str):
     token = jwt.encode(token_data, os.getenv('SECRET'), algorithm='HS256')
     return token
 
-async def send_verification_email(email_address: str, background_tasks: BackgroundTasks):
-    token = generate_verification_token(email_address)
+async def send_verification_email(user: UserModel, background_tasks: BackgroundTasks):
+    token = generate_verification_token(user.email_address)
 
     # Prepare email details
     url = os.getenv("HOST_URL")
     emails: EmailSchema = {
         "body": {
+            "name": user.first_name,
             "url": f"{url}verify-user/{token}",
-            "email_address": "Esteem User"
+            "email_address": user.email_address
         } 
     }
     # Define message structure
     message = MessageSchema(
         subject="Account Verification",
-        recipients=[email_address],  # Send to single address
+        recipients=[user.email_address],  # Send to single address
         template_body=emails.get('body'),
         subtype=MessageType.html
     )
@@ -41,21 +42,22 @@ async def send_verification_email(email_address: str, background_tasks: Backgrou
 
     return token
 
-async def send_verification_code(email_address: str, code: str, background_tasks: BackgroundTasks):
+async def send_verification_code(user: UserModel, code: str, background_tasks: BackgroundTasks):
     token = generate_verification_token(email_address)
 
     # Prepare email details
     url = os.getenv("HOST_URL")
     emails: EmailSchema  = {
         "body": {
+            "name": user.first_name,
             "sent_code": list(code),
-            "email_address": "Esteem User"
+            "email_address": user.email_address
         } 
     }
     # Define message structure
     message = MessageSchema(
         subject="Password Reset",
-        recipients=[email_address],  # Send to single address
+        recipients=[user.email_address],  # Send to single address
         template_body=emails.get('body'),
         subtype=MessageType.html
     )
@@ -66,19 +68,20 @@ async def send_verification_code(email_address: str, code: str, background_tasks
 
     return token
 
-async def welcome_email(email_address: str, background_tasks: BackgroundTasks):
+async def welcome_email(user: UserModel, background_tasks: BackgroundTasks):
     # Prepare email details
     url = os.getenv("HOST_URL")
     emails: EmailSchema  = {
         "body": {
+            "name": user.first_name,
             "url": url,
-            "email_address": "Esteem User"
+            "email_address": user.email_address
         } 
     }
     # Define message structure
     message = MessageSchema(
         subject="Welcome",
-        recipients=[email_address],  # Send to single address
+        recipients=[user.email_address],  # Send to single address
         template_body=emails.get('body'),
         subtype=MessageType.html
     )

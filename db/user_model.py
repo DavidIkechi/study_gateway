@@ -15,7 +15,8 @@ class UserModel(Base):
     password = Column(String(255), nullable=False)
     email_address = Column(String(100), nullable=False, unique=True, index=True)
     code = Column(String(255), nullable=False)
-
+    first_name = Column(String(255), nullable=False, default="Doe")
+    last_name = Column(String(255), nullable=False, default="Doe")
     is_mentor = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     is_verified = Column(Boolean, default=False)
@@ -30,6 +31,9 @@ class UserModel(Base):
     updated_at = Column(TIMESTAMP(timezone=True),
                         default=datetime.now(), 
                         onupdate=datetime.now(), nullable=False)
+    
+    user_profiles = relationship('ProfileModel', back_populates='users')
+    user_details = relationship('AdditionalUserDetails', back_populates='users')
     
     # define the static methods
     @staticmethod
@@ -71,4 +75,3 @@ class UserModel(Base):
         # filter out centers
         query = query.filter(UserModel.email_address == email)
         return query.first()
-    

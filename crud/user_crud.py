@@ -43,9 +43,9 @@ def check_mail(db, email, new_user= False):
             raise NotFoundException(detail=f"User with this email {email} does not exist.")
         
     return get_user
-        
 
 async def create_user(db, user, backtasks):
+    from crud.user_profile_crud import create_user_profile
     # check to see if the email address already exists
     check_user =  check_mail(db, user.email_address, new_user=True)
     # check passwords.
@@ -68,8 +68,11 @@ async def create_user(db, user, backtasks):
     
     create_new_user = UserModel.create_user(user_dict)
     db.add(create_new_user)
+    db.flush()
+    # create new user profile immediately.
+    _ = create_user_profile(db, create_new_user.id)
     # send verification mail notification
-    await send_verification_email(user.email_address, backtasks)
+    await send_verification_email(create_new_user, backtasks)
     
     return create_new_user
 
@@ -190,7 +193,7 @@ async def verify_token(db, token, backtask):
         raise BadExceptions(token_data)
 
     check_user =  check_mail(db, token_data)
-    await welcome_email(check_user.email_address, backtask)
+    await welcome_email(check_user, backtask)
     check_user.is_verified = True
     
     return check_user

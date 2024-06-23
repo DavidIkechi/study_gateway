@@ -8,10 +8,10 @@ from sqlalchemy.sql import text
 import sys
 sys.path.append("..")
 
-class NationalityModel(Base):
-    __tablename__ = "nationality_model"
+class CourseModel(Base):
+    __tablename__ = "course_model"
     id = Column(Integer, primary_key=True, index=True)
-    nationality = Column(String(100), nullable=False)
+    course_name = Column(String(100), unique=True, nullable=False)
     slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
     
     created_at = Column(TIMESTAMP(timezone=True),
@@ -19,26 +19,30 @@ class NationalityModel(Base):
     updated_at = Column(TIMESTAMP(timezone=True),
                         default=datetime.now(), 
                         onupdate=datetime.now(), nullable=False)
-    
-    user_profiles = relationship('ProfileModel', back_populates='nationalities')
 
+    user_profiles = relationship('ProfileModel', back_populates="courses")
     
     #define the static methods
     @staticmethod
-    def get_nationality_object(db: Session):
-        return db.query(NationalityModel)
+    def get_course_object(db: Session):
+        return db.query(CourseModel)
     
-    # get nationality by ID
+    # get course by ID
     @staticmethod
-    def get_nationality_by_id(db: Session, id: int):
-        return NationalityModel.get_nationality_object(db).get(id)
+    def get_course_by_id(db: Session, id: int):
+        return CourseModel.get_course_object(db).get(id)
     
-    # get nationality by slug
+    # get course by slug
     @staticmethod
-    def get_nationality_by_slug(db:Session, slug: str):
-        return NationalityModel.get_nationality_object(db).filter_by(slug=slug).first()
+    def get_course_by_slug(db:Session, slug: str):
+        return CourseModel.get_course_object(db).filter_by(slug=slug).first()
+
+    # get course by name
+    @staticmethod
+    def get_course_by_name(db:Session, name: str):
+        return CourseModel.get_course_object(db).filter_by(course_name=name).first()
     
-    # get all nationalities
+    # get all courses
     @staticmethod
-    def get_all_nationalities(db: Session):
-        return NationalityModel.get_nationality_object(db)
+    def get_all_courses(db: Session):
+        return CourseModel.get_course_object(db)

@@ -8,10 +8,12 @@ from sqlalchemy.sql import text
 import sys
 sys.path.append("..")
 
-class NationalityModel(Base):
-    __tablename__ = "nationality_model"
+class CountryCodeModel(Base):
+    __tablename__ = "country_code_model"
     id = Column(Integer, primary_key=True, index=True)
-    nationality = Column(String(100), nullable=False)
+    country_name = Column(String(100), unique=True, nullable=False)
+    phone_code = Column(String(100), nullable=False)
+    iso3 = Column(String(100), nullable=False)
     slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
     
     created_at = Column(TIMESTAMP(timezone=True),
@@ -20,25 +22,22 @@ class NationalityModel(Base):
                         default=datetime.now(), 
                         onupdate=datetime.now(), nullable=False)
     
-    user_profiles = relationship('ProfileModel', back_populates='nationalities')
-
-    
     #define the static methods
     @staticmethod
-    def get_nationality_object(db: Session):
-        return db.query(NationalityModel)
+    def get_country_code_object(db: Session):
+        return db.query(CountryCodeModel)
     
-    # get nationality by ID
+    # get country_code by ID
     @staticmethod
-    def get_nationality_by_id(db: Session, id: int):
-        return NationalityModel.get_nationality_object(db).get(id)
+    def get_country_code_by_id(db: Session, id: int):
+        return CountryCodeModel.get_country_code_object(db).get(id)
     
-    # get nationality by slug
+    # get country_code by slug
     @staticmethod
-    def get_nationality_by_slug(db:Session, slug: str):
-        return NationalityModel.get_nationality_object(db).filter_by(slug=slug).first()
-    
-    # get all nationalities
+    def get_country_code_by_slug(db:Session, slug: str):
+        return CountryCodeModel.get_country_code_object(db).filter_by(slug=slug).first()
+
+    # get all country_codes
     @staticmethod
-    def get_all_nationalities(db: Session):
-        return NationalityModel.get_nationality_object(db)
+    def get_all_countries(db: Session):
+        return CountryCodeModel.get_country_code_object(db)

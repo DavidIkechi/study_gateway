@@ -50,12 +50,76 @@ async def get_cities(country_slug: str, db: Session = Depends(get_db)):
     except Exception as e:
         return exceptions.server_error(str(e))
     
+@settings_router.get('/states/{country_slug}', summary="Get all states in a country", status_code=200)
+async def get_cities(country_slug: str, db: Session = Depends(get_db)):
+    from crud.settings import country_states
+    try:
+        return success_response.success_message(country_states(db, country_slug))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
     
 @settings_router.get('/gender', summary="Get all Genders", status_code=200)
 async def get_genders(db: Session = Depends(get_db)):
     from crud.settings import get_gender
     try:
         return success_response.success_message(get_gender(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+    
+@settings_router.get('/country-code', summary="Get all countries code", status_code=200)
+async def get_country(db: Session = Depends(get_db)):
+    from crud.settings import country_codes
+    try:
+        return success_response.success_message(country_codes(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@settings_router.get('/degree-sought', summary="Get all degree sought", status_code=200)
+async def get_country(db: Session = Depends(get_db)):
+    from crud.settings import degree_soughts
+    try:
+        return success_response.success_message(degree_soughts(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@settings_router.get('/degrees', summary="Get all degrees", status_code=200)
+async def get_degrees(db: Session = Depends(get_db)):
+    from crud.settings import degrees
+    try:
+        return success_response.success_message(degrees(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@settings_router.get('/courses', summary="Get all courses", status_code=200)
+async def get_country(db: Session = Depends(get_db)):
+    from crud.settings import courses
+    try:
+        return success_response.success_message(courses(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@settings_router.get('/packages', summary="Get all packages", status_code=200)
+async def get_packages(db: Session = Depends(get_db)):
+    from crud.settings import packages
+    try:
+        return success_response.success_message(packages(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+
+        
+@settings_router.get('/package-prices/{package_slug}', summary="Get all Prices for package", status_code=200)
+async def get_country(package_slug: str, db: Session = Depends(get_db)):
+    from crud.settings import get_package_pricing
+    try:
+        return success_response.success_message(get_package_pricing(db, package_slug))
     
     except Exception as e:
         return exceptions.server_error(str(e))

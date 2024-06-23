@@ -11,8 +11,17 @@ from .country_model import CountryModel
 from .nationality_model import NationalityModel
 from .gender_model import GenderModel
 from .cities_model import CityModel
-
-
+from .subscribers_model import SubscriberModel
+from .states_model import StateModel
+from .country_code_model import CountryCodeModel
+from .courses import CourseModel
+from .profile_model import ProfileModel
+from .degree_sought import DegreeSoughtModel
+from .degree import DegreeModel
+from .additional_profile import AdditionalUserDetails
+from .package_model import PackageModel
+from .pricing_model import PricingModel
+ 
 import sys
 sys.path.append("..")
 

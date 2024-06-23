@@ -14,7 +14,13 @@ from db import (
    country_model,
    nationality_model,
    gender_model,
-   cities_model
+   cities_model,
+   subscribers_model,
+   states_model,
+   country_code_model,
+   degree, degree_sought, courses,
+   profile_model, additional_profile,
+   package_model, pricing_model
 )
 
 from db.connection import get_db_conn_string

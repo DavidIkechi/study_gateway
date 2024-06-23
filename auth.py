@@ -19,7 +19,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl = 'users/login')
 
 def test_active_client():
     current_user = {
-        "sub": "admin@intuitive.com",
         "client_id": 1,
         "user_id": 1,
         "selected_client_id": 1,

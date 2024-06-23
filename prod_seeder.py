@@ -170,3 +170,156 @@ def seed_cities_prod(db: Session):
     ]
 
     seed_model(db, CityModel, city_data, [])
+    
+    
+def seed_states_prod(db: Session):
+    from db.main_model import StateModel
+    from crud.settings import check_country_by_name
+    from py_countries_states_cities_database import get_all_countries_and_states_nested
+
+    data = get_all_countries_and_states_nested()
+
+    state_data  = [
+        {'name': state['name'], 'country_id': check_country_by_name(db, country['name']).id}
+        for country in data
+        for state in country['states']
+    ]
+
+    seed_model(db, StateModel, state_data, [])
+    
+    
+def seed_states_prod(db: Session):
+    from db.main_model import StateModel
+    from crud.settings import check_country_by_name
+    from py_countries_states_cities_database import get_all_countries_and_states_nested
+
+    data = get_all_countries_and_states_nested()
+
+    state_data  = [
+        {'name': state['name'], 'country_id': check_country_by_name(db, country['name']).id}
+        for country in data
+        for state in country['states']
+    ]
+
+    seed_model(db, StateModel, state_data, [])
+    
+def seed_country_codes(db: Session):
+    from db.main_model import CountryCodeModel
+    from py_countries_states_cities_database import get_all_countries
+
+    get_countries = get_all_countries()
+
+    country_data = [
+        {'country_name': country['name'],
+         'phone_code': country['phone_code'],
+         'iso3': country['iso3']} 
+        for country in get_countries
+    ]
+
+    seed_model(db, CountryCodeModel, country_data, [])
+    
+def seed_degrees(db: Session):
+    from db.main_model import DegreeModel
+    
+    degree_data = [
+        {'degree_name': 'Bachelor'},
+        {'degree_name': 'Master'},
+        {'degree_name': 'Doctorate'},
+        {'degree_name': 'Diploma'},
+        {'degree_name': 'Certificate'},
+        {'degree_name': 'Others'}
+    ]
+    
+    seed_model(db, DegreeModel, degree_data, [])
+    
+def seed_degree_sought(db: Session):
+    from db.main_model import DegreeSoughtModel
+    
+    degree_data = [
+        {'degree_name': 'Undergraduate'},
+        {'degree_name': 'Master'},
+        {'degree_name': 'PhD'}
+    ]
+    
+    seed_model(db, DegreeSoughtModel, degree_data, [])
+    
+def seed_courses(db: Session):
+    from db.main_model import CourseModel
+    discipline_data = [
+        {'course_name': 'Computer Science'},
+        {'course_name': 'Mathematics'},
+        {'course_name': 'Physics'},
+        {'course_name': 'Chemistry'},
+        {'course_name': 'Biology'},
+        {'course_name': 'Economics'},
+        {'course_name': 'History'},
+        {'course_name': 'Psychology'},
+        {'course_name': 'Business'},
+        {'course_name': 'Engineering'},
+        {'course_name': 'Literature'},
+        {'course_name': 'Sociology'},
+        {'course_name': 'Political Science'},
+        {'course_name': 'Philosophy'},
+        {'course_name': 'Anthropology'},
+        {'course_name': 'Others'}
+    ]
+    
+    seed_model(db, CourseModel, discipline_data, [])
+    
+def seed_package(db: Session):
+    from db.main_model import PackageModel
+    
+    package_data = [
+        {'id': 1, 'package_name': 'Admission Package', 'slug': 'admission-package'},
+        {'id': 2, 'package_name': 'Full Package', 'slug': 'full-package'}
+    ]
+    
+    seed_model(db, PackageModel, package_data)
+    
+def seed_pricing(db: Session):
+    from db.main_model import PricingModel
+    
+    pricing_data = [
+        {'id': 1, 'name': 'Undergraduate Degree', 
+         'price': 1400, 'package_id': 1,
+         'requirement':['WAEC or NECO results', 'High school Transcript', 'Passport Data Page','Passport photo with white background'],
+         'benefits': ['Introductory meeting with Student Success Coach',
+                      'Application to 4 Universities',
+                      'Exclusive documentation with resources for study abroad',
+                      'Essay writing session', 'Review of Applications',
+                      'Bank Statement for admission', 'Scholarship resources'],
+         'description': 'Admission package gives you the right guidance to been admitted into the school of your choice.'},
+        {'id': 2, 'name': 'Masters Degree', 'price': 2050,
+         'package_id': 1, 
+         'requirement': ['Undergraduate Unofficial Transcript','High School Transcript',
+                         'Passport Data Page', 'Passport photo with white background'],
+         'benefits': ['Introductory meeting with Student Success Coach',
+                      'Application to 4 Universities',
+                      'Exclusive documentation with resources for study abroad',
+                      'Essay writing session', 'WES evaluation', 'Review of Applications',
+                      'Bank Statement for admission', 'Scholarship resources'],
+         'description': 'Admission package gives you the right guidance to been admitted into the school of your choice.'},
+        {'id': 3, 'name': 'Undergraduate Degree', 
+         'price': 2850, 'package_id': 2,
+         'requirement':['WAEC or NECO results', 'High school Transcript', 'Passport Data Page','Passport photo with white background'],
+         'benefits': ['Introductory meeting with Student Success Coach',
+                      'Application to 4 Universities',
+                      'Exclusive documentation with resources for study abroad',
+                      'Essay writing session', 'Review of Applications', 'Immigration SEVIS','Visa fee',
+                      'Bank Statement for admission', 'Scholarship resources', 'Extensive visa coaching',
+                      'WES transcript evaluation', 'Orientation before and on arrival'],
+                  'description': 'Full package gives you the right guidance to been admitted into the school of your choice.'},
+        {'id': 4, 'name': 'Masters Degree', 'price': 3850,
+         'package_id': 2, 
+         'requirement': ['Undergraduate Unofficial Transcript','High School Transcript',
+                         'Passport Data Page', 'Passport photo with white background'],
+         'benefits': ['Introductory meeting with Student Success Coach',
+                      'Application to 4 Universities',
+                      'Exclusive documentation with resources for study abroad',
+                      'Essay writing session', 'Review of Applications', 'Immigration SEVIS','Visa fee',
+                      'Bank Statement for admission', 'Scholarship resources', 'Extensive visa coaching',
+                      'WES transcript evaluation', 'Orientation before and on arrival'],
+                           'description': 'Full package gives you the right guidance to been admitted into the school of your choice.'}
+    ]
+    
+    seed_model(db, PricingModel, pricing_data, [])
