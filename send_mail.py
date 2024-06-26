@@ -43,7 +43,7 @@ async def send_verification_email(user: UserModel, background_tasks: BackgroundT
     return token
 
 async def send_verification_code(user: UserModel, code: str, background_tasks: BackgroundTasks):
-    token = generate_verification_token(email_address)
+    token = generate_verification_token(user.email_address)
 
     # Prepare email details
     url = os.getenv("HOST_URL")

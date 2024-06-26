@@ -107,7 +107,7 @@ async def send_code(db, email: str, backtasks):
     # generate OTP - returns OTP and hash
     sent_code, sig = otp_handler.generate()
     # send verification code notification
-    await send_verification_code(email, sent_code, backtasks)
+    await send_verification_code(check_user, sent_code, backtasks)
     check_user.code = sig
 
     return check_user
@@ -181,7 +181,7 @@ async def resend_link(db, user, backtasks):
     if check_user.is_verified:
         raise BadExceptions(detail="Account already verified")
     # send verification mail notification
-    await send_verification_email(user.email_address, backtasks)
+    await send_verification_email(user, backtasks)
     
     return check_user
 
@@ -196,7 +196,7 @@ async def verify_token(db, token, backtask):
     if check_user.is_verified:
         raise BadExceptions(detail="Account already verified")
     
-    await welcome_email(check_user.email_address, backtask)
+    await welcome_email(check_user, backtask)
     check_user.is_verified = True
     
     return check_user
