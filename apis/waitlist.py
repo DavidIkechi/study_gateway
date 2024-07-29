@@ -61,7 +61,7 @@ async def delete_user(email_address: str, backtask: BackgroundTasks, db: Session
 async def get_waitlist(db: Session = Depends(get_db)):
     try:
         waited = waitlist_crud.get_all_waitlist(db)
-        return success_response.success_message(waited)   
+        return waited  
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     
