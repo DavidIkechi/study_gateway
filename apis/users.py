@@ -14,7 +14,7 @@ from exceptions import (
     NotAuthorizedException,
     ForbiddenException
 )
-from schemas.user_schema import UserSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
+from schemas.user_schema import UserSchema, UserPasswordSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud import user_crud
@@ -110,7 +110,7 @@ async def verify_code(code: CodeSchema, db: Session = Depends(get_db)):
         return exceptions.server_error(detail=str(e))
 
 @user_router.patch('/change-password', summary="Change user's password", status_code=200)
-async def change_password(token: str, user: UserSchema, db: Session = Depends(get_db)):
+async def change_password(token: str, user: UserPasswordSchema, db: Session = Depends(get_db)):
     try:
         check_code = user_crud.change_password(db, token, user)
         db.commit()
