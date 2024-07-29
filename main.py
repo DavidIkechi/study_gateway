@@ -9,6 +9,7 @@ from apis.settings_api import settings_router
 from apis.users import user_router
 from apis.subscribers import subscriber_router
 from apis.user_profile_api import user_profile_router
+from apis.waitlist import waitlist_router
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, asyncio
@@ -73,6 +74,10 @@ study_gate_app.include_router(
 
 study_gate_app.include_router(
     user_profile_router
+)
+
+study_gate_app.include_router(
+    waitlist_router
 )
 
 @study_gate_app.on_event("startup")

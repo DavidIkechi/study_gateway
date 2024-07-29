@@ -17,20 +17,20 @@ from exceptions import (
 from schemas.user_schema import UserSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
 from fastapi.security import OAuth2PasswordRequestForm
 
-from crud import subscriber_crud
+from crud import waitlist_crud
 
 
-subscriber_router = APIRouter(
-    prefix="/subscribers",
-    tags=["Subscribers"]
+waitlist_router = APIRouter(
+    prefix="/waitlists",
+    tags=["waitlists"]
 )
 
-@subscriber_router.post('', summary="Add Subscriber", status_code=201)
-async def create_subscriber(user: ResendEmailSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
+@waitlist_router.post('', summary="Add waitlist", status_code=201)
+async def create_waitlist(user: ResendEmailSchema, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
-        await subscriber_crud.create_subscriber(db, user, backtask)
+        await waitlist_crud.create_waitlist(db, user, backtask)
         db.commit()
-        return success_response.success_message([], f"{user.email_address} subscribed successfully", 201)
+        return success_response.success_message([], f"{user.email_address} successfully added to waitlist", 201)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
@@ -41,13 +41,27 @@ async def create_subscriber(user: ResendEmailSchema, backtask: BackgroundTasks, 
     except Exception as e:
         return exceptions.server_error(str(e))
     
-@subscriber_router.delete('/{email_address}', summary="Add Subscriber", status_code=200)
+@waitlist_router.delete('/{email_address}', summary="Add waitlist", status_code=200)
 async def delete_user(email_address: str, backtask: BackgroundTasks, db: Session = Depends(get_db)):
     try:
-        await subscriber_crud.delete_subscriber(db, email_address, backtask)
+        await waitlist_crud.delete_waitlist(db, email_address, backtask)
         db.commit()
-        return success_response.success_message([], f"{email_address} deleted succesfully", 200)
+        return success_response.success_message([], f"{email_address} deleted succesfully from waitlist", 200)
     
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@waitlist_router.get('', summary="Get all waitlist", status_code=200)
+async def get_waitlist(db: Session = Depends(get_db)):
+    try:
+        waited = waitlist_crud.get_all_waitlist(db)
+        return success_response.success_message(waited)   
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     

@@ -20,7 +20,8 @@ from db import (
    country_code_model,
    degree, degree_sought, courses,
    profile_model, additional_profile,
-   package_model, pricing_model
+   package_model, pricing_model,
+   waitlist_model
 )
 
 from db.connection import get_db_conn_string
