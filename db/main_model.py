@@ -22,6 +22,7 @@ from .additional_profile import AdditionalUserDetails
 from .package_model import PackageModel
 from .pricing_model import PricingModel
 from .waitlist_model import WaitlistModel
+from .language_model import LanguageModel
  
 import sys
 sys.path.append("..")

@@ -21,7 +21,7 @@ from db import (
    degree, degree_sought, courses,
    profile_model, additional_profile,
    package_model, pricing_model,
-   waitlist_model
+   waitlist_model, language_model
 )
 
 from db.connection import get_db_conn_string

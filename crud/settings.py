@@ -198,3 +198,18 @@ def get_package_pricing(db, slug):
 
     return PricingModel.get_pricing_by_package(db, package_id).options(
         load_only('name','slug','price','requirement','description','benefits')).all()
+    
+def check_language_by_slug(db, slug):
+    from db.main_model import LanguageModel
+    get_language = LanguageModel.get_pricing_by_slug(db, slug)
+    
+    if not get_language:
+        raise NotFoundException(f"Language with id: {slug} not found")
+
+    return get_price
+
+def get_languages(db, slug):
+    from db.main_model import LanguageModel
+
+    return LanguageModel.get_all_languages(db).options(
+        load_only('name','slug')).all()
