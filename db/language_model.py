@@ -19,6 +19,9 @@ class LanguageModel(Base):
                         default=datetime.now(), 
                         onupdate=datetime.now(), nullable=False)
     
+    mentors = relationship('AdditionalMentors', back_populates='languages')
+
+    
     #define the static methods
     @staticmethod
     def get_language_object(db: Session):

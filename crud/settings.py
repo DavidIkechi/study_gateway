@@ -201,14 +201,14 @@ def get_package_pricing(db, slug):
     
 def check_language_by_slug(db, slug):
     from db.main_model import LanguageModel
-    get_language = LanguageModel.get_pricing_by_slug(db, slug)
+    get_language = LanguageModel.get_language_by_slug(db, slug)
     
     if not get_language:
         raise NotFoundException(f"Language with id: {slug} not found")
 
-    return get_price
+    return get_language
 
-def get_languages(db, slug):
+def get_languages(db):
     from db.main_model import LanguageModel
 
     return LanguageModel.get_all_languages(db).options(

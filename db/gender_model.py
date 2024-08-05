@@ -22,6 +22,8 @@ class GenderModel(Base):
                         onupdate=datetime.now(), nullable=False)
     
     user_profiles = relationship('ProfileModel', back_populates='genders')
+    mentors = relationship('AdditionalMentors', back_populates='genders')
+
 
                         
     # define the static methods here.

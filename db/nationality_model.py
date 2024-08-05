@@ -21,6 +21,8 @@ class NationalityModel(Base):
                         onupdate=datetime.now(), nullable=False)
     
     user_profiles = relationship('ProfileModel', back_populates='nationalities')
+    mentors = relationship('AdditionalMentors', back_populates='nationalities')
+
 
     
     #define the static methods

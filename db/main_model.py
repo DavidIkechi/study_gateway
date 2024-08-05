@@ -23,6 +23,7 @@ from .package_model import PackageModel
 from .pricing_model import PricingModel
 from .waitlist_model import WaitlistModel
 from .language_model import LanguageModel
+from .addtional_mentor import AdditionalMentors
  
 import sys
 sys.path.append("..")

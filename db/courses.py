@@ -21,6 +21,8 @@ class CourseModel(Base):
                         onupdate=datetime.now(), nullable=False)
 
     user_profiles = relationship('ProfileModel', back_populates="courses")
+    mentors = relationship('AdditionalMentors', back_populates="courses")
+
     
     #define the static methods
     @staticmethod

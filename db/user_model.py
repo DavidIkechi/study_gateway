@@ -34,6 +34,8 @@ class UserModel(Base):
     
     user_profiles = relationship('ProfileModel', back_populates='users')
     user_details = relationship('AdditionalUserDetails', back_populates='users')
+    mentors = relationship('AdditionalMentors', back_populates='users')
+
     
     # define the static methods
     @staticmethod

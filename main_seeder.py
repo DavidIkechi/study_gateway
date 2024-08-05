@@ -10,7 +10,7 @@ from prod_seeder import (
     seed_country_codes,
     seed_degrees, seed_degree_sought,
     seed_courses, seed_package,
-    seed_pricing
+    seed_pricing, seed_languages
 )
 
 def run_all_seeders(db):
@@ -26,6 +26,7 @@ def run_all_seeders(db):
         seed_courses(db)
         seed_package(db)
         seed_pricing(db)
+        seed_languages(db)
 
     
 def run_seeder(seeder: str = None):
@@ -53,6 +54,8 @@ def run_seeder(seeder: str = None):
             seed_package(db)
         elif seeder == 'pricing':
             seed_pricing(db)
+        elif seeder == 'languages':
+            seed_languages(db)
         elif seeder is None or seeder.strip() == "":
             run_all_seeders(db)
             

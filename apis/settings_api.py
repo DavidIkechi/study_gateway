@@ -123,3 +123,22 @@ async def get_country(package_slug: str, db: Session = Depends(get_db)):
     
     except Exception as e:
         return exceptions.server_error(str(e))
+
+@settings_router.get('/languages', summary="Get all languages", status_code=200)
+async def get_languag(db: Session = Depends(get_db)):
+    from crud.settings import get_languages
+    try:
+        return success_response.success_message(get_languages(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+
+        
+@settings_router.get('/languages/{language_slug}', summary="Get single language", status_code=200)
+async def get_language(language_slug: str, db: Session = Depends(get_db)):
+    from crud.settings import check_language_by_slug
+    try:
+        return success_response.success_message(check_language_by_slug(db, language_slug))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))

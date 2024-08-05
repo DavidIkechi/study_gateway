@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from utils import seed_model, get_unique_value
+from slugify import slugify
 import sys
 sys.path.append("..")
 from argon2 import PasswordHasher
@@ -323,3 +324,44 @@ def seed_pricing(db: Session):
     ]
     
     seed_model(db, PricingModel, pricing_data, [])
+    
+def seed_languages(db: Session):
+    from db.main_model import LanguageModel
+    import pycountry
+    
+    major_languages = [
+            {"name": "English", "code": "en"},
+            {"name": "Mandarin Chinese", "code": "zh"},
+            {"name": "Hindi", "code": "hi"},
+            {"name": "Spanish", "code": "es"},
+            {"name": "French", "code": "fr"},
+            {"name": "Arabic", "code": "ar"},
+            {"name": "Bengali", "code": "bn"},
+            {"name": "Russian", "code": "ru"},
+            {"name": "Portuguese", "code": "pt"},
+            {"name": "Indonesian", "code": "id"},
+            {"name": "German", "code": "de"},
+            {"name": "Japanese", "code": "ja"},
+            {"name": "Punjabi", "code": "pa"},
+            {"name": "Korean", "code": "ko"},
+            {"name": "Italian", "code": "it"},
+            {"name": "Vietnamese", "code": "vi"},
+            {"name": "Turkish", "code": "tr"},
+            {"name": "Urdu", "code": "ur"},
+            {"name": "Swahili", "code": "sw"},
+            {"name": "Marathi", "code": "mr"},
+            {"name": "Tamil", "code": "ta"},
+            {"name": "Persian", "code": "fa"},
+            {"name": "Telugu", "code": "te"},
+            {"name": "Javanese", "code": "jv"},
+            {"name": "Thai", "code": "th"},
+            # Add more languages as needed
+        ]
+    
+    language_data = [
+        {'name': language['name'],
+         'slug': language['code']} 
+        for language in major_languages
+    ]
+    
+    seed_model(db, LanguageModel, language_data)

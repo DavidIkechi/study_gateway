@@ -21,7 +21,8 @@ class DegreeModel(Base):
                         onupdate=datetime.now(), nullable=False)
 
     user_profiles = relationship('ProfileModel', back_populates="degrees")
-    
+    mentors = relationship('AdditionalMentors', back_populates="degrees")
+
     #define the static methods
     @staticmethod
     def get_degree_object(db: Session):

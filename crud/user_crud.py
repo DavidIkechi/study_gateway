@@ -21,6 +21,26 @@ import os
 
 hasher = PasswordHasher()
 
+def extra_both(user_data: dict):
+    mentor_data= {
+        'language': user_data['language'],
+        'course': user_data['course'],
+        'nationality': user_data['nationality'],
+        'gender': user_data['gender'],
+        'birth_date': user_data.get('birth_date', None),
+        'degree': user_data['degree']
+    }
+    
+    users_data ={
+        'email_address': user_data['email_address'],
+        'first_name': user_data['first_name'],
+        'last_name': user_data['last_name'],
+        'password': user_data['password'],
+        'code': user_data['code']
+    }
+    
+    return mentor_data, users_data
+
 def check_user_account(user: UserModel):
     if not user.status:
         raise exceptions.bad_request_error("Account is disabled")
@@ -44,17 +64,19 @@ def check_mail(db, email, new_user= False):
         
     return get_user
 
-async def create_user(db, user, backtasks):
+async def create_user(db, user, backtasks, mentor=False):
     from crud.user_profile_crud import create_user_profile
+    from crud.mentor_crud import create_mentor
     # check to see if the email address already exists
     check_user =  check_mail(db, user.email_address, new_user=True)
     # check passwords.
     get_password = user.password
     if get_password == "":
         raise BadExceptions(detail="Password cannot be blank.")
-    
-    if get_password != user.confirm_password:
-        raise BadExceptions(detail="Password do not match.")
+
+    if not mentor:
+        if get_password != user.confirm_password:
+            raise BadExceptions(detail="Password do not match.")
     
     bool, message = check_password(get_password)
     if not bool:
@@ -64,16 +86,24 @@ async def create_user(db, user, backtasks):
     user_dict['password'] = hasher.hash(user_dict['password'])
     user_dict['code'] = pyotp.random_base32()
     # user_dict['is_verified'] = True
-    user_dict.pop('confirm_password')
-    
+    if mentor:
+        mentor_data, user_dict = extra_both(user_dict)
+        user_dict['is_mentor'] = True
+    else:
+        user_dict.pop('confirm_password')
+   
     create_new_user = UserModel.create_user(user_dict)
     db.add(create_new_user)
     db.flush()
     # create new user profile immediately.
-    _ = create_user_profile(db, create_new_user.id)
-    # send verification mail notification
-    await send_verification_email(create_new_user, backtasks)
-    
+    if not mentor:
+        _ = create_user_profile(db, mentor_data, create_new_user.id)
+    else:
+        _ = create_mentor(db, mentor_data, create_new_user.id)
+           
+        # send verification mail notification
+        await send_verification_email(create_new_user, backtasks, mentor=mentor)
+        
     return create_new_user
 
 def user_login(db, email, password):

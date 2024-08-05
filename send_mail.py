@@ -16,11 +16,15 @@ def generate_verification_token(email: str):
     token = jwt.encode(token_data, os.getenv('SECRET'), algorithm='HS256')
     return token
 
-async def send_verification_email(user: UserModel, background_tasks: BackgroundTasks):
+async def send_verification_email(user: UserModel, background_tasks: BackgroundTasks, mentor=False):
     token = generate_verification_token(user.email_address)
 
     # Prepare email details
     url = os.getenv("HOST_URL")
+    if mentor:
+        url = f"{url}/mentor/verify-user/{token}"
+    else:
+        url = f"{url}verify-user/{token}"
     emails: EmailSchema = {
         "body": {
             "name": user.first_name,
