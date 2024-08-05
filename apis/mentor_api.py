@@ -14,7 +14,21 @@ from exceptions import (
     NotAuthorizedException,
     ForbiddenException
 )
-from schemas.user_schema import UserSchema, MentorSchema, UserPasswordSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
+from schemas.user_schema import (
+    UserSchema, 
+    MentorSchema, 
+    UserPasswordSchema, 
+    CodeSchema, 
+    refreshTokenSchema, 
+    ResendEmailSchema
+)
+from schemas.profile_schema import (
+    UserInfoSchema, 
+    ChangePasswordSchema,
+    ContactInfoSchema,
+    DegreeSchema
+)
+
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud import user_crud, mentor_crud
@@ -150,5 +164,86 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@mentor_router.get('/profile', summary="Get Mentor Profile", status_code=200)
+async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.get_user_details(db, current_user)
+        return success_response.success_message(user_detail)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+    
+@mentor_router.patch('/degree-info', summary="Update Mentor Degree information", status_code=200)
+async def update_degree_info(profile: DegreeSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = mentor_crud.update_degree_info(db, profile, current_user)
+        db.commit()
+        return success_response.success_message([], f"User {current_user['sub']} Degree information was updated successfully", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+    
+@mentor_router.patch('/update-password', summary="Update Mentor Password", status_code=200)
+async def update_password_info(profile: ChangePasswordSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = mentor_crud.update_password(db, profile, current_user)
+        db.commit()
+        return success_response.success_message([], f"Mentor {current_user['sub']} Password was updated successfully", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except VerifyMismatchError as e:
+        return exceptions.bad_request_error(detail="Incorrect Password")
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@mentor_router.patch('/personal-info', summary="Update Mentor personal information", status_code=200)
+async def update_personal_info(profile: UserInfoSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = mentor_crud.update_user_info(db, profile, current_user)
+        db.commit()
+        return success_response.success_message([], f"User {current_user['sub']} personal information was updated successfully", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@mentor_router.patch('/contact-info', summary="Update Mentor Contact information", status_code=200)
+async def update_contact_info(profile: ContactInfoSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = mentor_crud.update_contact_info(db, profile, current_user)
+        db.commit()
+        return success_response.success_message([], f"User {current_user['sub']} Contact information was updated successfully", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
     except Exception as e:
         return exceptions.server_error(str(e))

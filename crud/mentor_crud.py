@@ -24,7 +24,7 @@ from simpleotp import OTP
 from schemas.user_schema import NameSchema
 from schemas.profile_schema import ExtraSchema
 import os
-from crud import user_crud
+from crud import user_crud, user_profile_crud
 
 
 hasher = PasswordHasher()
@@ -50,10 +50,17 @@ def create_mentor(db, mentor_data, user_id: int):
         'degree_id': check_degree_by_slug(db, mentor_data['degree']).id,
     }
     
+    profile_dict = {
+        'user_id': user_id,'course_id': check_courses_by_slug(db, mentor_data['course']).id,
+        'gender_id': check_gender_by_slug(db, mentor_data['gender']).id,
+        'nationality_id': check_nationality_by_slug(db, mentor_data['nationality']).id,
+        'degree_id': check_degree_by_slug(db, mentor_data['degree']).id
+    }
     if mentor_data.get('birth_date') is not None:
         mentor_dict['birth_date'] = mentor_data['birth_date']
+        profile_dict['birth_date'] = mentor_data['birth_date']
         
-    user_profile = ProfileModel.create_profile({'user_id': user_id})
+    user_profile = ProfileModel.create_profile(profile_dict)
     db.add(user_profile)
     
     additional_details = AdditionalUserDetails.create_user_details({'user_id': user_id})
@@ -113,13 +120,64 @@ def get_user_details(db, current_user):
     _ = is_mentor(query.first())
     
     query = query.options(
-        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at),
+            # Load only specific fields for the main entity
+            load_only(
+                'id',
+                'email_address',
+                'first_name',
+                'last_name',
+                'created_at'
+            ),
+        joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
+                                                      ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
         joinedload(UserModel.mentors).load_only(AdditionalMentors.id, AdditionalMentors.address, AdditionalMentors.birth_date),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.genders).load_only('id','slug','name'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.languages).load_only('id', 'name', 'slug'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.degrees).load_only('id', 'degree_name', 'slug'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.nationalities).load_only('id', 'nationality', 'slug'),
-        joinedload(UserModel.mentors).joinedload(AdditionalMentors.courses).load_only('id','course_name', 'slug'),
+        joinedload(UserModel.mentors).joinedload(AdditionalMentors.courses).load_only('id','course_name', 'slug')
     )
 
     return query.first()
+
+def update_user_info(db, profile_info, current_user):
+    from crud.settings import check_gender_by_slug, check_nationality_by_slug
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    _ = is_mentor(get_user)
+    
+    return user_profile_crud.update_user_info(db, profile_info, current_user)
+
+def update_contact_info(db, profile_info, current_user):
+    from crud.settings import check_country_by_slug, check_states_by_slug
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    _ = is_mentor(get_user)
+    
+    return user_profile_crud.update_contact_info(db, profile_info, current_user)
+
+def update_degree_info(db, profile_info, current_user):
+    from crud.settings import check_courses_by_slug, check_sought_by_slug, check_degree_by_slug
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    _ = is_mentor(get_user)
+    
+    return user_profile_crud.update_degree_info(db, profile_info, current_user)
+
+def update_password(db, profile_info, current_user):
+    # check to see if the email address already exists
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    _ = is_mentor(get_user)
+    
+    return user_profile_crud.change_password(db, profile_info, current_user)
+    
