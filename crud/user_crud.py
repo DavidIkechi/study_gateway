@@ -89,6 +89,7 @@ async def create_user(db, user, backtasks, mentor=False):
     if mentor:
         mentor_data, user_dict = extra_both(user_dict)
         user_dict['is_mentor'] = True
+        user_dict['is_verified'] = True
     else:
         user_dict.pop('confirm_password')
    
