@@ -47,6 +47,12 @@ async def get_cities(country_slug: str, db: Session = Depends(get_db)):
     try:
         return success_response.success_message(country_cities(db, country_slug))
     
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
     
@@ -55,6 +61,12 @@ async def get_cities(country_slug: str, db: Session = Depends(get_db)):
     from crud.settings import country_states
     try:
         return success_response.success_message(country_states(db, country_slug))
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
     
     except Exception as e:
         return exceptions.server_error(str(e))
@@ -121,6 +133,12 @@ async def get_country(package_slug: str, db: Session = Depends(get_db)):
     try:
         return success_response.success_message(get_package_pricing(db, package_slug))
     
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
 
@@ -140,5 +158,32 @@ async def get_language(language_slug: str, db: Session = Depends(get_db)):
     try:
         return success_response.success_message(check_language_by_slug(db, language_slug))
     
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@settings_router.get('/universities', summary="Get all Universities", status_code=200)
+async def get_uni(db: Session = Depends(get_db)):
+    from crud.settings import get_universities
+    try:
+        return success_response.success_message(get_universities(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+
+        
+@settings_router.get('/universities/{uni_slug}', summary="Get university", status_code=200)
+async def get_single_uni(uni_slug: str, db: Session = Depends(get_db)):
+    from crud.settings import check_university_by_slug
+    try:
+        return success_response.success_message(check_university_by_slug(db, uni_slug))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+    

@@ -22,6 +22,8 @@ class CourseModel(Base):
 
     user_profiles = relationship('ProfileModel', back_populates="courses")
     mentors = relationship('AdditionalMentors', back_populates="courses")
+    ment_studs = relationship("MentorStudent", back_populates="courses")
+
 
     
     #define the static methods

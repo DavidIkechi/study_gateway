@@ -213,3 +213,17 @@ def get_languages(db):
 
     return LanguageModel.get_all_languages(db).options(
         load_only('name','slug')).all()
+    
+def check_university_by_slug(db, slug):
+    from db.main_model import UniversityModel
+    get_university = UniversityModel.get_university_by_slug(db, slug)
+    
+    if not get_university:
+        raise NotFoundException(f"University with id: {slug} not found")
+
+    return get_university
+
+def get_universities(db):
+    from db.main_model import UniversityModel
+
+    return UniversityModel.get_university_object(db).all()

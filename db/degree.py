@@ -22,6 +22,8 @@ class DegreeModel(Base):
 
     user_profiles = relationship('ProfileModel', back_populates="degrees")
     mentors = relationship('AdditionalMentors', back_populates="degrees")
+    ment_studs = relationship("MentorStudent", back_populates="degrees")
+
 
     #define the static methods
     @staticmethod

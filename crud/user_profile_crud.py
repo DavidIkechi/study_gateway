@@ -156,3 +156,14 @@ def get_user_profile(db, current_user):
     )
 
     return query.first()
+
+def change_photo(db, profile_info, current_user):
+    # check to see if the email address already exists
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    image_binary = base64.b64decode(profile_info.profile)
+    get_user.photo = image_binary
+    
+    return get_user

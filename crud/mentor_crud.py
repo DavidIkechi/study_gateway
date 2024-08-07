@@ -180,4 +180,14 @@ def update_password(db, profile_info, current_user):
     _ = is_mentor(get_user)
     
     return user_profile_crud.change_password(db, profile_info, current_user)
+
+def change_photo(db, profile_info, current_user):
+    # check to see if the email address already exists
+    info_dict = profile_info.dict(exclude_none=True)
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
+    _ = is_mentor(get_user)
+    
+    return user_profile_crud.change_photo(db, profile_info, current_user)
     

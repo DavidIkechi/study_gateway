@@ -365,3 +365,62 @@ def seed_languages(db: Session):
     ]
     
     seed_model(db, LanguageModel, language_data)
+    
+def seed_universities(db: Session):
+    from db.main_model import UniversityModel
+
+    # Raw data extracted from the Excel file with IDs added
+    university_data = [
+        {
+            'id': 1,
+            'name': 'Harvard University',
+            'location': 'Cambridge, MA',
+            'url': 'https://www.harvard.edu/academics/',
+            'address': 'Massachusetts Hall, Cambridge, MA 02138',
+        },
+        {
+            'id': 2,
+            'name': 'Stanford University',
+            'location': 'Stanford, CA',
+            'url': 'https://explorecourses.stanford.edu/',
+            'address': '450 Serra Mall, Stanford, CA 94305',
+        },
+        {
+            'id': 3,
+            'name': 'Massachusetts Institute of Technology (MIT)',
+            'location': 'Cambridge, MA',
+            'url': 'https://catalog.mit.edu/subjects/',
+            'address': '77 Massachusetts Ave, Cambridge, MA 02139',
+        },
+        {
+            'id': 4,
+            'name': 'University of California, Berkeley',
+            'location': 'Berkeley, CA',
+            'url': 'https://guide.berkeley.edu/courses/',
+            'address': '200 California Hall, Berkeley, CA 94720',
+        },
+        {
+            'id': 5,
+            'name': 'University of Chicago',
+            'location': 'Chicago, IL',
+            'url': 'https://collegecatalog.uchicago.edu/thecollege/',
+            'address': '5801 S Ellis Ave, Chicago, IL 60637',
+        },
+        {
+            'id': 6,
+            'name': 'California Institute of Technology (Caltech)',
+            'location': 'Pasadena, CA',
+            'url': 'https://catalog.caltech.edu/current',
+            'address': '1200 E California Blvd, Pasadena, CA 91125',
+        },
+        {
+            'id': 7,
+            'name': 'Princeton University',
+            'location': 'Princeton, NJ',
+            'url': 'Academics - Princeton University',
+            'address': 'Princeton, NJ 08544',
+        }
+    ]
+
+    # Insert data into the database
+    seed_model(db, UniversityModel, university_data, [])

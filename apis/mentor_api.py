@@ -20,7 +20,8 @@ from schemas.user_schema import (
     UserPasswordSchema, 
     CodeSchema, 
     refreshTokenSchema, 
-    ResendEmailSchema
+    ResendEmailSchema,
+    ChangeProfileImageSchema
 )
 from schemas.profile_schema import (
     UserInfoSchema, 
@@ -186,6 +187,22 @@ async def update_degree_info(profile: DegreeSchema, db: Session = Depends(get_db
         user_info = mentor_crud.update_degree_info(db, profile, current_user)
         db.commit()
         return success_response.success_message([], f"User {current_user['sub']} Degree information was updated successfully", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@mentor_router.patch('/change-profile-photo', summary="Update Mentor Profile Photo", status_code=200)
+async def update_degree_info(profile: ChangeProfileImageSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = mentor_crud.change_photo(db, profile, current_user)
+        db.commit()
+        return success_response.success_message([], f"User {current_user['sub']} profile photo was updated successfully", 200)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)

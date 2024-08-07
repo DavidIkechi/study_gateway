@@ -24,6 +24,8 @@ from .pricing_model import PricingModel
 from .waitlist_model import WaitlistModel
 from .language_model import LanguageModel
 from .addtional_mentor import AdditionalMentors
+from .mentor_student import MentorStudent
+from .university_model import UniversityModel
  
 import sys
 sys.path.append("..")

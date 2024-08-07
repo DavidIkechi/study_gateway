@@ -22,6 +22,8 @@ class UserModel(Base):
     is_verified = Column(Boolean, default=False)
     is_lock = Column(Boolean, default=False)
     status = Column(Boolean, default=True)
+    photo = Column(LargeBinary, nullable=True)  # Add photo column
+
     is_setup = Column(Boolean, default=False)
     lock_count = Column(Integer, default=0)
     last_login = Column(DateTime, nullable=True)
@@ -35,6 +37,11 @@ class UserModel(Base):
     user_profiles = relationship('ProfileModel', back_populates='users')
     user_details = relationship('AdditionalUserDetails', back_populates='users')
     mentors = relationship('AdditionalMentors', back_populates='users')
+    # Define relationships with the foreign_keys parameter
+    mentee_relationships = relationship("MentorStudent", foreign_keys="[MentorStudent.user_id]", back_populates="user")
+    mentor_relationships = relationship("MentorStudent", foreign_keys="[MentorStudent.mentor_id]", back_populates="mentor")
+
+
 
     
     # define the static methods

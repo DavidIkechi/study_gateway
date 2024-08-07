@@ -1,8 +1,9 @@
 # Schemas
 from .base_schema import BaseModel
-from pydantic import EmailStr, validator
+from pydantic import EmailStr, validator, constr
 from datetime import datetime
 from typing import Optional
+import base64
         
 class UserSchema(BaseModel):
     email_address: EmailStr
@@ -26,6 +27,33 @@ class UserSchema(BaseModel):
     @validator('confirm_password')
     def check_confirm_passwords(cls, v):
         return v.strip()
+class ChangeProfileImageSchema(BaseModel):
+    profile: constr(regex=r'^[A-Za-z0-9+/]+={0,2}$')  # Ensures base64 format
+
+    @validator('profile')
+    def check_image_base64(cls, v):
+        # Strip whitespace and check for empty string
+        v = v.strip()
+        if not v:
+            raise ValueError('Base64 image data must not be empty')
+
+        # Check for valid image formats
+        if not (v.startswith('/9j/') or v.startswith('iVBORw0KGgo')):
+            raise ValueError('Image must be in JPEG, JPG, or PNG format')
+
+        # Decode base64 string to binary data
+        try:
+            image_binary = base64.b64decode(v)
+        except Exception as e:
+            raise ValueError('Invalid base64 image data')
+
+        # Check the size of the decoded image (max 500KB)
+        max_size = 500 * 1024  # 500 KB
+        decoded_size = len(image_binary)
+        if decoded_size > max_size:
+            raise ValueError('Image size exceeds the 500KB limit')
+
+        return v
     
 class MentorSchema(BaseModel):
     email_address: EmailStr
