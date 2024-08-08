@@ -182,3 +182,20 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@user_router.get('/mentors', summary="Get all mentors", status_code=200)
+async def update_contact_info(language: str = Query(default=None), discipline: str = Query(default=None),
+                              page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
+                              page_size: int=10, current_user: dict = Depends(validate_active_client)):
+    try:
+        user_info = student_crud.get_mentors(db, current_user, language, discipline, page, page_size)
+        return success_response.success_message(user_info, "", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))

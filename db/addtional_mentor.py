@@ -21,6 +21,7 @@ class AdditionalMentors(Base):
     degree_id = Column(Integer, ForeignKey('degree_model.id'))
     course_id = Column(Integer, ForeignKey('course_model.id'))
     birth_date = Column(DateTime, nullable=True)
+    bio = Column(TEXT, nullable=True)
 
     address = Column(TEXT, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True),

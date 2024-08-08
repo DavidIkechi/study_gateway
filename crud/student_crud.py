@@ -85,3 +85,16 @@ def get_user_detail(db, current_user):
     _ = is_mentor_admin(query.first())
     
     return user_crud.get_user_detail(db, current_user)
+
+def get_mentors(db, current_user, language: str=None, discipline: str=None, page: int=None, page_size:int = None):
+    from crud.settings import check_language_by_slug, check_courses_by_slug
+    user_id = current_user.get('user_id')
+    query = UserModel.get_user_object(db).filter_by(id=user_id)
+    _ = is_mentor_admin(query.first())
+    language_id, course_id = None, None
+    if language is not None:
+        language_id = check_language_by_slug(db, language).id
+    if discipline is not None:
+        course_id = check_courses_by_slug(db, discipline).id
+        
+    return UserModel.get_mentors(db, user_id, language_id, course_id, page, page_size)

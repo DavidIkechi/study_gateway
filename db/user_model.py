@@ -5,6 +5,9 @@ from sqlalchemy.orm import Session, load_only, relationship, joinedload
 import uuid
 from datetime import datetime
 from sqlalchemy.sql import text
+from sqlalchemy import and_, not_, or_
+from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import Params
 
 import sys
 sys.path.append("..")
@@ -40,9 +43,6 @@ class UserModel(Base):
     # Define relationships with the foreign_keys parameter
     mentee_relationships = relationship("MentorStudent", foreign_keys="[MentorStudent.user_id]", back_populates="user")
     mentor_relationships = relationship("MentorStudent", foreign_keys="[MentorStudent.mentor_id]", back_populates="mentor")
-
-
-
     
     # define the static methods
     @staticmethod
@@ -84,3 +84,60 @@ class UserModel(Base):
         # filter out centers
         query = query.filter(UserModel.email_address == email)
         return query.first()
+    
+    @staticmethod
+    def get_mentors(db: Session, user_id: int, language_id: int = None, course_id: int = None, page: int = None, page_size: int = 10):
+        from db.main_model import AdditionalMentors, MentorStudent, DegreeModel, CourseModel 
+        # Build the query
+        query = db.query(UserModel).join(
+            AdditionalMentors, AdditionalMentors.user_id == UserModel.id
+        ).filter(
+            UserModel.is_mentor == True,
+            UserModel.is_setup == True
+        )
+        
+        # Apply additional filters if provided
+        if language_id is not None:
+            query = query.filter(AdditionalMentors.language_id == language_id)
+        if course_id is not None:
+            query = query.filter(AdditionalMentors.course_id == course_id)
+
+        # Build a list of mentors with additional information about the user-mentor relationship
+        mentors_with_status = []
+        for mentor in query.all():
+            deg = db.query(AdditionalMentors).filter_by(user_id=mentor.id).first()
+            degree = DegreeModel.get_degree_by_id(db, deg.degree_id).degree_name
+            course = CourseModel.get_course_by_id(db, deg.course_id).course_name
+            # Check if the user is involved with this mentor
+            accepted_status = db.query(MentorStudent).filter(
+                MentorStudent.user_id == user_id,
+                MentorStudent.mentor_id == mentor.id,
+                MentorStudent.status == 'accepted',
+                MentorStudent.completed == False
+            ).first()
+            user_bio = db.query(AdditionalMentors).filter_by(user_id=mentor.id).first()
+            mentor_bio = user_bio.bio
+            admitted = db.query(MentorStudent).filter(
+                MentorStudent.mentor_id == mentor.id,
+                MentorStudent.admission_progress == 1.0
+            ).all()
+
+            mentor_info = {
+                'mentor_id': mentor.id,
+                'email': mentor.email_address,
+                'first_name': mentor.first_name,
+                'last_name': mentor.last_name,
+                'is_verified': mentor.is_verified,
+                'photo': mentor.photo,
+                'created_at': mentor.created_at,
+                'accepted': accepted_status is not None,
+                'admitted_student': len(admitted),
+                'biography': mentor_bio
+            }
+            mentors_with_status.append(mentor_info)
+        if page:
+            # Use fastapi-pagination to paginate the list
+            page_offset = Params(page=page, size=page_size)
+            return paginate(mentors_with_status, params=page_offset)
+        
+        return mentors_with_status    
