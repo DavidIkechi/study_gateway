@@ -28,7 +28,7 @@ class UserSchema(BaseModel):
     def check_confirm_passwords(cls, v):
         return v.strip()
 class ChangeProfileImageSchema(BaseModel):
-    profile: str = Field(..., regex=r'^[A-Za-z0-9+/]+={0,2}$')  # Ensures base64 format
+    profile: str = Field(..., pattern=r'^[A-Za-z0-9+/]+={0,2}$')  # Ensures base64 format
 
     @validator('profile')
     def check_image_base64(cls, v):
