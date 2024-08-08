@@ -67,6 +67,15 @@ class ChangeProfileImageSchema(BaseModel):
 
         return v
     
+class ConnectSchema(BaseModel):
+    connect_ref: str
+    status: bool
+    
+    @validator('status')
+    def validate_status(cls, value):
+        if not isinstance(value, bool):
+            raise ValueError('Status must be a boolean value')
+        return value
 class MentorSchema(BaseModel):
     email_address: EmailStr
     password: str

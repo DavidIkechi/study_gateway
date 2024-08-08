@@ -55,6 +55,10 @@ class MentorStudent(Base):
     @staticmethod
     def get_ment_studs_by_id(db: Session, id):
         return MentorStudent.get_ment_studs_object(db).get(id)
+    
+    @staticmethod
+    def get_ment_studs_by_slug(db: Session, slug):
+        return MentorStudent.get_ment_studs_object(db).filter_by(application_ref=slug).first()
 
     @staticmethod
     def get_ment_studs_by_user_id(db: Session, user_id):

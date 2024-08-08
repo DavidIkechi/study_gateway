@@ -224,5 +224,39 @@ def get_overview(db, current_user):
         "successful_admissions": successful_students
     }
     
+def check_mentor_stud(db, ment_slug):
+    mentor = MentorStudent.get_ment_studs_by_slug(db, ment_slug)
+    if not mentor:
+        raise NotFoundException(f"Sorry, application reference not found")
+    
+    return mentor
+    
+def accept_or_decline(db, current_user, details):
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+
+    _ = is_mentor(get_user)
+    get_mentor = check_mentor_stud(db, details.connect_ref)
+    if get_mentor.mentor_id != user_id:
+        raise BadExceptions(f"Connection request not tied to mentor")
+    
+    if get_mentor.status == 'accepted':
+        raise BadExceptions(f"Connection already accepted")    
+    # Delete other connections and set the current connection status to accepted
+    db.query(MentorStudent).filter(
+        MentorStudent.user_id == get_mentor.user_id,
+        MentorStudent.mentor_id != user_id,
+        MentorStudent.degree_id == get_mentor.degree_id,
+        MentorStudent.course_id == get_mentor.course_id,
+        MentorStudent.year == get_mentor.year,
+        MentorStudent.status != 'accepted',
+    ).delete()
+    
+    status = 'accepted' if details.status else 'rejected'
+    
+    get_mentor.status = status
+    
+    return f"Connection {status} successfully"
+    
     
     

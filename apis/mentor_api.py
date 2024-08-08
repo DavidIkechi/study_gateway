@@ -21,7 +21,8 @@ from schemas.user_schema import (
     CodeSchema, 
     refreshTokenSchema, 
     ResendEmailSchema,
-    ChangeProfileImageSchema
+    ChangeProfileImageSchema,
+    ConnectSchema
 )
 from schemas.profile_schema import (
     UserInfoSchema, 
@@ -274,5 +275,27 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@mentor_router.patch('/accept-connection', summary="Accept or Decline Student Connection", status_code=200)
+async def accept(profile: ConnectSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.accept_or_decline(db, current_user, profile)
+        db.commit()
+        return success_response.success_message([], user_detail, 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+    
+    

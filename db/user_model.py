@@ -117,11 +117,22 @@ class UserModel(Base):
                 MentorStudent.status == 'accepted',
                 MentorStudent.completed == False
             ).first()
+            
+            get_status = db.query(MentorStudent).filter(
+                MentorStudent.user_id == user_id,
+                MentorStudent.mentor_id == mentor.id,
+                MentorStudent.completed == False
+            ).first()
 
             admitted_students = db.query(MentorStudent).filter(
                 MentorStudent.mentor_id == mentor.id,
                 MentorStudent.admission_progress == 1.0
             ).count()
+            
+            status = None
+            if get_status is not None:
+                status = get_status.status if get_status.status != 'rejected' else None
+            
 
             mentor_info = {
                 'mentor_id': mentor.id,
@@ -133,7 +144,8 @@ class UserModel(Base):
                 'created_at': mentor.created_at,
                 'accepted': accepted_status is not None,
                 'admitted_student': admitted_students,
-                'biography': additional_mentor.bio
+                'biography': additional_mentor.bio,
+                'status': status
             }
             mentors_with_status.append(mentor_info)
 
