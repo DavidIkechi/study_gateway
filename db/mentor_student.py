@@ -22,7 +22,7 @@ class MentorStudent(Base):
     completed = Column(Boolean, default=False)
     status = Column(Enum("pending", "accepted", "rejected", name="status_enum"), default="pending")
     # New fields for year and progress
-    # year = Column(Integer, nullable=True)  # Use Date to store the year
+    year = Column(Integer, nullable=True)  # Use Date to store the year
     document_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
     admission_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
     visa_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
