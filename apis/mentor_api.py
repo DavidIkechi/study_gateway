@@ -264,3 +264,15 @@ async def update_contact_info(profile: ContactInfoSchema, db: Session = Depends(
         
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@mentor_router.get('/overview', summary="Get Mentor Overview including total students, current and successful admissions", status_code=200)
+async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.get_overview(db, current_user)
+        return success_response.success_message(user_detail)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))

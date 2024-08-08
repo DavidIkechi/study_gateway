@@ -12,7 +12,7 @@ from exceptions import (
 )
 from db.main_model import (
     ProfileModel, AdditionalUserDetails, UserModel,
-    GenderModel, AdditionalMentors, AdditionalMentors, LanguageModel
+    GenderModel, AdditionalMentors, AdditionalMentors, LanguageModel, MentorStudent
 )
 
 from argon2 import PasswordHasher
@@ -190,4 +190,39 @@ def change_photo(db, profile_info, current_user):
     _ = is_mentor(get_user)
     
     return user_profile_crud.change_photo(db, profile_info, current_user)
+
+def get_overview(db, current_user):
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+
+    _ = is_mentor(get_user)
+
+    # Retrieve the count of all students associated with the mentor
+    all_students = db.query(MentorStudent).filter(
+        MentorStudent.mentor_id == user_id,
+        MentorStudent.status == 'accepted'
+    ).count()
+
+    # Retrieve the count of current students
+    current_students = db.query(MentorStudent).filter(
+        MentorStudent.mentor_id == user_id,
+        MentorStudent.status == 'accepted',
+        MentorStudent.completed == False,
+        MentorStudent.admission_progress != 1.0
+    ).count()
+
+    # Retrieve the count of successful students
+    successful_students = db.query(MentorStudent).filter(
+        MentorStudent.mentor_id == user_id,
+        MentorStudent.status == 'accepted',
+        MentorStudent.admission_progress == 1.0
+    ).count()
+
+    return {
+        "all_students": all_students,
+        "current_students": current_students,
+        "successful_admissions": successful_students
+    }
+    
+    
     

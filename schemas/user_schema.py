@@ -4,6 +4,18 @@ from pydantic import EmailStr, validator, constr, Field
 from datetime import datetime
 from typing import Optional
 import base64
+
+class UserConnectSchema(BaseModel):
+    mentor_email_address: EmailStr
+    university: str
+    year: int = Field(..., ge=datetime.now().year)  # Ensure year is from current year onwards
+
+    @validator('year')
+    def validate_year(cls, value):
+        current_year = datetime.now().year
+        if value < current_year:
+            raise ValueError(f'Year must be {current_year} or later')
+        return value
         
 class UserSchema(BaseModel):
     email_address: EmailStr

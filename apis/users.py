@@ -14,7 +14,11 @@ from exceptions import (
     NotAuthorizedException,
     ForbiddenException
 )
-from schemas.user_schema import UserSchema, UserPasswordSchema, CodeSchema, refreshTokenSchema, ResendEmailSchema
+from schemas.user_schema import (
+    UserSchema, UserPasswordSchema, 
+    CodeSchema, refreshTokenSchema, 
+    ResendEmailSchema, UserConnectSchema
+)
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud import user_crud, student_crud
@@ -190,6 +194,23 @@ async def update_contact_info(language: str = Query(default=None), discipline: s
     try:
         user_info = student_crud.get_mentors(db, current_user, language, discipline, page, page_size)
         return success_response.success_message(user_info, "", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))
+    
+@user_router.post('/mentor-connect', summary="Connect with a mentor", status_code=200)
+async def resend_email(details: UserConnectSchema, db: Session = Depends(get_db), 
+                       current_user: dict = Depends(validate_active_client)):
+    try:
+        connection = student_crud.send_connection(db, current_user, details)
+        db.commit()
+        return success_response.success_message([], f"Connection request sent", 200)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)

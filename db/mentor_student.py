@@ -5,7 +5,7 @@ from sqlalchemy import (
     BigInteger, TIMESTAMP, ForeignKey, Float,
     JSON, TEXT, LargeBinary, DateTime, Date
 )
-
+import uuid
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy.sql import func
 
@@ -17,16 +17,15 @@ class MentorStudent(Base):
     degree_id = Column(Integer, ForeignKey("degree_model.id"))
     course_id = Column(Integer, ForeignKey("course_model.id"))
     university_id = Column(Integer, ForeignKey('universities.id'))
-    application_ref = Column(String(50), unique=True, nullable=False)
+    application_ref = Column(String(50), unique=True, default=lambda: str(uuid.uuid4()), nullable=False)
     connected = Column(Boolean, default=True)
     completed = Column(Boolean, default=False)
     status = Column(Enum("pending", "accepted", "rejected", name="status_enum"), default="pending")
     # New fields for year and progress
-    year = Column(Date, nullable=True)  # Use Date to store the year
+    # year = Column(Integer, nullable=True)  # Use Date to store the year
     document_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
     admission_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
     visa_progress = Column(Float, default=0.0, nullable=False)  # Progress between 0 and 1
-
     created_at = Column(
         TIMESTAMP(timezone=True), default=func.now(), nullable=False
     )
@@ -73,4 +72,3 @@ class MentorStudent(Base):
         for key, value in user_data.items():
             setattr(ment_stud, key, value)
         return ment_stud
-
