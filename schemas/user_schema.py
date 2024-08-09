@@ -133,5 +133,23 @@ class NameSchema(BaseModel):
     first_name: str = None
     last_name: str = None
     
+class StudentUpdateSchema(BaseModel):
+    university_id: str = None
+    completed: bool = None
+    document_progress: float = None
+    visa_progress: float = None
+    admission_progress: float = None
+    year: int = Field(..., ge=datetime.now().year) # Ensure year is from current year onwards
+
+    @validator('year')
+    def validate_year(cls, value):
+        current_year = datetime.now().year
+        if value < current_year:
+            raise ValueError(f'Year must be {current_year} or later')
+        return value
     
-    
+    @validator('completed')
+    def validate_status(cls, value):
+        if not isinstance(value, bool):
+            raise ValueError('Status must be a boolean value')
+        return value

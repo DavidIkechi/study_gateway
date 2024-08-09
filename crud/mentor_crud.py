@@ -257,6 +257,15 @@ def accept_or_decline(db, current_user, details):
     get_mentor.status = status
     
     return f"Connection {status} successfully"
+
+def get_students(db, cuurent_user, name: str, page:int = None, page_size:int=None, current: bool= False):
+    user_id = cuurent_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_mentor(get_user)
+    
+    return MentorStudent.get_mentors(db, user_id, name, page, page_size, current)
+    
+    
     
     
     

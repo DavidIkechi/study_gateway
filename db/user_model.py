@@ -6,8 +6,8 @@ import uuid
 from datetime import datetime
 from sqlalchemy.sql import text
 from sqlalchemy import and_, not_, or_
-from fastapi_pagination.ext.sqlalchemy import paginate
-from fastapi_pagination import Params
+from fastapi_pagination.ext.sqlalchemy import paginate as pg
+from fastapi_pagination import Params, paginate
 
 import sys
 sys.path.append("..")
