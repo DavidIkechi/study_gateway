@@ -40,6 +40,12 @@ def check_mail(db, email, new_user= False):
         
     return get_user
 
+def check_mentor_slug(db, slug):
+    get_info = MentorStudent.get_ment_studs_by_slug(db, slug)
+    if get_info is None:
+        raise NotFoundException(f"Application Reference not found.")
+    return get_info
+
 def create_mentor(db, mentor_data, user_id: int):
     from crud.settings import check_gender_by_slug, check_nationality_by_slug, check_courses_by_slug, check_degree_by_slug, check_language_by_slug
     mentor_dict = {
@@ -264,6 +270,22 @@ def get_students(db, cuurent_user, name: str, page:int = None, page_size:int=Non
     _ = is_mentor(get_user)
     
     return MentorStudent.get_mentors(db, user_id, name, page, page_size, current)
+
+def more_details(db, app_id: int):
+    return MentorStudent.get_student_info(db, app_id)
+
+def get_more_detail(db, current_user, ment_slug):
+    from crud.user_crud import check_mail
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_mentor(get_user)
+    
+    get_application = check_mentor_slug(db, ment_slug)
+    # check if the email.id is 
+    if get_application.mentor_id != user_id:
+        raise BadExceptions(f"Mentor not tied to student")
+
+    return more_details(db, get_application.id) 
     
     
     

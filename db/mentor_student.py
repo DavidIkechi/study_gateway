@@ -142,3 +142,39 @@ class MentorStudent(Base):
             return paginate(student_info, params=page_offset)
 
         return student_info
+    
+    @staticmethod
+    def get_student_info(db, app_id:int):
+        from db.main_model import CourseModel, UserModel, DegreeSoughtModel, DegreeModel, ProfileModel, UniversityModel, NationalityModel
+        query = MentorStudent.get_ment_studs_by_id(db, app_id)
+        user = UserModel.get_user_by_id(db, query.user_id)
+        
+        degree_sought= db.query(DegreeSoughtModel).join(
+                ProfileModel, ProfileModel.degree_sought_id == DegreeSoughtModel.id
+            ).filter(
+                ProfileModel.user_id == user.id
+            ).first()
+            
+        nat= db.query(NationalityModel).join(
+                ProfileModel, ProfileModel.nationality_id == NationalityModel.id
+            ).filter(
+                ProfileModel.user_id == user.id
+            ).first()
+        
+        details = {
+            'name': (user.first_name + ' ' + user.last_name).title(),
+            'email_address': user.email_address,
+            'course_name': CourseModel.get_course_by_id(db, query.course_id).course_name,
+            'degree': DegreeModel.get_degree_by_id(db, query.degree_id).degree_name,
+            'degree_sought': degree_sought.degree_name,
+            'admission_progress': query.admission_progress,
+            'visa_progress': query.visa_progress,
+            'year': query.year,
+            'mentor_id': query.mentor_id,
+            'nationality': nat.nationality,
+            'document_progress': query.document_progress,
+            'university': UniversityModel.get_university_by_id(db, query.university_id).name
+            
+        }
+        
+        return details

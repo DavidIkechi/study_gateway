@@ -328,6 +328,22 @@ async def get_user(name: str = Query(default=None), page: int= Query(default=Non
     
     except Exception as e:
         return exceptions.server_error(str(e)) 
+    
+@mentor_router.get('/student/{connection_slug}', summary="Get more student information", status_code=200)
+async def get_user(connection_slug:str,  db:Session = Depends(get_db), 
+                   current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.get_more_detail(db, current_user, connection_slug)
+        return success_response.success_message(user_detail)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e)) 
 
     
     
