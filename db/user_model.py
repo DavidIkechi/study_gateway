@@ -141,6 +141,8 @@ class UserModel(Base):
                 'last_name': mentor.last_name,
                 'is_verified': mentor.is_verified,
                 'photo': mentor.photo,
+                'course': course,
+                'degree': degree,
                 'created_at': mentor.created_at,
                 'accepted': accepted_status is not None,
                 'admitted_student': admitted_students,
