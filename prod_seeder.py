@@ -4,6 +4,36 @@ from slugify import slugify
 import sys
 sys.path.append("..")
 from argon2 import PasswordHasher
+import pyotp
+from datetime import datetime, timedelta
+from simpleotp import OTP
+
+
+hasher = PasswordHasher()
+
+def seed_admin_user(db: Session):
+    from db.main_model import UserModel
+    # Admin user data
+    admin_data = [
+        {
+            'email_address': 'adminuser@studygateway.com',
+            'password': hasher.hash('Qwertypassword@123'),  # Securely hashed password
+            'code': pyotp.random_base32(),  # Unique code for the admin
+            'first_name': 'Admin',
+            'last_name': 'User',
+            'is_mentor': False,
+            'is_admin': True,  # Mark the user as an admin
+            'is_verified': True,  # Assume the admin is verified by default
+            'is_lock': False,
+            'status': True,
+            'is_setup': True,  # Assume setup is complete for admin
+            'lock_count': 0,
+            'login_count': 0
+        }
+    ]
+
+    # Use a generic seeding function similar to `seed_model`
+    seed_model(db, UserModel, admin_data, [])
 
 
 def seed_disciplines(db:Session):

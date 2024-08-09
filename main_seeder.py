@@ -10,7 +10,8 @@ from prod_seeder import (
     seed_country_codes,
     seed_degrees, seed_degree_sought,
     seed_courses, seed_package,
-    seed_pricing, seed_languages, seed_universities
+    seed_pricing, seed_languages, seed_universities,
+    seed_admin_user
 )
 
 def run_all_seeders(db):
@@ -27,6 +28,10 @@ def run_all_seeders(db):
         seed_package(db)
         seed_pricing(db)
         seed_languages(db)
+        seed_admin_user(db)
+        seed_universities(db)
+
+
 
     
 def run_seeder(seeder: str = None):
@@ -58,6 +63,8 @@ def run_seeder(seeder: str = None):
             seed_languages(db)
         elif seeder == 'universities':
             seed_universities(db)
+        elif seeder == 'admin':
+            seed_admin_user(db)  
         elif seeder is None or seeder.strip() == "":
             run_all_seeders(db)
             

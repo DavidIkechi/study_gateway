@@ -11,6 +11,7 @@ from apis.subscribers import subscriber_router
 from apis.user_profile_api import user_profile_router
 from apis.mentor_api import mentor_router
 from apis.waitlist import waitlist_router
+from apis.admin_api import admin_router
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, asyncio
@@ -83,6 +84,10 @@ study_gate_app.include_router(
 
 study_gate_app.include_router(
     mentor_router
+)
+
+study_gate_app.include_router(
+    admin_router
 )
 
 @study_gate_app.on_event("startup")
