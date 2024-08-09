@@ -123,6 +123,7 @@ class MentorStudent(Base):
             ).first()
             
             students = {
+                'application_slug': stud.application_ref,
                 'mentor_id': stud.id,
                 'email': student.email_address,
                 'first_name': student.first_name,
