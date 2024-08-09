@@ -67,3 +67,19 @@ async def login_user(login_data: OAuth2PasswordRequestForm = Depends(), db: Sess
         
     except Exception as e:
         return exceptions.server_error(detail=str(e))
+    
+@admin_router.patch('/mentors/activation', summary="activate mentors", status_code=200)
+async def get_user(email_address: str = Query(default=None), db:Session = Depends(get_db), 
+                   current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = admin_crud.activate_mentors(db, current_user, email_address)
+        return success_response.success_message("activated successfully")
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e)) 

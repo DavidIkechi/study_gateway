@@ -52,3 +52,30 @@ def user_login(db, email, password):
     _ = is_admin(check_user)
     
     return user_crud.user_login(db, email, password)
+
+def activate_mentor(db, email_address):
+    from crud.mentor_crud import is_mentor
+    check_user = check_mail(db, email_address)
+    check_mentor = is_mentor(db, check_user)
+    check_mentor.is_setup = True
+    
+    return check_mentor
+
+def activate_mentors(db, current_user, email_address: str = None):
+    user_id = cuurent_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_admin(get_user)
+    
+    
+    if email_address is not None:
+        return activate_mentor(db, email)
+    
+    updated_count = db.query(UserModel).filter(
+        UserModel.is_mentor == True,
+        UserModel.is_setup == False
+    ).update(
+        {UserModel.is_setup: True},
+        synchronize_session=False
+    )
+    
+    return updated_count    
