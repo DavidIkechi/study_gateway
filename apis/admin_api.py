@@ -73,6 +73,7 @@ async def get_user(email_address: str = Query(default=None), db:Session = Depend
                    current_user: dict = Depends(validate_active_client)):
     try:
         user_detail = admin_crud.activate_mentors(db, current_user, email_address)
+        db.commit()
         return success_response.success_message("activated successfully")
     
     except BadExceptions as e:
