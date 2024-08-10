@@ -53,7 +53,7 @@ def update_user_info(db, profile_info, current_user):
     profile_id = ProfileModel.get_profile_by_user_id(db, user_id).id
     
     if info_dict.get('bio') is not None and get_user.is_mentor:
-        mentor = AdditionalMentor.get_mentors_by_user_id(db, user_id)
+        mentor = AdditionalMentors.get_mentors_by_user_id(db, user_id)
         bio = info_dict.get('bio')
         mentor.bio = bio
         info_dict.pop('bio')
