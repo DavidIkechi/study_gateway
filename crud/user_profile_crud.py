@@ -43,11 +43,20 @@ def check_profile(db, user_id):
     return UserModel.update_user(db, user_id, {'is_setup': True})
     
 def update_user_info(db, profile_info, current_user):
+    from db.main_model import AdditionalMentors
     from crud.settings import check_gender_by_slug, check_nationality_by_slug
     info_dict = profile_info.dict(exclude_none=True)
     user_id = current_user.get('user_id')
     
+    get_user = UserModel.get_user_by_id(db, user_id)
+    
     profile_id = ProfileModel.get_profile_by_user_id(db, user_id).id
+    
+    if info_dict.get('bio') is not None and get_user.is_mentor:
+        mentor = AdditionalMentor.get_mentors_by_user_id(db, user_id)
+        bio = info_dict.get('bio')
+        mentor.bio = bio
+        info_dict.pop('bio')
     
     if info_dict.get('gender') is not None:
         info_dict['gender_id'] = check_gender_by_slug(db, info_dict['gender']).id

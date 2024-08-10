@@ -298,26 +298,10 @@ async def accept(profile: ConnectSchema, db: Session = Depends(get_db), current_
         return exceptions.server_error(str(e))
     
 @mentor_router.get('/current-students', summary="Get Mentor's current students", status_code=200)
-async def get_user(name: str = Query(default=None), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
+async def get_user(name: str = Query(default=None), current: bool = Query(default=False), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
                               page_size: int=10, current_user: dict = Depends(validate_active_client)):
     try:
-        user_detail = mentor_crud.get_students(db, current_user, name, page, page_size, True)
-        return success_response.success_message(user_detail)
-    
-    except BadExceptions as e:
-        return exceptions.bad_request_error(detail=e.detail)
-    
-    except NotFoundException as e:
-        return exceptions.not_found_error(detail = e.detail)
-    
-    except Exception as e:
-        return exceptions.server_error(str(e)) 
-    
-@mentor_router.get('/all-students', summary="Get all Mentor's student", status_code=200)
-async def get_user(name: str = Query(default=None), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
-                              page_size: int=10, current_user: dict = Depends(validate_active_client)):
-    try:
-        user_detail = mentor_crud.get_students(db, current_user, name, page, page_size, False)
+        user_detail = mentor_crud.get_students(db, current_user, name, page, page_size, current)
         return success_response.success_message(user_detail)
     
     except BadExceptions as e:

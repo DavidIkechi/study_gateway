@@ -6,6 +6,7 @@ from typing import Optional
 class UserInfoSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    bio: Optional[str] = None
     gender: Optional[str] = None
     birth_date: Optional[datetime] = None
     nationality: Optional[str] = None  # Assuming you want to add email as well
