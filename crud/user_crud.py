@@ -209,7 +209,7 @@ async def resend_link(db, user, backtasks):
     if check_user.is_verified:
         raise BadExceptions(detail="Account already verified")
     # send verification mail notification
-    await send_verification_email(user, backtasks)
+    await send_verification_email(check_user, backtasks)
     
     return check_user
 
