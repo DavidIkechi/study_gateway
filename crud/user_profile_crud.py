@@ -146,13 +146,39 @@ def change_password(db, profile_info, current_user):
     
     return get_user
 
+
+def get_user_profile_image(get_user): 
+    import imghdr   
+    # Assuming 'photo' is stored as binary (LargeBinary)
+    image_binary = get_user.photo
+    
+    # Encode the binary image data to base64
+    if image_binary:
+        # Detect the image format (jpeg, png, etc.)
+        image_type = imghdr.what(None, h=image_binary)
+        
+        # Fallback in case the format is not detected
+        if image_type is None:
+            image_type = 'jpeg'  # Default to jpeg
+        
+        # Encode the binary image data to base64
+        image_base64 = base64.b64encode(image_binary).decode('utf-8')
+        
+        # Add the appropriate data URL scheme
+        image_base64 = f"data:image/{image_type};base64,{image_base64}"
+    else:
+        image_base64 = None  # Or provide a placeholder image or message
+    
+    return image_base64
+
 def get_user_profile(db, current_user):
     from db.main_model import MentorStudent
     user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_object(db).filter_by(id=user_id)
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     
     query = query.options(
-        load_only(UserModel.id, UserModel.email_address, UserModel.photo, UserModel.first_name, UserModel.last_name, UserModel.created_at,
+        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at,
                   UserModel.is_setup, UserModel.is_verified),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
@@ -183,7 +209,8 @@ def get_user_profile(db, current_user):
         
     user_profile = {
         'user': query.first(),
-        'connection_status': connection
+        'connection_status': connection,
+        'profile_image': get_user_profile_image(get_user)
     }
     
     return user_profile    

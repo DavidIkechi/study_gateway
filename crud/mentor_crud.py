@@ -127,6 +127,7 @@ def get_user_detail(db, user_dict):
 
 def get_user_details(db, current_user):
     user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_object(db).filter_by(id=user_id)
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     _ = is_mentor(query.first())
     
@@ -140,7 +141,6 @@ def get_user_details(db, current_user):
                 'created_at',
                 'is_setup',
                 'is_verified',
-                'photo',
                 'id'
             ),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
@@ -154,7 +154,9 @@ def get_user_details(db, current_user):
     )
 
     user_profile = {
-        'user': query.first()
+        'user': query.first(),
+        'profile_image': user_profile_crud.get_user_profile_image(get_user)
+
     }
     
     return user_profile
