@@ -174,7 +174,7 @@ def get_user_profile_image(get_user):
 def get_user_profile(db, current_user):
     from db.main_model import MentorStudent
     user_id = current_user.get('user_id')
-    get_user = UserModel.get_user_object(db).filter_by(id=user_id)
+    get_user = UserModel.get_user_object(db).filter_by(id=user_id).first()
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     
     query = query.options(

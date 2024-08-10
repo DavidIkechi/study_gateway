@@ -127,7 +127,7 @@ def get_user_detail(db, user_dict):
 
 def get_user_details(db, current_user):
     user_id = current_user.get('user_id')
-    get_user = UserModel.get_user_object(db).filter_by(id=user_id)
+    get_user = UserModel.get_user_object(db).filter_by(id=user_id).first()
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     _ = is_mentor(query.first())
     
