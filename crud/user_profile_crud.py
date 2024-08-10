@@ -151,7 +151,7 @@ def get_user_profile(db, current_user):
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     
     query = query.options(
-        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at
+        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at,
                   UserModel.is_setup, UserModel.is_verified),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
