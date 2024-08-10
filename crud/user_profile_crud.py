@@ -166,8 +166,6 @@ def get_user_profile(db, current_user):
                                                      'course_extra', 'highest_degree_extra')
     )
 
-    valid = query.first()
-    connection_status = []
     mentor = MentorStudent.get_ment_studs_object(db).filter(
         MentorStudent.user_id == user_id,
         MentorStudent.connected == True,
@@ -181,10 +179,13 @@ def get_user_profile(db, current_user):
         'visa_progress': mentor.visa_progress if mentor else 0.0,
         'document_progress': mentor.document_progress if mentor else 0.0
     }
+        
+    user_profile = {
+        'user': query.first(),
+        'connection_status': connection
+    }
     
-    valid['connection'] = connection_status.append(connection)
-    
-    return valid    
+    return user_profile    
 
 def change_photo(db, profile_info, current_user):
     # check to see if the email address already exists

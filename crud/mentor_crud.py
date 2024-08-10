@@ -147,7 +147,11 @@ def get_user_details(db, current_user):
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.courses).load_only('id','course_name', 'slug')
     )
 
-    return query.first()
+    user_profile = {
+        'user': query.first()
+    }
+    
+    return user_profile
 
 def update_user_info(db, profile_info, current_user):
     from crud.settings import check_gender_by_slug, check_nationality_by_slug
