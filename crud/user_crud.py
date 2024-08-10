@@ -98,7 +98,7 @@ async def create_user(db, user, backtasks, mentor=False):
     db.flush()
     # create new user profile immediately.
     if not mentor:
-        _ = create_user_profile(db, user_dict, create_new_user.id)
+        _ = create_user_profile(db, create_new_user.id)
     else:
         _ = create_mentor(db, mentor_data, create_new_user.id)
            
