@@ -24,6 +24,7 @@ from simpleotp import OTP
 from schemas.user_schema import NameSchema
 from schemas.profile_schema import ExtraSchema
 import os
+import base64
 
 hasher = PasswordHasher()
 
