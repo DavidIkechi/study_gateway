@@ -4,6 +4,7 @@ from pydantic import EmailStr, validator, constr, Field
 from datetime import datetime
 from typing import Optional
 import base64
+import re
 
 class UserConnectSchema(BaseModel):
     mentor_email_address: EmailStr
@@ -39,23 +40,24 @@ class UserSchema(BaseModel):
     @validator('confirm_password')
     def check_confirm_passwords(cls, v):
         return v.strip()
+
 class ChangeProfileImageSchema(BaseModel):
-    profile: str = Field(..., pattern=r'^[A-Za-z0-9+/]+={0,2}$')  # Ensures base64 format
+    profile: str = Field(..., pattern=r'^(?:data:image\/(jpeg|png|jpg);base64,)?[A-Za-z0-9+/]+={0,2}$')
 
     @validator('profile')
     def check_image_base64(cls, v):
-        # Strip whitespace and check for empty string
-        v = v.strip()
+        # Check for data URL scheme and strip it
+        if v.startswith('data:image'):
+            # This regex will strip the data URL scheme if present
+            v = re.sub(r'^data:image\/(jpeg|png|jpg);base64,', '', v)
+
+        # Ensure string is not empty after stripping
         if not v:
             raise ValueError('Base64 image data must not be empty')
 
-        # Check for valid image formats
-        if not (v.startswith('/9j/') or v.startswith('iVBORw0KGgo')):
-            raise ValueError('Image must be in JPEG, JPG, or PNG format')
-
         # Decode base64 string to binary data
         try:
-            image_binary = base64.b64decode(v)
+            image_binary = base64.b64decode(v, validate=True)
         except Exception as e:
             raise ValueError('Invalid base64 image data')
 
