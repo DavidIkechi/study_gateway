@@ -297,7 +297,7 @@ async def accept(profile: ConnectSchema, db: Session = Depends(get_db), current_
     except Exception as e:
         return exceptions.server_error(str(e))
     
-@mentor_router.get('/current-students', summary="Get Mentor's current students", status_code=200)
+@mentor_router.get('/students', summary="Get Mentor's students", status_code=200)
 async def get_user(name: str = Query(default=None), current: bool = Query(default=False), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
                               page_size: int=10, current_user: dict = Depends(validate_active_client)):
     try:
