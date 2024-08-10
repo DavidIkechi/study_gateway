@@ -130,19 +130,19 @@ class ResendEmailSchema(BaseModel):
     email_address: EmailStr
     
 class NameSchema(BaseModel):
-    first_name: str = None
-    last_name: str = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     
 class StudentUpdateSchema(BaseModel):
-    university: str = None
-    completed: bool = None
-    document_progress: float = None
-    visa_progress: float = None
-    course: str = None
-    degree: str = None
-    admission_progress: float = None
-    year: int = Field(..., ge=datetime.now().year) # Ensure year is from current year onwards
-
+    university: Optional[str] = None
+    completed: Optional[bool] = None
+    document_progress: Optional[float] = None
+    visa_progress: Optional[float] = None
+    course: Optional[str] = None
+    degree: Optional[str] = None
+    admission_progress: Optional[float] = None
+    year: int = Field(..., ge=datetime.now().year)
+    
     @validator('year')
     def validate_year(cls, value):
         current_year = datetime.now().year
