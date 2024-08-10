@@ -146,11 +146,13 @@ def change_password(db, profile_info, current_user):
     return get_user
 
 def get_user_profile(db, current_user):
+    from db.main_model import MentorStudent
     user_id = current_user.get('user_id')
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     
     query = query.options(
-        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at),
+        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at
+                  UserModel.is_setup, UserModel.is_verified),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
         joinedload(UserModel.user_profiles).joinedload(ProfileModel.genders).load_only('id','slug','name'),
@@ -164,7 +166,25 @@ def get_user_profile(db, current_user):
                                                      'course_extra', 'highest_degree_extra')
     )
 
-    return query.first()
+    value = query.first()
+    connection_status = []
+    mentor = MentorStudent.get_ment_studs_object(db).filter(
+        MentorStudent.user_id == user_id,
+        MentorStudent.connected == True,
+        MentorStudent.status == 'accepted'
+    ).first()
+    
+    connection_status = {
+        'connected_mentor': bool(mentor),
+        'mentor_id': mentor.mentor_id if mentor else 0,
+        'admission_progress': mentor.admission_progress if mentor else 0.0,
+        'visa_progress': mentor.visa_progress if mentor else 0.0,
+        'document_progress': mentor.document_progress if mentor else 0.0
+    }
+    
+    valid['connection'] = connection_status.append(connection)
+    
+    return valid    
 
 def change_photo(db, profile_info, current_user):
     # check to see if the email address already exists

@@ -132,7 +132,10 @@ def get_user_details(db, current_user):
                 'email_address',
                 'first_name',
                 'last_name',
-                'created_at'
+                'created_at',
+                'is_setup',
+                'is_verified',
+                'id'
             ),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
