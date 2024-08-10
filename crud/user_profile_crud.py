@@ -174,7 +174,7 @@ def get_user_profile(db, current_user):
         MentorStudent.status == 'accepted'
     ).first()
     
-    connection_status = {
+    connection = {
         'connected_mentor': bool(mentor),
         'mentor_id': mentor.mentor_id if mentor else 0,
         'admission_progress': mentor.admission_progress if mentor else 0.0,
