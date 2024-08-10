@@ -220,7 +220,7 @@ def change_photo(db, profile_info, current_user):
     info_dict = profile_info.dict(exclude_none=True)
     user_id = current_user.get('user_id')
     get_user = UserModel.get_user_by_id(db, user_id)
-    photo = info.profile
+    photo = profile_info.profile
     
     if photo.startswith('data:image/'):
         # Split at the comma and take the second part
