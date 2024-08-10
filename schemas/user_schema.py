@@ -134,10 +134,12 @@ class NameSchema(BaseModel):
     last_name: str = None
     
 class StudentUpdateSchema(BaseModel):
-    university_id: str = None
+    university: str = None
     completed: bool = None
     document_progress: float = None
     visa_progress: float = None
+    course: str = None
+    degree: str = None
     admission_progress: float = None
     year: int = Field(..., ge=datetime.now().year) # Ensure year is from current year onwards
 

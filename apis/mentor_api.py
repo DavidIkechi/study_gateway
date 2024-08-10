@@ -22,7 +22,8 @@ from schemas.user_schema import (
     refreshTokenSchema, 
     ResendEmailSchema,
     ChangeProfileImageSchema,
-    ConnectSchema
+    ConnectSchema,
+    StudentUpdateSchema
 )
 from schemas.profile_schema import (
     UserInfoSchema, 
@@ -327,7 +328,23 @@ async def get_user(connection_slug:str,  db:Session = Depends(get_db),
         return exceptions.not_found_error(detail = e.detail)
     
     except Exception as e:
-        return exceptions.server_error(str(e)) 
+        return exceptions.server_error(str(e))
+    
+@mentor_router.patch('/update-student/{connection_slug}', summary="Update Student information including admission and other information.", status_code=200)
+async def accept(connection_slug: str, profile: StudentUpdateSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.update_admission(db, current_user, connection_slug, profile)
+        db.commit()
+        return success_response.success_message([], "student details was successfully updated", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
 
     
     

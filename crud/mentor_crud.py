@@ -12,7 +12,7 @@ from exceptions import (
 )
 from db.main_model import (
     ProfileModel, AdditionalUserDetails, UserModel,
-    GenderModel, AdditionalMentors, AdditionalMentors, LanguageModel, MentorStudent
+    GenderModel, AdditionalMentors, AdditionalMentors, LanguageModel, MentorStudent,
 )
 
 from argon2 import PasswordHasher
@@ -286,6 +286,31 @@ def get_more_detail(db, current_user, ment_slug):
         raise BadExceptions(f"Mentor not tied to student")
 
     return more_details(db, get_application.id) 
+    
+def update_admission(db, current_user, connection_slug, profile):
+    from crud.settings import check_courses_by_slug, check_university_by_slug, check_degree_by_slug
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_mentor(get_user)
+    
+    get_application = check_mentor_slug(db, ment_slug)
+    # check if the email.id is 
+    if get_application.mentor_id != user_id:
+        raise BadExceptions(f"Mentor not tied to student")
+    
+    profile_dict = profile.dict(exclude_none=True)
+   # Update university if provided and pop it from the dictionary
+    if 'university' in profile_dict:
+        profile_dict['university_id'] = check_university_by_slug(db, profile_dict.pop('university')).id
+    # Update course if provided and pop it from the dictionary
+    if 'course' in profile_dict:
+        profile_dict['course_id'] = check_courses_by_slug(db, profile_dict.pop('course')).id
+    # Update degree if provided and pop it from the dictionary
+    if 'degree' in profile_dict:
+        profile_dict['degree_id'] = check_degree_by_slug(db, profile_dict.pop('degree')).id
+        
+    return MentorStudent.update_ment_studs(db, get_application.id, profile_dict)
+    
     
     
     
