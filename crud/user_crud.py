@@ -169,18 +169,15 @@ def verify_code(db, code):
     return get_token
 
 def change_password(db, token, user):
-    # check to see if the email address already exists
-    check_user =  check_mail(db, user.email_address)
-    _ = check_user_account(check_user)
-
     # decode token.
     bool_result, token_data = password_verif_token(token)
 
     if not bool_result:
-        raise BadExceptions(token_data) 
+        raise BadExceptions(token_data)
+    
+    check_user =  check_mail(db, token_data)
+    _ = check_user_account(check_user)
 
-    if token_data != check_user.email_address:
-        raise BadExceptions(f"Token email doesn't match with email supplied.")
     # check passwords.
     get_password = user.password
     if get_password == "":

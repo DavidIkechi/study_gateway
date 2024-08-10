@@ -66,7 +66,12 @@ def verify_code(db, code):
 
 def change_password(db, token, user):
     # check to see if the email address already exists
-    check_user =  check_mail(db, user.email_address)
+    bool_result, token_data = password_verif_token(token)
+
+    if not bool_result:
+        raise BadExceptions(token_data)
+    
+    check_user =  check_mail(db, token_data)
     _ = is_mentor_admin(check_user)
     
     return user_crud.change_password(db, token, user)
