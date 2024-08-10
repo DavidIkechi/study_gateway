@@ -136,7 +136,7 @@ def get_user_details(db, current_user):
             ),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
-        joinedload(UserModel.mentors).load_only(AdditionalMentors.id, AdditionalMentors.address, AdditionalMentors.birth_date),
+        joinedload(UserModel.mentors).load_only(AdditionalMentors.id, AdditionalMentors.address, AdditionalMentors.birth_date, AdditionalMentors.bio),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.genders).load_only('id','slug','name'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.languages).load_only('id', 'name', 'slug'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.degrees).load_only('id', 'degree_name', 'slug'),
