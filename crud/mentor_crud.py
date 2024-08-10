@@ -96,7 +96,7 @@ async def send_code(db, email: str, backtasks):
     check_user = check_mail(db, email)
     _ = is_mentor(check_user)
     
-    return user_crud.send_code(db, email, backtasks)
+    return await user_crud.send_code(db, email, backtasks)
 
 def verify_code(db, code):
      # first check if email_address exists.
