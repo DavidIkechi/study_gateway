@@ -119,19 +119,19 @@ async def user_profile(db: Session = Depends(get_db), current_user: dict = Depen
     
 @user_profile_router.patch('/change-profile-image', summary="Update Profile Image", status_code=200)
 async def update_password_info(profile: ChangeProfileImageSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
-    # try:
+    try:
         user_info = user_profile_crud.change_photo(db, profile, current_user)
         db.commit()
         return success_response.success_message([], f"User {current_user['sub']} Photo was successfully changed", 200)
     
-    # except BadExceptions as e:
-    #     return exceptions.bad_request_error(detail = e.detail)
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
     
-    # except NotFoundException as e:
-    #     return exceptions.not_found_error(detail = e.detail)
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
     
-    # except VerifyMismatchError as e:
-    #     return exceptions.bad_request_error(detail="Incorrect Password")
+    except VerifyMismatchError as e:
+        return exceptions.bad_request_error(detail="Incorrect Password")
     
-    # except Exception as e:
-    #     return exceptions.server_error(str(e))
+    except Exception as e:
+        return exceptions.server_error(str(e))

@@ -140,6 +140,7 @@ def get_user_details(db, current_user):
                 'created_at',
                 'is_setup',
                 'is_verified',
+                'photo',
                 'id'
             ),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
