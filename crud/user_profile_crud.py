@@ -166,7 +166,7 @@ def get_user_profile(db, current_user):
                                                      'course_extra', 'highest_degree_extra')
     )
 
-    value = query.first()
+    valid = query.first()
     connection_status = []
     mentor = MentorStudent.get_ment_studs_object(db).filter(
         MentorStudent.user_id == user_id,
