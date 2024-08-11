@@ -11,7 +11,6 @@ sys.path.append("..")
 
 class UniversityModel(Base):
     __tablename__ = "universities"
-    
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     name = Column(String(255), nullable=False)
     location = Column(String(255), nullable=False)
@@ -20,7 +19,7 @@ class UniversityModel(Base):
     address = Column(TEXT, nullable=True)
     
     ment_studs = relationship("MentorStudent", back_populates="university")
-
+    location = relationship("LocationModel", back_populates="university")
     
     @staticmethod
     def get_university_object(db: Session):

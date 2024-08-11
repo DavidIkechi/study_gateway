@@ -26,6 +26,12 @@ from .language_model import LanguageModel
 from .addtional_mentor import AdditionalMentors
 from .mentor_student import MentorStudent
 from .university_model import UniversityModel
+from .college_model import CollegeSchoolModel
+from .degreetype_model import DegreeTypeModel
+from .semester_model import SemesterModel
+from .university_location import LocationModel
+from .university_description import UniversityDescription
+from .state_university import StateUniversityModel
  
 import sys
 sys.path.append("..")

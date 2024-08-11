@@ -23,7 +23,10 @@ from db import (
    package_model, pricing_model,
    waitlist_model, language_model,
    addtional_mentor,
-   mentor_student, university_model
+   mentor_student, university_model,
+   college_model, degreetype_model,
+   semester_model, university_location,
+   university_description, state_university
 )
 
 from db.connection import get_db_conn_string
