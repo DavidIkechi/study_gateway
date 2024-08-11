@@ -408,49 +408,49 @@ def seed_universities(db: Session):
         {
             'id': 1,
             'name': 'Harvard University',
-            'location': 'Massachusetts',  # Extracted state
+            'locations': 'Massachusetts',  # Extracted state
             'url': 'https://www.harvard.edu/academics/',
             'address': 'Massachusetts Hall, Cambridge, MA 02138',
         },
         {
             'id': 2,
             'name': 'Stanford University',
-            'location': 'California',  # Extracted state
+            'locations': 'California',  # Extracted state
             'url': 'https://explorecourses.stanford.edu/',
             'address': '450 Serra Mall, Stanford, CA 94305',
         },
         {
             'id': 3,
             'name': 'Massachusetts Institute of Technology (MIT)',
-            'location': 'Massachusetts',  # Extracted state
+            'locations': 'Massachusetts',  # Extracted state
             'url': 'https://catalog.mit.edu/subjects/',
             'address': '77 Massachusetts Ave, Cambridge, MA 02139',
         },
         {
             'id': 4,
             'name': 'University of California, Berkeley',
-            'location': 'California',  # Extracted state
+            'locations': 'California',  # Extracted state
             'url': 'https://guide.berkeley.edu/courses/',
             'address': '200 California Hall, Berkeley, CA 94720',
         },
         {
             'id': 5,
             'name': 'University of Chicago',
-            'location': 'Illinois',  # Extracted state
+            'locations': 'Illinois',  # Extracted state
             'url': 'https://collegecatalog.uchicago.edu/thecollege/',
             'address': '5801 S Ellis Ave, Chicago, IL 60637',
         },
         {
             'id': 6,
             'name': 'California Institute of Technology (Caltech)',
-            'location': 'California',  # Extracted state
+            'locations': 'California',  # Extracted state
             'url': 'https://catalog.caltech.edu/current',
             'address': '1200 E California Blvd, Pasadena, CA 91125',
         },
         {
             'id': 7,
             'name': 'Princeton University',
-            'location': 'New Jersey',  # Extracted state
+            'locations': 'New Jersey',  # Extracted state
             'url': 'https://www.princeton.edu/academics',
             'address': 'Princeton, NJ 08544',
         }
