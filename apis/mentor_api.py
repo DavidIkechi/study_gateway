@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, BackgroundTasks
+from fastapi import APIRouter, Depends, Query, BackgroundTasks, File, UploadFile
 from sqlalchemy.orm import Session
 import sys
 sys.path.append("..")
@@ -200,7 +200,7 @@ async def update_degree_info(profile: DegreeSchema, db: Session = Depends(get_db
         return exceptions.server_error(str(e))
     
 @mentor_router.patch('/change-profile-photo', summary="Update Mentor Profile Photo", status_code=200)
-async def update_degree_info(profile: ChangeProfileImageSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+async def update_degree_info(profile: UploadFile = File(...), db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
     try:
         user_info = mentor_crud.change_photo(db, profile, current_user)
         db.commit()
