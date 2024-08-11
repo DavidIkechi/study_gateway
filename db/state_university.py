@@ -13,8 +13,8 @@ class StateUniversityModel(Base):
     __tablename__ = "state_universities"
     
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, unique=True)
-    slug = Column(String(60), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
+    name = Column(String(255), nullable=False)
+    slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
 
     descriptions = relationship("UniversityDescription", back_populates="state")
 

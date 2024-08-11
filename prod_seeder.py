@@ -398,59 +398,254 @@ def seed_languages(db: Session):
     
 def seed_universities(db: Session):
     from db.main_model import UniversityModel
-
+    # Delete all records from the table
+    db.query(UniversityModel).delete()
+    
+    # Reset the auto-increment value (MySQL specific)
+    db.execute('ALTER TABLE universities AUTO_INCREMENT = 1;')    
     # Raw data extracted from the Excel file with IDs added
     university_data = [
         {
             'id': 1,
             'name': 'Harvard University',
-            'location': 'Cambridge, MA',
+            'location': 'Massachusetts',  # Extracted state
             'url': 'https://www.harvard.edu/academics/',
             'address': 'Massachusetts Hall, Cambridge, MA 02138',
         },
         {
             'id': 2,
             'name': 'Stanford University',
-            'location': 'Stanford, CA',
+            'location': 'California',  # Extracted state
             'url': 'https://explorecourses.stanford.edu/',
             'address': '450 Serra Mall, Stanford, CA 94305',
         },
         {
             'id': 3,
             'name': 'Massachusetts Institute of Technology (MIT)',
-            'location': 'Cambridge, MA',
+            'location': 'Massachusetts',  # Extracted state
             'url': 'https://catalog.mit.edu/subjects/',
             'address': '77 Massachusetts Ave, Cambridge, MA 02139',
         },
         {
             'id': 4,
             'name': 'University of California, Berkeley',
-            'location': 'Berkeley, CA',
+            'location': 'California',  # Extracted state
             'url': 'https://guide.berkeley.edu/courses/',
             'address': '200 California Hall, Berkeley, CA 94720',
         },
         {
             'id': 5,
             'name': 'University of Chicago',
-            'location': 'Chicago, IL',
+            'location': 'Illinois',  # Extracted state
             'url': 'https://collegecatalog.uchicago.edu/thecollege/',
             'address': '5801 S Ellis Ave, Chicago, IL 60637',
         },
         {
             'id': 6,
             'name': 'California Institute of Technology (Caltech)',
-            'location': 'Pasadena, CA',
+            'location': 'California',  # Extracted state
             'url': 'https://catalog.caltech.edu/current',
             'address': '1200 E California Blvd, Pasadena, CA 91125',
         },
         {
             'id': 7,
             'name': 'Princeton University',
-            'location': 'Princeton, NJ',
-            'url': 'Academics - Princeton University',
+            'location': 'New Jersey',  # Extracted state
+            'url': 'https://www.princeton.edu/academics',
             'address': 'Princeton, NJ 08544',
         }
     ]
 
     # Insert data into the database
     seed_model(db, UniversityModel, university_data, [])
+    
+def seed_colleges(db: Session):
+    from db.main_model import CollegeSchoolModel
+
+    # The complete and cleaned college data
+    college_data = [
+        {'university_id': 1, 'name': 'Faculty of Arts and Sciences'},
+        {'university_id': 1, 'name': 'School of Engineering and Applied Sciences'},
+        {'university_id': 1, 'name': 'Havard University Graduate'},
+        {'university_id': 1, 'name': 'Harvard Business School'},
+        {'university_id': 1, 'name': 'Graduate School of Arts and Sciences'},
+        {'university_id': 1, 'name': 'Kennedy School of Government'},
+        {'university_id': 1, 'name': 'Harvard Graduate School of Design'},
+        {'university_id': 1, 'name': 'Harvard Graduate School of Education'},
+        {'university_id': 1, 'name': 'Harvard School of Public Health'},
+        {'university_id': 1, 'name': 'Harvard Law School'},
+        {'university_id': 1, 'name': 'Harvard Medical School'},
+        {'university_id': 1, 'name': 'Harvard School of Dental Medicine'},
+        {'university_id': 1, 'name': 'Harvard Divinity School'},
+        {'university_id': 2, 'name': 'School of Humanities and Sciences'},
+        {'university_id': 2, 'name': 'School of Engineering'},
+        {'university_id': 2, 'name': 'Stanford University Graduate'},
+        {'university_id': 2, 'name': 'Graduate School of Business'},
+        {'university_id': 2, 'name': 'Stanford Law School'},
+        {'university_id': 2, 'name': 'Stanford Medical School'},
+        {'university_id': 2, 'name': 'Stanford Graduate School of Education'},
+        {'university_id': 3, 'name': 'MIT School of Engineering'},
+        {'university_id': 3, 'name': 'MIT Sloan School of Management'},
+        {'university_id': 3, 'name': 'School of Architecture and Planning'},
+        {'university_id': 3, 'name': 'School of Humanities, Arts, and Social Sciences'},
+        {'university_id': 3, 'name': 'School of Science'},
+        {'university_id': 3, 'name': 'MIT Schwarzman College of Computing'},
+        {'university_id': 4, 'name': 'UC Berkeley College of Engineering'},
+        {'university_id': 4, 'name': 'College of Environmental Design'},
+        {'university_id': 4, 'name': 'Haas School of Business'},
+        {'university_id': 4, 'name': 'School of Law'},
+        {'university_id': 4, 'name': 'School of Information'},
+        {'university_id': 4, 'name': 'Graduate School of Education'},
+        {'university_id': 5, 'name': 'University of Chicago Law School'},
+        {'university_id': 5, 'name': 'Booth School of Business'},
+        {'university_id': 5, 'name': 'Division of the Humanities'},
+        {'university_id': 5, 'name': 'Division of the Physical Sciences'},
+        {'university_id': 5, 'name': 'Division of the Social Sciences'},
+        {'university_id': 5, 'name': 'Graham School of Continuing Liberal and Professional Studies'},
+        {'university_id': 5, 'name': 'Pritzker School of Medicine'},
+        {'university_id': 6, 'name': 'Caltech Division of Biology and Biological Engineering'},
+        {'university_id': 6, 'name': 'Caltech Division of Chemistry and Chemical Engineering'},
+        {'university_id': 6, 'name': 'Caltech Division of Engineering and Applied Science'},
+        {'university_id': 6, 'name': 'Caltech Division of Geological and Planetary Sciences'},
+        {'university_id': 6, 'name': 'Caltech Division of Humanities and Social Sciences'},
+        {'university_id': 6, 'name': 'Caltech Division of Physics, Mathematics and Astronomy'},
+        {'university_id': 7, 'name': 'Princeton School of Public and International Affairs'},
+        {'university_id': 7, 'name': 'School of Engineering and Applied Science'},
+        {'university_id': 7, 'name': 'Princeton Graduate School'},
+        {'university_id': 7, 'name': 'Woodrow Wilson School of Public and International Affairs'}
+    ]
+    
+    seed_model(db, CollegeSchoolModel, college_data, [])
+
+def seed_us_states(db: Session):
+    from db.main_model import StateUniversityModel
+    # List of all U.S. states
+    us_states = [
+        {"name": "Alabama"},
+        {"name": "Alaska"},
+        {"name": "Arizona"},
+        {"name": "Arkansas"},
+        {"name": "California"},
+        {"name": "Colorado"},
+        {"name": "Connecticut"},
+        {"name": "Delaware"},
+        {"name": "Florida"},
+        {"name": "Georgia"},
+        {"name": "Hawaii"},
+        {"name": "Idaho"},
+        {"name": "Illinois"},
+        {"name": "Indiana"},
+        {"name": "Iowa"},
+        {"name": "Kansas"},
+        {"name": "Kentucky"},
+        {"name": "Louisiana"},
+        {"name": "Maine"},
+        {"name": "Maryland"},
+        {"name": "Massachusetts"},
+        {"name": "Michigan"},
+        {"name": "Minnesota"},
+        {"name": "Mississippi"},
+        {"name": "Missouri"},
+        {"name": "Montana"},
+        {"name": "Nebraska"},
+        {"name": "Nevada"},
+        {"name": "New Hampshire"},
+        {"name": "New Jersey"},
+        {"name": "New Mexico"},
+        {"name": "New York"},
+        {"name": "North Carolina"},
+        {"name": "North Dakota"},
+        {"name": "Ohio"},
+        {"name": "Oklahoma"},
+        {"name": "Oregon"},
+        {"name": "Pennsylvania"},
+        {"name": "Rhode Island"},
+        {"name": "South Carolina"},
+        {"name": "South Dakota"},
+        {"name": "Tennessee"},
+        {"name": "Texas"},
+        {"name": "Utah"},
+        {"name": "Vermont"},
+        {"name": "Virginia"},
+        {"name": "Washington"},
+        {"name": "West Virginia"},
+        {"name": "Wisconsin"},
+        {"name": "Wyoming"}
+    ]
+
+    # Insert data into the database
+    seed_model(db, StateUniversityModel, us_states, [])
+    
+def seed_locations(db: Session):
+    from db.main_model import LocationModel
+
+    # Location data with latitude and longitude
+    location_data = [
+        {'university_id': 1, 'latitude': 42.3770, 'longitude': -71.1167, 
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415837/h_favbrp.webp",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415836/h3_etp6dj.webp",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415836/h1_qgy6bz.webp",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415836/h2_hy6mpm.webp"]},  # Harvard University, Cambridge, MA
+        {'university_id': 2, 'latitude': 37.4275, 'longitude': -122.1697,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415992/s2_elxa4q.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415991/s1_o0xpnc.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415989/s3_iyoduj.webp",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723415989/s_fmpi6t.webp"]}, # Stanford University, Stanford, CA
+        {'university_id': 3, 'latitude': 42.3601, 'longitude': -71.0942,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416191/m3_yqbtu8.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416191/m1_wadhp7.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416191/m2_yw1bia.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416191/m_vusbir.jpg"]},  # MIT, Cambridge, MA
+        {'university_id': 4, 'latitude': 37.8719, 'longitude': -122.2585,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416336/c1_wdre5f.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416335/c4_u3pvpf.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416335/c3_pkuceh.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416335/c2_rrf1fe.jpg"]}, # UC Berkeley, Berkeley, CA
+        {'university_id': 5, 'latitude': 41.7886, 'longitude': -87.5987,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416431/chi1_ascywe.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/ch12_hy23cn.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi3_tq4n0v.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi4_h6injp.jpg"]},  # University of Chicago, Chicago, IL
+        {'university_id': 6, 'latitude': 34.1377, 'longitude': -118.1253,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416750/y4_hdwbe9.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416748/y3_dll8ke.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416747/y2_clhtal.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416746/y1_fvexy3.jpg"]}, # Caltech, Pasadena, CA
+        {'university_id': 7, 'latitude': 40.3430, 'longitude': -74.6514,
+         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416650/p4_hymwv9.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p_blp9tr.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p3_c3hlec.jpg",
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416646/p2_plhsz0.jpg"]}   # Princeton University, Princeton, NJ
+    ]
+
+    # Insert data into the database
+    seed_model(db, LocationModel, location_data, [])
+    
+def seed_degree_types(db: Session):
+    from db.main_model import DegreeTypeModel
+
+    # Degree data extracted from the Excel file
+    degree_data = [
+        {'name': 'Bachelor of Science in Engineering (BSE)'},
+        {'name': 'Master of Science (SM), Doctor of Philosophy (PhD)'},
+        {'name': 'Doctor of Philosophy (PhD)'},
+        {'name': 'Bachelor of Science in Architecture (BSArch)'},
+        {'name': 'Master in City Planning (MCP), Doctor of Philosophy (PhD)'},
+        {'name': 'Master of Business Administration (MBA), Master of Finance (MFin), Doctor of Philosophy (PhD)'},
+        {'name': 'Bachelor of Science (BS)'},
+        {'name': 'Bachelor of Business Administration (BBA)'},
+        {'name': 'Bachelor of Arts (BA) or Bachelor of Science (BS)'},
+        {'name': 'Master of Public Policy (MPP)'},
+        {'name': 'Master of Science in Engineering (MSE)'},
+        {'name': 'Master of Public Affairs (MPA)'},
+        {'name': 'Master of Business Administration (MBA)'},
+        {'name': 'Master of Arts (MA)'},
+        {'name': 'Bachelor of Arts (BA)'},
+        {'name': 'Bachelor of Science in Management (SBM)'},
+        {'name': 'Master of Science (MS)'}
+    ]
+    
+    seed_model(db, DegreeTypeModel, degree_data, [])
+
+
+

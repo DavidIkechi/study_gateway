@@ -13,7 +13,7 @@ class UniversityDescription(Base):
     __tablename__ = "university_descriptions"
     
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    state_id = Column(Integer, ForeignKey('state_universities.id', ondelete='CASCADE'), nullable=False)
+    state_id = Column(Integer, ForeignKey('state_universities.id'), nullable=False)
     university_id = Column(Integer, ForeignKey('universities.id', ondelete='CASCADE'), nullable=False)
     course_id = Column(Integer, ForeignKey('course_model.id', ondelete='CASCADE'), nullable=False)
     college_id = Column(Integer, ForeignKey('colleges_schools.id', ondelete='CASCADE'), nullable=False)

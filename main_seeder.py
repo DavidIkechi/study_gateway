@@ -11,7 +11,8 @@ from prod_seeder import (
     seed_degrees, seed_degree_sought,
     seed_courses, seed_package,
     seed_pricing, seed_languages, seed_universities,
-    seed_admin_user
+    seed_admin_user, seed_colleges, seed_us_states, seed_locations,
+    seed_degree_types
 )
 
 def run_all_seeders(db):
@@ -30,9 +31,10 @@ def run_all_seeders(db):
         seed_languages(db)
         seed_admin_user(db)
         seed_universities(db)
-
-
-
+        seed_colleges(db)
+        seed_us_states(db)
+        seed_locations(db)
+        seed_degree_types(db)
     
 def run_seeder(seeder: str = None):
     db = Session()
@@ -64,7 +66,15 @@ def run_seeder(seeder: str = None):
         elif seeder == 'universities':
             seed_universities(db)
         elif seeder == 'admin':
-            seed_admin_user(db)  
+            seed_admin_user(db)
+        elif seeder == 'colleges':
+            seed_colleges(db)  
+        elif seeder == 'us_states':
+            seed_us_states(db)
+        elif seeder == 'locations':
+            seed_locations(db)
+        elif seeder == "degree_types":
+            seed_degree_types(db)
         elif seeder is None or seeder.strip() == "":
             run_all_seeders(db)
             
