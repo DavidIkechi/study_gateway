@@ -25,7 +25,7 @@ class UserModel(Base):
     is_verified = Column(Boolean, default=False)
     is_lock = Column(Boolean, default=False)
     status = Column(Boolean, default=True)
-    photo = Column(LargeBinary, nullable=True)  # Add photo column
+    # photo = Column(LargeBinary, nullable=True)  # Add photo column
 
     is_setup = Column(Boolean, default=False)
     lock_count = Column(Integer, default=0)
