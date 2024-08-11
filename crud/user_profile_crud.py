@@ -15,7 +15,7 @@ from db.main_model import (
     GenderModel
 )
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from PIL import Image
+from PIL import Image, ImageOps
 import io
 
 from argon2 import PasswordHasher
@@ -228,13 +228,24 @@ def get_user_profile(db, current_user):
 
 def process_image(image: UploadFile, max_size_kb: int = 100):
     with Image.open(image.file) as img:
-        img = img.resize((200, 200), Image.ANTIALIAS)  # Resize to 200x200
+        img = img.resize((200, 200), Image.Resampling.LANCZOS)  # Resize to 200x200 pixels using LANCZOS resampling
         img_byte_arr = io.BytesIO()
-        img.save(img_byte_arr, format='PNG', quality=85)  # Save with initial quality
-
-        while img_byte_arr.tell() > max_size_kb * 1024:  # If still too large
+        
+        # Convert and save the image to PNG format
+        img.save(img_byte_arr, format='PNG')
+        
+        # Check the size and ensure it meets the size requirement
+        while img_byte_arr.tell() > max_size_kb * 1024:
             img_byte_arr = io.BytesIO()  # Reset the byte stream
-            img.save(img_byte_arr, format='PNG', quality=img_byte_arr.tell() - 10)  # Lower quality progressively
+            img = img.resize((int(img.width * 0.9), int(img.height * 0.9)), Image.Resampling.LANCZOS)  # Resize slightly smaller
+            img.save(img_byte_arr, format='PNG')
+            
+            if img_byte_arr.tell() <= max_size_kb * 1024:
+                break  # Exit loop if size is acceptable
+
+        # Raise an exception if the image still exceeds the size limit
+        if img_byte_arr.tell() > max_size_kb * 1024:
+            raise HTTPException(status_code=400, detail="Image cannot be reduced to the required size")
 
         return img_byte_arr
     
