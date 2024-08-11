@@ -141,6 +141,7 @@ def get_user_details(db, current_user):
                 'created_at',
                 'is_setup',
                 'is_verified',
+                'photo',
                 'id'
             ),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
@@ -154,9 +155,7 @@ def get_user_details(db, current_user):
     )
 
     user_profile = {
-        'user': query.first(),
-        'profile_image': user_profile_crud.get_user_profile_image(get_user)
-
+        'user': query.first()
     }
     
     return user_profile
@@ -204,7 +203,6 @@ def update_password(db, profile_info, current_user):
 
 def change_photo(db, profile_info, current_user):
     # check to see if the email address already exists
-    info_dict = profile_info.dict(exclude_none=True)
     user_id = current_user.get('user_id')
     get_user = UserModel.get_user_by_id(db, user_id)
     

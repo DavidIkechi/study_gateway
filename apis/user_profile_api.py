@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, BackgroundTasks
+from fastapi import APIRouter, Depends, Query, BackgroundTasks, File, UploadFile
 from sqlalchemy.orm import Session
 import sys
 sys.path.append("..")
@@ -118,7 +118,7 @@ async def user_profile(db: Session = Depends(get_db), current_user: dict = Depen
         return exceptions.server_error(str(e))
     
 @user_profile_router.patch('/change-profile-image', summary="Update Profile Image", status_code=200)
-async def update_password_info(profile: ChangeProfileImageSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+async def update_password_info(profile: UploadFile = File(...), db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
     try:
         user_info = user_profile_crud.change_photo(db, profile, current_user)
         db.commit()

@@ -14,6 +14,9 @@ from db.main_model import (
     ProfileModel, AdditionalUserDetails, UserModel,
     GenderModel
 )
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from PIL import Image
+import io
 
 from argon2 import PasswordHasher
 from send_mail import *
@@ -25,8 +28,17 @@ from schemas.user_schema import NameSchema
 from schemas.profile_schema import ExtraSchema
 import os
 import base64
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 hasher = PasswordHasher()
+
+cloudinary.config(
+  cloud_name = os.getenv("cloud_name"), 
+  api_key = os.getenv("cloud_api_key"), 
+  api_secret = os.getenv("cloud_api_secret")
+)
 
 def create_user_profile(db, user_id: int):
     user_profile = ProfileModel.create_profile({'user_id': user_id})
@@ -178,7 +190,7 @@ def get_user_profile(db, current_user):
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     
     query = query.options(
-        load_only(UserModel.id, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at,
+        load_only(UserModel.id, UserModel.photo, UserModel.email_address, UserModel.first_name, UserModel.last_name, UserModel.created_at,
                   UserModel.is_setup, UserModel.is_verified),
         joinedload(UserModel.user_profiles).load_only(ProfileModel.id, ProfileModel.city, ProfileModel.address, 
                                                       ProfileModel.phone, ProfileModel.zip_code, ProfileModel.birth_date),
@@ -210,24 +222,35 @@ def get_user_profile(db, current_user):
     user_profile = {
         'user': query.first(),
         'connection_status': connection,
-        'profile_image': get_user_profile_image(get_user)
     }
     
     return user_profile    
 
-def change_photo(db, profile_info, current_user):
+def process_image(image: UploadFile, max_size_kb: int = 100):
+    with Image.open(image.file) as img:
+        img = img.resize((200, 200), Image.ANTIALIAS)  # Resize to 200x200
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='PNG', quality=85)  # Save with initial quality
+
+        while img_byte_arr.tell() > max_size_kb * 1024:  # If still too large
+            img_byte_arr = io.BytesIO()  # Reset the byte stream
+            img.save(img_byte_arr, format='PNG', quality=img_byte_arr.tell() - 10)  # Lower quality progressively
+
+        return img_byte_arr
+    
+def change_photo(db, image, current_user):
     # check to see if the email address already exists
-    info_dict = profile_info.dict(exclude_none=True)
     user_id = current_user.get('user_id')
     get_user = UserModel.get_user_by_id(db, user_id)
-    photo = profile_info.profile
+    if not image.content_type.startswith("image/"):
+        raise BadExceptions("Invalid image file type")    
     
-    if photo.startswith('data:image/'):
-        # Split at the comma and take the second part
-        photo = photo.split(',')[1]
+    new_image = process_image(image)
+    result = cloudinary.uploader.upload(new_image.getvalue(), resource_type="image")
+    
+    url = result.get("url")
         # Decode the base64 string to binary data
     
-    image_binary = base64.b64decode(photo)
-    get_user.photo = image_binary
+    get_user.photo = url
     
     return get_user
