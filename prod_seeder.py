@@ -629,21 +629,19 @@ def seed_locations(db: Session):
          'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416431/chi1_ascywe.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/ch12_hy23cn.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi3_tq4n0v.jpg",
-                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi4_h6injp.jpg"]},  # University of Chicago, Chicago, IL
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi4_h6injp.jpg"]},  
         {'university_id': 6, 'latitude': 40.3430, 'longitude': -74.6514,
          'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416650/p4_hymwv9.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p_blp9tr.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p3_c3hlec.jpg",
-                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416646/p2_plhsz0.jpg"]}   # Princeton University, Princeton, NJ
-        {
-            'university_id': 7, 'latitude': 38.5882, 'longitude': -90.3453,
-            'image_urls': ['https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w1_bkcbmt.jpg', 
+                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416646/p2_plhsz0.jpg"]},   # Princeton University, Princeton, NJ
+        {'university_id': 7, 'latitude': 38.5882, 'longitude': -90.3453,
+         'image_urls': ['https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w1_bkcbmt.jpg', 
                            'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w4_umpvcf.jpg',
                            'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w3_ypgurh.webp',
                            'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488315/w2_aquf5h.jpg']
         },
-        {
-            'university_id': 8, 'latitude': 41.3163, 'longitude': -72.9223,
+        {'university_id': 8, 'latitude': 41.3163, 'longitude': -72.9223,
             'image_urls': ['https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416750/y4_hdwbe9.jpg', 
                            'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416748/y3_dll8ke.jpg',
                            'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416747/y2_clhtal.jpg',
@@ -679,6 +677,1064 @@ def seed_degree_types(db: Session):
     ]
     
     seed_model(db, DegreeTypeModel, degree_data, [])
+    
+def seed_university_cities(db: Session):
+    from db.main_model import UniversityDescription
+    
+    # Delete all records from the table
+    db.query(UniversityDescription).delete()
+    # Reset the auto-increment value (MySQL specific)
+    db.execute('ALTER TABLE university_descriptions AUTO_INCREMENT = 1;')    
+    # Raw data extracted from the Excel file with IDs added
+    
+    university_data = [
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 6,
+        "college_id": 1,
+        "degree_type_id": 15,
+        "description": "The Economics department offers a comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$33,600 - $67,200 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 1,
+        "college_id": 2,
+        "degree_type_id": 15,
+        "description": "The concentration in Computer Science is designed to teach students skills and ideas they will use immediately and in the future.",
+        "tuition": "$33,600 - $67,200 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 8,
+        "college_id": 1,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$33,600 - $67,200 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 13,
+        "college_id": 1,
+        "degree_type_id": 15,
+        "description": "The Government department covers political theory, comparative politics, international relations, and American government.",
+        "tuition": "$33,600 - $67,200 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 10,
+        "college_id": 2,
+        "degree_type_id": 7,
+        "description": "The Engineering Sciences department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$33,600 - $67,200 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 9,
+        "college_id": 4,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and leadership.",
+        "tuition": "$70,000 - $75,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-6000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 6,
+        "college_id": 5,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 1,
+        "college_id": 5,
+        "degree_type_id": 3,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 8,
+        "college_id": 5,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 13,
+        "college_id": 6,
+        "degree_type_id": 10,
+        "description": "The Public Policy department offers comprehensive training in policy analysis, public management, international development, and political economy.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 1,
+        "state_id": 21,
+        "course_id": 10,
+        "college_id": 2,
+        "degree_type_id": 2,
+        "description": "The Engineering Sciences department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(617) 495-1000"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Economics department offers comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 15,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on algorithms, data structures, artificial intelligence, and computer systems.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Political Science department covers political theory, comparative politics, international relations, and American politics.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 10,
+        "college_id": 15,
+        "degree_type_id": 7,
+        "description": "The Engineering department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 9,
+        "college_id": 16,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and leadership.",
+        "tuition": "$70,000 - $75,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2766"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 15,
+        "degree_type_id": 3,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Political Science department offers comprehensive training in advanced political theory, comparative politics, international relations, and public policy.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Economics department offers comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 15,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on algorithms, data structures, artificial intelligence, and computer systems.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 14,
+        "degree_type_id": 15,
+        "description": "The Political Science department covers political theory, comparative politics, international relations, and American politics.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 10,
+        "college_id": 15,
+        "degree_type_id": 7,
+        "description": "The Engineering department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$55,000 - $66,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(650) 723-4463"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 9,
+        "college_id": 16,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and leadership.",
+        "tuition": "$70,000 - $75,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2766"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 15,
+        "degree_type_id": 3,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 2,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 14,
+        "degree_type_id": 3,
+        "description": "The Political Science department offers comprehensive training in advanced political theory, comparative politics, international relations, and public policy.",
+        "tuition": "$45,000 - $50,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(650) 723-2300"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 10,
+        "college_id": 21,
+        "degree_type_id": 7,
+        "description": "Focuses on electrical systems, circuits, and electronics, preparing students for careers in technology and innovation.",
+        "tuition": "$52,790-$64,880",
+        "academic_level": "undergraduate",
+        "phone_number": "(+1) 617-253-3291"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 3,
+        "college_id": 22,
+        "degree_type_id": 7,
+        "description": "Studies the fundamental principles governing motion in the universe, from quantum to astronomical scales.",
+        "tuition": "$52,790-$64,880",
+        "academic_level": "undergraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 14,
+        "college_id": 23,
+        "degree_type_id": 7,
+        "description": "Integrates design, technology, and social sciences to create innovative spaces and urban environments.",
+        "tuition": "$52,790-$64,880",
+        "academic_level": "undergraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 6,
+        "college_id": 24,
+        "degree_type_id": 7,
+        "description": "Focuses on understanding economic behavior at the individual and market levels, with applications in policy and business decision-making.",
+        "tuition": "$52,790-$64,880",
+        "academic_level": "undergraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 9,
+        "college_id": 25,
+        "degree_type_id": 16,
+        "description": "Prepares students to lead and manage organizations effectively through strategic planning, operations management, and leadership skills.",
+        "tuition": "$52,790-$64,880",
+        "academic_level": "undergraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 10,
+        "college_id": 21,
+        "degree_type_id": 2,
+        "description": "Focuses on advanced concepts in electrical systems and computer science, including AI, machine learning, and circuits.",
+        "tuition": "$53,450-$65,510 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(+1) 617-253-3291"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 5,
+        "college_id": 22,
+        "degree_type_id": 2,
+        "description": "Explores the molecular mechanisms underlying life processes, with research in genetics, biochemistry, and cellular biology.",
+        "tuition": "$53,450-$65,510 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 14,
+        "college_id": 23,
+        "degree_type_id": 2,
+        "description": "Combines urban design, development, and planning to address contemporary urban issues through innovative solutions.",
+        "tuition": "$53,450-$65,510 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 13,
+        "college_id": 24,
+        "degree_type_id": 2,
+        "description": "Analyzes political systems and behavior across different countries, focusing on comparative methodologies and theories.",
+        "tuition": "$53,450-$65,510 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 3,
+        "state_id": 21,
+        "course_id": 9,
+        "college_id": 25,
+        "degree_type_id": 2,
+        "description": "Prepares students for careers in finance, combining engineering, finance, and management principles to address complex financial issues.",
+        "tuition": "$53,450-$65,510 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(+1) 617-253-1000"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 27,
+        "degree_type_id": 15,
+        "description": "The Economics department offers comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $43,000 - $45,000 per year (out-of-state)",
+        "academic_level": "undergraduate",
+        "phone_number": "(510) 642-0822"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 27,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on algorithms, data structures, artificial intelligence, and computer systems.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $43,000 - $45,000 per year (out-of-state)",
+        "academic_level": "undergraduate",
+        "phone_number": "(510) 642-1042"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 27,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $43,000 - $45,000 per year (out-of-state)",
+        "academic_level": "undergraduate",
+        "phone_number": "(510) 642-5292"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 27,
+        "degree_type_id": 15,
+        "description": "The Political Science department covers political theory, comparative politics, international relations, and American politics.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $43,000 - $45,000 per year (out-of-state)",
+        "academic_level": "undergraduate",
+        "phone_number": "(510) 642-6323"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 10,
+        "college_id": 26,
+        "degree_type_id": 7,
+        "description": "The Engineering department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $43,000 - $45,000 per year (out-of-state)",
+        "academic_level": "undergraduate",
+        "phone_number": "(510) 642-7594"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 9,
+        "college_id": 28,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and leadership.",
+        "tuition": "$65,000 - $70,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-7989"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 6,
+        "college_id": 27,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $28,000 - $30,000 per year (out-of-state)",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-0822"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 1,
+        "college_id": 26,
+        "degree_type_id": 2,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $28,000 - $30,000 per year (out-of-state)",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-1042"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 8,
+        "college_id": 27,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $28,000 - $30,000 per year (out-of-state)",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-5292"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 13,
+        "college_id": 30,
+        "degree_type_id": 10,
+        "description": "The Public Policy department offers comprehensive training in policy analysis, public management, international development, and political economy.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $28,000 - $30,000 per year (out-of-state)",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-4670"
+    },
+    {
+        "university_id": 4,
+        "state_id": 5,
+        "course_id": 10,
+        "college_id": 26,
+        "degree_type_id": 2,
+        "description": "The Engineering department offers courses in engineering mathematics, materials science, thermodynamics, and control systems.",
+        "tuition": "$13,000 - $15,000 per year (in-state), $28,000 - $30,000 per year (out-of-state)",
+        "academic_level": "postgraduate",
+        "phone_number": "(510) 642-7594"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 6,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Economics department offers comprehensive education in microeconomics, macroeconomics, econometrics, and economic policy.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-7743"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 1,
+        "college_id": 32,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on algorithms, data structures, machine learning, and systems programming.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-6614"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 8,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and developmental psychology.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-8861"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 13,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Political Science department covers political theory, comparative politics, international relations, and American politics.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-8667"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 12,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Sociology department offers courses in social theory, social research methods, urban sociology, and sociology of culture.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-8677"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 5,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Biology department focuses on cell biology, genetics, ecology, and evolution.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(773) 702-7891"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 9,
+        "college_id": 31,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and leadership.",
+        "tuition": "$72,000 - $75,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 702-7743"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 6,
+        "college_id": 34,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 702-8299"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 1,
+        "college_id": 33,
+        "degree_type_id": 2,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 702-6614"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 8,
+        "college_id": 34,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 702-8861"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 13,
+        "college_id": 34,
+        "degree_type_id": 3,
+        "description": "The Political Science department offers comprehensive training in advanced political theory, comparative politics, international relations, and public policy.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 702-8667"
+    },
+    {
+        "university_id": 5,
+        "state_id": 12,
+        "course_id": 3,
+        "college_id": 33,
+        "degree_type_id": 3,
+        "description": "The Molecular Engineering department offers courses in advanced materials, quantum engineering, bioengineering, and energy storage.",
+        "tuition": "$60,000 - $65,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(773) 834-2943"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 13,
+        "college_id": 41,
+        "degree_type_id": 15,
+        "description": "The Public and International Affairs department offers comprehensive education in international relations, policy analysis, public management, and political economy.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 1,
+        "college_id": 42,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on algorithms, data structures, artificial intelligence, and systems engineering.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 6,
+        "college_id": 43,
+        "degree_type_id": 15,
+        "description": "The Economics department offers comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 8,
+        "college_id": 43,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 13,
+        "college_id": 43,
+        "degree_type_id": 15,
+        "description": "The Politics department covers political theory, comparative politics, international relations, and American politics.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 10,
+        "college_id": 42,
+        "degree_type_id": 7,
+        "description": "The Electrical Engineering department offers courses in circuit theory, electromagnetics, signal processing, and control systems.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 13,
+        "college_id": 41,
+        "degree_type_id": 12,
+        "description": "The Public and International Affairs department offers advanced education in policy analysis, international development, political economy, and security studies.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4800"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 6,
+        "college_id": 43,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in advanced microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4000"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 1,
+        "college_id": 42,
+        "degree_type_id": 3,
+        "description": "The Computer Science department focuses on machine learning, data science, artificial intelligence, and systems engineering.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4000"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 8,
+        "college_id": 43,
+        "degree_type_id": 3,
+        "description": "The Psychology department provides advanced training in clinical psychology, cognitive neuroscience, developmental psychology, and behavioral genetics.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4000"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 13,
+        "college_id": 43,
+        "degree_type_id": 3,
+        "description": "The Politics department offers comprehensive training in advanced political theory, comparative politics, international relations, and public policy.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4000"
+    },
+    {
+        "university_id": 6,
+        "state_id": 30,
+        "course_id": 10,
+        "college_id": 42,
+        "degree_type_id": 2,
+        "description": "The Electrical Engineering department offers courses in advanced circuit theory, electromagnetics, signal processing, and control systems.",
+        "tuition": "$56,000 - $60,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(609) 258-4000"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 9,
+        "college_id": 30,
+        "degree_type_id": 8,
+        "description": "The Business Administration department offers comprehensive education in management, finance, marketing, and entrepreneurship.",
+        "tuition": "$30,000 - $36,550 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 1,
+        "college_id": 31,
+        "degree_type_id": 7,
+        "description": "The Computer Science department focuses on programming, data structures, algorithms, and database systems.",
+        "tuition": "$30,000 - $36,550 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 8,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The Psychology department provides a solid foundation in general, cognitive, social, and clinical psychology.",
+        "tuition": "$30,000 - $36,550 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 13,
+        "college_id": 32,
+        "degree_type_id": 15,
+        "description": "The International Relations department covers international law, global economics, diplomacy, and international organizations.",
+        "tuition": "$30,000 - $36,550 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 5,
+        "college_id": 33,
+        "degree_type_id": 15,
+        "description": "The Media Communications department explores media theory, journalism, public relations, and digital media.",
+        "tuition": "$30,000 - $36,550 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 9,
+        "college_id": 30,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in management, finance, marketing, and entrepreneurship.",
+        "tuition": "$28,000 - $30,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 1,
+        "college_id": 31,
+        "degree_type_id": 2,
+        "description": "The Computer Science department focuses on advanced topics in programming, machine learning, cybersecurity, and data analytics.",
+        "tuition": "$28,000 - $30,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 8,
+        "college_id": 32,
+        "degree_type_id": 14,
+        "description": "The Psychology department provides advanced training in clinical, cognitive psychology, research methods, and psychological assessment.",
+        "tuition": "$28,000 - $30,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 13,
+        "college_id": 32,
+        "degree_type_id": 14,
+        "description": "The International Relations department covers advanced topics in international law, global security, political economy, and conflict resolution.",
+        "tuition": "$28,000 - $30,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 7,
+        "state_id": 24,
+        "course_id": 5,
+        "college_id": 33,
+        "degree_type_id": 14,
+        "description": "The Media Communications department explores advanced media theory, strategic communications, digital content creation, and media management.",
+        "tuition": "$28,000 - $30,000 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(314) 968-6900"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 6,
+        "college_id": 35,
+        "degree_type_id": 15,
+        "description": "The Economics department offers a comprehensive education in microeconomics, macroeconomics, econometrics, and economic theory.",
+        "tuition": "$51,400 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(203) 432-4771"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 1,
+        "college_id": 36,
+        "degree_type_id": 15,
+        "description": "The Computer Science department offers education in programming, algorithms, data structures, and system design.",
+        "tuition": "$51,400 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(203) 432-1234"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 8,
+        "college_id": 35,
+        "degree_type_id": 15,
+        "description": "The Psychology department offers education in behavioral neuroscience, cognitive science, and social psychology.",
+        "tuition": "$51,400 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(203) 432-0987"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 13,
+        "college_id": 35,
+        "degree_type_id": 15,
+        "description": "The Political Science department offers education in political theory, comparative politics, and international relations.",
+        "tuition": "$51,400 per year",
+        "academic_level": "undergraduate",
+        "phone_number": "(203) 432-4779"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 9,
+        "college_id": 37,
+        "degree_type_id": 13,
+        "description": "The Business Administration department offers advanced education in finance, management, and entrepreneurship.",
+        "tuition": "$72,350 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(203) 432-5932"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 6,
+        "college_id": 38,
+        "degree_type_id": 3,
+        "description": "The Economics department offers rigorous training in microeconomic theory, macroeconomic analysis, and econometrics.",
+        "tuition": "$45,700 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(203) 432-5555"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 1,
+        "college_id": 38,
+        "degree_type_id": 3,
+        "description": "The Computer Science department offers research opportunities in artificial intelligence, data science, and cybersecurity.",
+        "tuition": "$45,700 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(203) 432-1234"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 8,
+        "college_id": 38,
+        "degree_type_id": 3,
+        "description": "The Psychology department offers research-based education in cognitive psychology, developmental psychology, and behavioral neuroscience.",
+        "tuition": "$45,700 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(203) 432-0987"
+    },
+    {
+        "university_id": 8,
+        "state_id": 21,
+        "course_id": 13,
+        "college_id": 38,
+        "degree_type_id": 3,
+        "description": "The Political Science department offers research opportunities in political theory, international relations, and public policy.",
+        "tuition": "$45,700 per year",
+        "academic_level": "postgraduate",
+        "phone_number": "(203) 432-4779"
+    }
+    ]
 
+    seed_model(db, UniversityDescription, university_data, [])
 
 

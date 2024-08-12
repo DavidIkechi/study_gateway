@@ -80,7 +80,7 @@ def create_mentor(db, mentor_data, user_id: int):
 
 def is_mentor(check_user):
     if not check_user.is_mentor:
-        raise BadExceptions("Not a mentor, contact admin or support")
+        raise NotAuthorizedException("Not a mentor, contact admin or support")
     
     return check_user
 

@@ -28,7 +28,7 @@ from crud import user_crud
 
 def is_mentor_admin(check_user):
     if check_user.is_mentor or check_user.is_admin:
-        raise BadExceptions("Only restricted to Student contact admin or support")
+        raise NotAuthorizedException("Only restricted to Student contact admin or support")
     
     return check_user
 
@@ -172,4 +172,3 @@ def send_connection(db, current_user, details):
     db.add(add_data)
     
     return add_data
-    

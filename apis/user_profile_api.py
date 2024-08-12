@@ -44,6 +44,9 @@ async def update_personal_info(profile: UserInfoSchema, db: Session = Depends(ge
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
         
@@ -59,6 +62,9 @@ async def update_contact_info(profile: ContactInfoSchema, db: Session = Depends(
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -76,6 +82,9 @@ async def update_degree_info(profile: DegreeSchema, db: Session = Depends(get_db
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
         
@@ -92,6 +101,9 @@ async def update_password_info(profile: ChangePasswordSchema, db: Session = Depe
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -111,6 +123,9 @@ async def user_profile(db: Session = Depends(get_db), current_user: dict = Depen
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
         
@@ -126,6 +141,9 @@ async def update_password_info(profile: UploadFile = File(...), db: Session = De
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)

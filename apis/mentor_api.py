@@ -53,6 +53,9 @@ async def create_user(user: MentorSchema, backtask: BackgroundTasks, db: Session
         db.rollback()
         return exceptions.bad_request_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         db.rollback()
         return exceptions.not_found_error(detail = e.detail)
@@ -72,6 +75,9 @@ async def login_user(login_data: OAuth2PasswordRequestForm = Depends(), db: Sess
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
 
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -137,8 +143,8 @@ async def change_password(token: str, user: UserPasswordSchema, db: Session = De
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
 
-    except NotFoundException as e:
-        return exceptions.not_found_error(detail = e.detail)
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except ForbiddenException as e:
         return exceptions.forbidden_error(detail=e.detail)
@@ -155,6 +161,9 @@ async def refresh_token(refresh_token: refreshTokenSchema, db: Session = Depends
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
     
@@ -167,6 +176,9 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
     
@@ -178,6 +190,9 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except Exception as e:
         return exceptions.server_error(str(e))
@@ -192,6 +207,9 @@ async def update_degree_info(profile: DegreeSchema, db: Session = Depends(get_db
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -208,6 +226,9 @@ async def update_degree_info(profile: UploadFile = File(...), db: Session = Depe
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -229,6 +250,9 @@ async def update_password_info(profile: ChangePasswordSchema, db: Session = Depe
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except VerifyMismatchError as e:
         return exceptions.bad_request_error(detail="Incorrect Password")
     
@@ -244,6 +268,9 @@ async def update_personal_info(profile: UserInfoSchema, db: Session = Depends(ge
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -261,6 +288,9 @@ async def update_contact_info(profile: ContactInfoSchema, db: Session = Depends(
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
         
@@ -275,6 +305,9 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -292,6 +325,9 @@ async def accept(profile: ConnectSchema, db: Session = Depends(get_db), current_
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
     
@@ -307,6 +343,9 @@ async def get_user(name: str = Query(default=None), current: bool = Query(defaul
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -324,6 +363,9 @@ async def get_user(connection_slug:str,  db:Session = Depends(get_db),
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
     
@@ -339,6 +381,9 @@ async def accept(connection_slug: str, profile: StudentUpdateSchema, db: Session
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+     except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -356,12 +401,11 @@ async def get_user(name: str = Query(default=None), page: int= Query(default=Non
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
     
     except Exception as e:
-        return exceptions.server_error(str(e)) 
-
-    
-    
-    
+        return exceptions.server_error(str(e))

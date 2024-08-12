@@ -43,6 +43,9 @@ async def create_user(user: UserSchema, backtask: BackgroundTasks, db: Session =
     except NotFoundException as e:
         db.rollback()
         return exceptions.not_found_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
         
     except Exception as e:
         db.rollback()
@@ -62,6 +65,9 @@ async def login_user(login_data: OAuth2PasswordRequestForm = Depends(), db: Sess
 
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except ForbiddenException as e:
         return exceptions.forbidden_error(detail=e.detail)
@@ -90,6 +96,9 @@ async def send_password(email: str, backtask: BackgroundTasks, db: Session = Dep
     
     except ForbiddenException as e:
         return exceptions.forbidden_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
 
     except Exception as e:
         return exceptions.server_error(detail=str(e))
@@ -109,6 +118,9 @@ async def verify_code(code: CodeSchema, db: Session = Depends(get_db)):
     
     except ForbiddenException as e:
         return exceptions.forbidden_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
 
     except Exception as e:
         return exceptions.server_error(detail=str(e))
@@ -127,6 +139,9 @@ async def change_password(token: str, user: UserPasswordSchema, db: Session = De
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except ForbiddenException as e:
         return exceptions.forbidden_error(detail=e.detail)
 
@@ -141,6 +156,9 @@ async def refresh_token(refresh_token: refreshTokenSchema, db: Session = Depends
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except Exception as e:
         return exceptions.server_error(str(e))
@@ -158,6 +176,9 @@ async def resend_email(user: ResendEmailSchema, backtask: BackgroundTasks, db: S
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
         
     except Exception as e:
         return exceptions.server_error(str(e))
@@ -172,6 +193,9 @@ async def refresh_token(token: refreshTokenSchema, backtask: BackgroundTasks, db
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
+    
     except Exception as e:
         return exceptions.server_error(str(e))
     
@@ -183,6 +207,9 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except Exception as e:
         return exceptions.server_error(str(e))
@@ -197,6 +224,9 @@ async def update_contact_info(language: str = Query(default=None), discipline: s
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
@@ -214,6 +244,9 @@ async def resend_email(details: UserConnectSchema, db: Session = Depends(get_db)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)

@@ -18,9 +18,9 @@ class UniversityDescription(Base):
     course_id = Column(Integer, ForeignKey('course_model.id', ondelete='CASCADE'), nullable=False)
     college_id = Column(Integer, ForeignKey('colleges_schools.id', ondelete='CASCADE'), nullable=False)
     description = Column(TEXT, nullable=True)
-    degree_type = Column(Integer, ForeignKey('degree_types.id', ondelete='CASCADE'), nullable=False)
+    degree_type_id = Column(Integer, ForeignKey('degree_types.id', ondelete='CASCADE'), nullable=False)
     tuition = Column(String(100), nullable=True)
-    phone = Column(String(100))
+    phone_number = Column(String(100))
     academic_level = Column(Enum("post graduate", "under graduate", name="level_enum"), default="under graduate")
     slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
     
