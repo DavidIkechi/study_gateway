@@ -345,6 +345,22 @@ async def accept(connection_slug: str, profile: StudentUpdateSchema, db: Session
     
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@mentor_router.get('/students/connection-request', summary="Get Mentor connection request", status_code=200)
+async def get_user(name: str = Query(default=None), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
+                              page_size: int=10, current_user: dict = Depends(validate_active_client)):
+    try:
+        user_detail = mentor_crud.get_students_request(db, current_user, name, page, page_size)
+        return success_response.success_message(user_detail)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e)) 
 
     
     

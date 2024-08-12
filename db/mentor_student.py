@@ -179,3 +179,63 @@ class MentorStudent(Base):
         }
         
         return details
+    
+    @staticmethod
+    def get_mentors_request(db: Session, user_id: int, name: str = None, page: int = None, page_size: int = 10):
+        from db.main_model import AdditionalMentors, UserModel, MentorStudent, DegreeModel, CourseModel, ProfileModel, DegreeSoughtModel, UniversityModel     
+        # Query the mentors associated with the given user_id (mentor_id)
+        
+        query = db.query(MentorStudent).join(
+            UserModel, UserModel.id == MentorStudent.user_id 
+        ).filter(
+            MentorStudent.mentor_id == user_id,
+            MentorStudent.completed == False,
+            MentorStudent.status == 'pending'
+        )
+     
+        # Apply name filter if provided
+        if name is not None:
+            name_filter = f"%{name}%"
+            query = query.filter(
+                (UserModel.first_name + ' ' + UserModel.last_name).ilike(name_filter)
+            )
+        
+        student_info = []
+        for stud in query.all():
+            mentor = MentorStudent.get_ment_studs_by_id(db, stud.id)
+            # Assuming each student has one profile
+            degree_name = DegreeModel.get_degree_by_id(db, mentor.degree_id).degree_name
+            course_name = CourseModel.get_course_by_id(db, mentor.course_id).course_name
+            university_name = UniversityModel.get_university_by_id(db, mentor.university_id).name
+            
+            student = UserModel.get_user_by_id(db, mentor.user_id)
+            # Extract the necessary information from profile_info
+            degree_sought= db.query(DegreeSoughtModel).join(
+                ProfileModel, ProfileModel.degree_sought_id == DegreeSoughtModel.id
+            ).filter(
+                ProfileModel.user_id == stud.user_id
+            ).first()
+            
+            students = {
+                'application_slug': stud.application_ref,
+                'mentor_id': stud.id,
+                'email': student.email_address,
+                'first_name': student.first_name,
+                'last_name': student.last_name,
+                'is_verified': student.is_verified,
+                'year': mentor.year,
+                'university': university_name,
+                'photo': student.photo,
+                'created_at': student.created_at,
+                'highest_degree': degree_name,
+                'degree_sought': degree_sought.degree_name,
+                'course_name': course_name
+            }
+            student_info.append(students)
+        
+        # Apply pagination if needed
+        if page:
+            page_offset = Params(page=page, size=page_size)
+            return paginate(student_info, params=page_offset)
+
+        return student_info

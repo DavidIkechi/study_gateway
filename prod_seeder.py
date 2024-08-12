@@ -404,65 +404,78 @@ def seed_universities(db: Session):
     # Reset the auto-increment value (MySQL specific)
     db.execute('ALTER TABLE universities AUTO_INCREMENT = 1;')    
     # Raw data extracted from the Excel file with IDs added
+    
     university_data = [
         {
             'id': 1,
             'name': 'Harvard University',
-            'locations': 'Massachusetts',  # Extracted state
+            'locations': 'Massachusetts',
             'url': 'https://www.harvard.edu/academics/',
             'address': 'Massachusetts Hall, Cambridge, MA 02138',
         },
         {
             'id': 2,
             'name': 'Stanford University',
-            'locations': 'California',  # Extracted state
+            'locations': 'California',
             'url': 'https://explorecourses.stanford.edu/',
             'address': '450 Serra Mall, Stanford, CA 94305',
         },
         {
             'id': 3,
             'name': 'Massachusetts Institute of Technology (MIT)',
-            'locations': 'Massachusetts',  # Extracted state
+            'locations': 'Massachusetts',
             'url': 'https://catalog.mit.edu/subjects/',
             'address': '77 Massachusetts Ave, Cambridge, MA 02139',
         },
         {
             'id': 4,
             'name': 'University of California, Berkeley',
-            'locations': 'California',  # Extracted state
+            'locations': 'California',
             'url': 'https://guide.berkeley.edu/courses/',
             'address': '200 California Hall, Berkeley, CA 94720',
         },
         {
             'id': 5,
             'name': 'University of Chicago',
-            'locations': 'Illinois',  # Extracted state
+            'locations': 'Illinois',
             'url': 'https://collegecatalog.uchicago.edu/thecollege/',
             'address': '5801 S Ellis Ave, Chicago, IL 60637',
         },
         {
             'id': 6,
-            'name': 'California Institute of Technology (Caltech)',
-            'locations': 'California',  # Extracted state
-            'url': 'https://catalog.caltech.edu/current',
-            'address': '1200 E California Blvd, Pasadena, CA 91125',
+            'name': 'Princeton University',
+            'locations': 'New Jersey',
+            'url': 'https://registrar.princeton.edu/course-offerings',
+            'address': 'Princeton, NJ 08544',
         },
         {
             'id': 7,
-            'name': 'Princeton University',
-            'locations': 'New Jersey',  # Extracted state
-            'url': 'https://www.princeton.edu/academics',
-            'address': 'Princeton, NJ 08544',
+            'name': 'Webster University',
+            'locations': 'Missouri',
+            'url': 'https://www.webster.edu/',
+            'address': '470 E. Lockwood Avenue, St. Louis, MO 63119',
+        },
+        {
+            'id': 8,
+            'name': 'Yale University',
+            'locations': 'Connecticut',
+            'url': 'https://www.yale.edu/academics',
+            'address': 'New Haven, CT 06520',
         }
     ]
 
-    # Insert data into the database
     seed_model(db, UniversityModel, university_data, [])
     
 def seed_colleges(db: Session):
     from db.main_model import CollegeSchoolModel
+    
+    # Delete all records from the table
+    db.query(CollegeSchoolModel).delete()
+    
+    # Reset the auto-increment value (MySQL specific)
+    db.execute('ALTER TABLE colleges_schools AUTO_INCREMENT = 1;')    
+    # Raw data extracted from the Excel file with IDs added
 
-    # The complete and cleaned college data
     college_data = [
         {'university_id': 1, 'name': 'Faculty of Arts and Sciences'},
         {'university_id': 1, 'name': 'School of Engineering and Applied Sciences'},
@@ -503,16 +516,21 @@ def seed_colleges(db: Session):
         {'university_id': 5, 'name': 'Division of the Social Sciences'},
         {'university_id': 5, 'name': 'Graham School of Continuing Liberal and Professional Studies'},
         {'university_id': 5, 'name': 'Pritzker School of Medicine'},
-        {'university_id': 6, 'name': 'Caltech Division of Biology and Biological Engineering'},
-        {'university_id': 6, 'name': 'Caltech Division of Chemistry and Chemical Engineering'},
-        {'university_id': 6, 'name': 'Caltech Division of Engineering and Applied Science'},
-        {'university_id': 6, 'name': 'Caltech Division of Geological and Planetary Sciences'},
-        {'university_id': 6, 'name': 'Caltech Division of Humanities and Social Sciences'},
-        {'university_id': 6, 'name': 'Caltech Division of Physics, Mathematics and Astronomy'},
-        {'university_id': 7, 'name': 'Princeton School of Public and International Affairs'},
-        {'university_id': 7, 'name': 'School of Engineering and Applied Science'},
-        {'university_id': 7, 'name': 'Princeton Graduate School'},
-        {'university_id': 7, 'name': 'Woodrow Wilson School of Public and International Affairs'}
+        {'university_id': 6, 'name': 'Princeton School of Public and International Affairs'},
+        {'university_id': 6, 'name': 'School of Engineering and Applied Science'},
+        {'university_id': 6, 'name': 'Princeton Graduate School'},
+        {'university_id': 6, 'name': 'Woodrow Wilson School of Public and International Affairs'},
+        {'university_id': 7, 'name': 'Walker School of Business & Technology'},
+        {'university_id': 7, 'name': 'College of Arts & Sciences'},
+        {'university_id': 7, 'name': 'School of Communications'},
+        {'university_id': 8, 'name': 'Yale College'},
+        {'university_id': 8, 'name': 'School of Engineering & Applied Science'},
+        {'university_id': 8, 'name': 'Graduate School of Arts & Sciences'},
+        {'university_id': 8, 'name': 'Yale School of Management'},
+        {'university_id': 8, 'name': 'Yale Law School'},
+        {'university_id': 8, 'name': 'Yale School of Medicine'},
+        {'university_id': 8, 'name': 'Yale School of Public Health'},
+        {'university_id': 8, 'name': 'Yale School of Architecture'},
     ]
     
     seed_model(db, CollegeSchoolModel, college_data, [])
@@ -578,6 +596,12 @@ def seed_us_states(db: Session):
     
 def seed_locations(db: Session):
     from db.main_model import LocationModel
+    # Delete all records from the table
+    db.query(LocationModel).delete()
+    
+    # Reset the auto-increment value (MySQL specific)
+    db.execute('ALTER TABLE locations AUTO_INCREMENT = 1;')    
+    # Raw data extracted from the Excel file with IDs added
 
     # Location data with latitude and longitude
     location_data = [
@@ -606,16 +630,25 @@ def seed_locations(db: Session):
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/ch12_hy23cn.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi3_tq4n0v.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416430/chi4_h6injp.jpg"]},  # University of Chicago, Chicago, IL
-        {'university_id': 6, 'latitude': 34.1377, 'longitude': -118.1253,
-         'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416750/y4_hdwbe9.jpg",
-                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416748/y3_dll8ke.jpg",
-                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416747/y2_clhtal.jpg",
-                        "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416746/y1_fvexy3.jpg"]}, # Caltech, Pasadena, CA
-        {'university_id': 7, 'latitude': 40.3430, 'longitude': -74.6514,
+        {'university_id': 6, 'latitude': 40.3430, 'longitude': -74.6514,
          'image_urls': ["https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416650/p4_hymwv9.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p_blp9tr.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416649/p3_c3hlec.jpg",
                         "https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416646/p2_plhsz0.jpg"]}   # Princeton University, Princeton, NJ
+        {
+            'university_id': 7, 'latitude': 38.5882, 'longitude': -90.3453,
+            'image_urls': ['https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w1_bkcbmt.jpg', 
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w4_umpvcf.jpg',
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488316/w3_ypgurh.webp',
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723488315/w2_aquf5h.jpg']
+        },
+        {
+            'university_id': 8, 'latitude': 41.3163, 'longitude': -72.9223,
+            'image_urls': ['https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416750/y4_hdwbe9.jpg', 
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416748/y3_dll8ke.jpg',
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416747/y2_clhtal.jpg',
+                           'https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723416746/y1_fvexy3.jpg']
+        }
     ]
 
     # Insert data into the database

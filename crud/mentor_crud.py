@@ -323,6 +323,14 @@ def update_admission(db, current_user, connection_slug, profile):
         profile_dict['degree_id'] = check_degree_by_slug(db, profile_dict.pop('degree')).id
         
     return MentorStudent.update_ment_studs(db, get_application.id, profile_dict)
+
+def get_students_request(db, current_user, name: str, page:int = None, page_size:int=None):
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_mentor(get_user)
+    
+    return MentorStudent.get_mentors_request(db, user_id, name, page, page_size)
+
     
     
     
