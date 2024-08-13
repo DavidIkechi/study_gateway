@@ -205,4 +205,4 @@ class UserModel(Base):
             page_offset = Params(page=page, size=page_size)
             return paginate(schools, params=page_offset)
 
-        return school  
+        return schools  

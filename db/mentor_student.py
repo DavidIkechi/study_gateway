@@ -171,6 +171,7 @@ class MentorStudent(Base):
             'admission_progress': query.admission_progress,
             'visa_progress': query.visa_progress,
             'year': query.year,
+            'photo': user.photo,
             'mentor_id': query.mentor_id,
             'nationality': nat.nationality,
             'document_progress': query.document_progress,

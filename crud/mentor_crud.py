@@ -78,7 +78,10 @@ def create_mentor(db, mentor_data, user_id: int):
     
     return True
 
-def is_mentor(check_user):
+def is_mentor(check_user, login=False):
+    if login:
+        if not check_user.is_mentor:
+            raise ForbiddenException("Not permitted to access this resource, contact admin or support")
     if not check_user.is_mentor:
         raise NotAuthorizedException("Not a mentor, contact admin or support")
     
@@ -87,7 +90,7 @@ def is_mentor(check_user):
 def user_login(db, email, password):
     # first check if email_address exists.
     check_user = check_mail(db, email)
-    _ = is_mentor(check_user)
+    _ = is_mentor(check_user, True)
     
     return user_crud.user_login(db, email, password)
 

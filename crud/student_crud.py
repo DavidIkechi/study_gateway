@@ -26,7 +26,11 @@ from schemas.profile_schema import ExtraSchema
 import os
 from crud import user_crud
 
-def is_mentor_admin(check_user):
+def is_mentor_admin(check_user, login=False):
+    if login:
+        if check_user.is_mentor or check_user.is_admin:
+            raise ForbiddenException("Not permitted to access this resource, contact admin or support")
+
     if check_user.is_mentor or check_user.is_admin:
         raise NotAuthorizedException("Only restricted to Student contact admin or support")
     
@@ -46,7 +50,7 @@ def check_mail(db, email, new_user= False):
 def user_login(db, email, password):
     # first check if email_address exists.
     check_user = check_mail(db, email)
-    _ = is_mentor_admin(check_user)
+    _ = is_mentor_admin(check_user, True)
     
     return user_crud.user_login(db, email, password)
 
