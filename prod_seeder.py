@@ -405,6 +405,7 @@ def seed_universities(db: Session):
     db.execute('ALTER TABLE universities AUTO_INCREMENT = 1;')    
     # Raw data extracted from the Excel file with IDs added
     
+    
     university_data = [
         {
             'id': 1,
