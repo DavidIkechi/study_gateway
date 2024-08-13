@@ -22,13 +22,13 @@ async def send_verification_email(user: UserModel, background_tasks: BackgroundT
     # Prepare email details
     url = os.getenv("HOST_URL")
     if mentor:
-        url = f"{url}/mentor/verify-user/{token}"
+        url = f"{url}/mentor/verify-token/{token}"
     else:
-        url = f"{url}verify-user/{token}"
+        url = f"{url}verify-token/{token}"
     emails: EmailSchema = {
         "body": {
             "name": user.first_name,
-            "url": f"{url}verify-user/{token}",
+            "url": f"{url}",
             "email_address": user.email_address
         } 
     }
