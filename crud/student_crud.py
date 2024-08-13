@@ -190,7 +190,7 @@ def get_schools(db, university: str=None, location: str=None, course: str=None, 
         
     return UserModel.get_schools(db, uni_id, loc_id, course, page, page_size)
 
-def get_university_details(db, school_slug: str):
+def get_school_details(db, school_slug: str):
     from db.main_model import UniversityDescription
     # user_id = current_user.get('user_id')
     # query = UserModel.get_user_object(db).filter_by(id=user_id)

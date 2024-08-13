@@ -277,7 +277,7 @@ async def get_university(university: str = Query(default=None), location: str = 
 @user_router.get('/search-university/{school_slug}', summary="Get all universities", status_code=200)
 async def get_university_details(school_slug: str, db:Session = Depends(get_db)):
     try:
-        user_info = student_crud.get_school_detail(db, school_slug)
+        user_info = student_crud.get_school_details(db, school_slug)
         return success_response.success_message(user_info, "", 200)
     
     except BadExceptions as e:
