@@ -32,6 +32,7 @@ from .semester_model import SemesterModel
 from .university_location import LocationModel
 from .university_description import UniversityDescription
 from .state_university import StateUniversityModel
+from .college_uni import CollegeUniversityModel
  
 import sys
 sys.path.append("..")

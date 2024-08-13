@@ -273,3 +273,21 @@ async def get_university(university: str = Query(default=None), location: str = 
         
     except Exception as e:
         return exceptions.server_error(str(e))
+    
+@user_router.get('/search-university/{school_slug}', summary="Get all universities", status_code=200)
+async def get_university_details(school_slug: str, db:Session = Depends(get_db)):
+    try:
+        user_info = student_crud.get_school_detail(db, school_slug)
+        return success_response.success_message(user_info, "", 200)
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail = e.detail)
+    
+    except NotAuthorizedException as e:
+        return exceptsions.unauthorized_error(detail = e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+        
+    except Exception as e:
+        return exceptions.server_error(str(e))

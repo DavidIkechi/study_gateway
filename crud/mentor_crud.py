@@ -309,7 +309,7 @@ def update_admission(db, current_user, connection_slug, profile):
     get_user = UserModel.get_user_by_id(db, user_id)
     _ = is_mentor(get_user)
     
-    get_application = check_mentor_slug(db, ment_slug)
+    get_application = check_mentor_slug(db, connection_slug)
     # check if the email.id is 
     if get_application.mentor_id != user_id:
         raise BadExceptions(f"Mentor not tied to student")

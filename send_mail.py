@@ -24,7 +24,7 @@ async def send_verification_email(user: UserModel, background_tasks: BackgroundT
     if mentor:
         url = f"{url}/mentor/verify-user/{token}"
     else:
-        url = f"{url}verify-user/{token}"
+        url = f"{url}/verify-user/{token}"
     emails: EmailSchema = {
         "body": {
             "name": user.first_name,

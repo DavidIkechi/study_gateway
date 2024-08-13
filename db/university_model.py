@@ -21,7 +21,7 @@ class UniversityModel(Base):
     ment_studs = relationship("MentorStudent", back_populates="university")
     location = relationship("LocationModel", back_populates="university")
     descriptions = relationship("UniversityDescription", back_populates="university")
-
+    college_universities = relationship("CollegeUniversityModel", back_populates="university")
     
     @staticmethod
     def get_university_object(db: Session):

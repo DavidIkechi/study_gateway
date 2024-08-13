@@ -18,6 +18,7 @@ class CollegeSchoolModel(Base):
     slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
     
     descriptions = relationship("UniversityDescription", back_populates="college")
+    college_universities = relationship("CollegeUniversityModel", back_populates="college")
         
     @staticmethod
     def create_college_school(college_data: dict):

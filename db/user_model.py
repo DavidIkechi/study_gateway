@@ -8,6 +8,7 @@ from sqlalchemy.sql import text
 from sqlalchemy import and_, not_, or_
 from fastapi_pagination.ext.sqlalchemy import paginate as pg
 from fastapi_pagination import Params, paginate
+import random
 
 import sys
 sys.path.append("..")
@@ -184,7 +185,7 @@ class UserModel(Base):
             uni_name = db.query(UniversityModel).get(school.university_id).name
             college_name = db.query(CollegeSchoolModel).get(school.college_id).name
             location = db.query(LocationModel).filter(LocationModel.university_id == school.university_id).first()
-            image_url = location.image_urls[0] if location and location.image_urls else None
+            image_url = random.choice(location.image_urls) if location and location.image_urls else None
             slug = school.slug
             # Check if the user is involved with this mentor            
             school_info = {
@@ -205,4 +206,52 @@ class UserModel(Base):
             page_offset = Params(page=page, size=page_size)
             return paginate(schools, params=page_offset)
 
-        return schools  
+        return schools
+    
+    @staticmethod
+    def get_school_details(db: Session, uni_id: int):
+        from db.main_model import CourseModel, UniversityModel, UniversityDescription, DegreeTypeModel, CollegeSchoolModel, StateUniversityModel, LocationModel
+        
+        school = db.query(UniversityDescription).get(uni_id)        
+        # Build a list of schools
+        
+        coursename = db.query(CourseModel).get(school.course_id).course_name
+        desc = school.description
+        state_name = db.query(StateUniversityModel).get(school.state_id).name
+        uni_name = db.query(UniversityModel).get(school.university_id).name
+        college_name = db.query(CollegeSchoolModel).get(school.college_id).name
+        location = db.query(LocationModel).filter(LocationModel.university_id == school.university_id).first()
+        image_url = location.image_urls if location and location.image_urls else None
+        slug = school.slug
+        tuition = school.tuition
+        uni_detail = db.query(UniversityModel).get(school.university_id)
+        latitude = location.latitude if location else None
+        longitude = location.longitude if location else None
+
+        # Retrieve all unique phone numbers for the given university_id
+        phone_numbers = db.query(UniversityDescription.phone_number).filter(
+            UniversityDescription.university_id == school.university_id
+        ).distinct().all()
+        
+        # Extract the phone numbers from the query result
+        phone_numbers = [phone for phone in phone_numbers]
+
+            # Check if the user is involved with this mentor            
+        school_info = {
+            'school_id': school.id,
+            'school_description': desc,
+            'state_name': state_name,
+            'school_name': uni_name,
+            'image_url': image_url,
+            'course_name': coursename,
+            'college': college_name,
+            'academic_level': school.academic_level,
+            'tuition': tuition,
+            'address': uni_details.address,
+            'website_link': uni_details.url,
+            'latitude': latitude,
+            'longitude': longitude,
+            'phone_number': phone_numbers
+        }
+
+        return school_info

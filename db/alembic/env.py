@@ -26,7 +26,8 @@ from db import (
    mentor_student, university_model,
    college_model, degreetype_model,
    semester_model, university_location,
-   university_description, state_university
+   university_description, state_university,
+   college_uni
 )
 
 from db.connection import get_db_conn_string
