@@ -247,8 +247,8 @@ class UserModel(Base):
             'college': college_name,
             'academic_level': school.academic_level,
             'tuition': tuition,
-            'address': uni_details.address,
-            'website_link': uni_details.url,
+            'address': uni_detail.address,
+            'website_link': uni_detail.url,
             'latitude': latitude,
             'longitude': longitude,
             'phone_number': phone_numbers
