@@ -116,6 +116,6 @@ async def connection_email(user: UserModel, mentor: UserModel, background_tasks:
 
     # Send email in background task
     fm = FastMail(conf)
-    background_tasks.add_task(fm.send_message, message=message, template_name='welcome.html')
+    background_tasks.add_task(fm.send_message, message=message, template_name='mentor.html')
 
     return
