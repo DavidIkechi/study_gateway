@@ -172,3 +172,16 @@ def send_connection(db, current_user, details):
     db.add(add_data)
     
     return add_data
+
+def get_schools(db, university: str=None, location: str=None, course: str=None, page: int=None, page_size:int = None):
+    from crud.settings import state_university_by_slug, check_university_by_slug
+    # user_id = current_user.get('user_id')
+    # query = UserModel.get_user_object(db).filter_by(id=user_id)
+    # _ = is_mentor_admin(query.first())
+    uni_id, loc_id = None, None
+    if university is not None:
+        uni_id = check_university_by_slug(db, university).id
+    if location is not None:
+        loc_id = state_university_by_slug(db, location).id
+        
+    return UserModel.get_schools(db, uni_id, loc_id, course, page, page_size)

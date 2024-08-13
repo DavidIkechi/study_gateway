@@ -156,4 +156,53 @@ class UserModel(Base):
             page_offset = Params(page=page, size=page_size)
             return paginate(mentors_with_status, params=page_offset)
 
-        return mentors_with_status 
+        return mentors_with_status
+    
+    
+    @staticmethod
+    def get_schools(db: Session, uni_id: int = None, loc_id: int = None, course: str=None, page: int = None, page_size: int = 10):
+        from db.main_model import CourseModel, UniversityModel, UniversityDescription, DegreeTypeModel, CollegeSchoolModel, StateUniversityModel, LocationModel
+        
+        query = db.query(UniversityDescription)
+        if uni_id is not None:
+            query = query.filter(UniversityDescription.university_id == uni_id)
+            
+        if loc_id is not None:
+            query = query.filter(UniversityDescription.state_id == loc_id)
+        # Build the query
+        if course is not None:
+            matching_courses = db.query(CourseModel.id).filter(CourseModel.course_name.ilike(f'%{course}%')).subquery()
+            # Filter the UniversityDescription records by the matching course IDs
+            query = query.filter(UniversityDescription.course_id.in_(matching_courses))
+        
+        # Build a list of schools
+        schools = []
+        for school in query.all():
+            coursename = db.query(CourseModel).get(school.course_id).course_name
+            desc = school.description
+            state_name = db.query(StateUniversityModel).get(school.state_id).name
+            uni_name = db.query(UniversityModel).get(school.university_id).name
+            college_name = db.query(CollegeSchoolModel).get(school.college_id).name
+            location = db.query(LocationModel).filter(LocationModel.university_id == school.university_id).first()
+            image_url = location.image_urls[0] if location and location.image_urls else None
+            slug = school.slug
+            # Check if the user is involved with this mentor            
+            school_info = {
+                'school_id': school.id,
+                'slug': slug,
+                'school_description': desc,
+                'state_name': state_name,
+                'school_name': uni_name,
+                'image_url': image_url,
+                'course_name': coursename,
+                'college': college_name,
+                'academic_level': school.academic_level
+            }
+            schools.append(school_info)
+
+        if page:
+            # Use fastapi-pagination to paginate the list
+            page_offset = Params(page=page, size=page_size)
+            return paginate(schools, params=page_offset)
+
+        return school  

@@ -253,3 +253,23 @@ async def resend_email(details: UserConnectSchema, db: Session = Depends(get_db)
         
     except Exception as e:
         return exceptions.server_error(str(e))
+
+@user_router.get('/search-universities', summary="Get all universities", status_code=200)
+async def get_university(university: str = Query(default=None), location: str = Query(default=None),
+                              course: str = Query(default=None), page: int= Query(default=None, ge=1), db:Session = Depends(get_db), 
+                              page_size: int=10):
+    # try:
+        user_info = student_crud.get_schools(db, university, location, course,  page, page_size)
+        return success_response.success_message(user_info, "", 200)
+    
+    # except BadExceptions as e:
+    #     return exceptions.bad_request_error(detail = e.detail)
+    
+    # except NotAuthorizedException as e:
+    #     return exceptsions.unauthorized_error(detail = e.detail)
+    
+    # except NotFoundException as e:
+    #     return exceptions.not_found_error(detail = e.detail)
+        
+    # except Exception as e:
+    #     return exceptions.server_error(str(e))
