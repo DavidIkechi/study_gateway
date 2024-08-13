@@ -21,7 +21,7 @@ class UniversityDescription(Base):
     degree_type_id = Column(Integer, ForeignKey('degree_types.id', ondelete='CASCADE'), nullable=False)
     tuition = Column(String(100), nullable=True)
     phone_number = Column(String(100))
-    # academic_level = Column(Enum("postgraduate", "undergraduate", name="level_enum"), default="undergraduate")
+    academic_level = Column(Enum("postgraduate", "undergraduate", name="level_enum"), default="undergraduate")
     slug = Column(String(36), nullable=False, unique=True, default=lambda: str(uuid.uuid4()))
     
     state = relationship("StateUniversityModel", back_populates="descriptions")
