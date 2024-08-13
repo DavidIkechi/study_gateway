@@ -468,7 +468,6 @@ def seed_universities(db: Session):
     
 def seed_colleges(db: Session):
     from db.main_model import CollegeSchoolModel
-    
     # Delete all records from the table
     db.query(CollegeSchoolModel).delete()
     

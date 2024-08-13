@@ -186,4 +186,12 @@ async def get_single_uni(uni_slug: str, db: Session = Depends(get_db)):
     except Exception as e:
         return exceptions.server_error(str(e))
     
+@settings_router.get('/school-locations', summary="Get all locations for school", status_code=200)
+async def get_uni(db: Session = Depends(get_db)):
+    from crud.settings import get_state_universities
+    try:
+        return success_response.success_message(get_state_universities(db))
+    
+    except Exception as e:
+        return exceptions.server_error(str(e))
     

@@ -382,7 +382,7 @@ async def accept(connection_slug: str, profile: StudentUpdateSchema, db: Session
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)
     
-     except NotAuthorizedException as e:
+    except NotAuthorizedException as e:
         return exceptions.unauthorized_error(detail = e.detail)
     
     except NotFoundException as e:

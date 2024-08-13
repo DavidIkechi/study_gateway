@@ -227,3 +227,17 @@ def get_universities(db):
     from db.main_model import UniversityModel
 
     return UniversityModel.get_university_object(db).all()
+
+def get_state_universities(db):
+    from db.main_model import StateUniversityModel
+    
+    return StateUniversityModel.get_state_object(db).all()
+
+def state_university_by_slug(db, slug):
+    from db.main_model import StateUniversityModel
+    get_state = StateUniversityModel.get_state_university_by_slug(db, slug)
+    
+    if not get_state:
+        raise NotFoundException(f"State with id: {slug} not found")
+
+    return get_state

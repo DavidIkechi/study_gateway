@@ -19,6 +19,10 @@ class StateUniversityModel(Base):
     descriptions = relationship("UniversityDescription", back_populates="state")
 
     @staticmethod
+    def get_state_object(db: Session):
+        return db.query(StateUniversityModel)
+    
+    @staticmethod
     def create_state_university(state_university_data: dict):
         return StateUniversityModel(**state_university_data)
 
