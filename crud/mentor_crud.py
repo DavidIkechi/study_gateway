@@ -253,7 +253,7 @@ def check_mentor_stud(db, ment_slug):
     
     return mentor
     
-def accept_or_decline(db, current_user, details):
+async def accept_or_decline(db, current_user, details, backtask):
     user_id = current_user.get('user_id')
     get_user = UserModel.get_user_by_id(db, user_id)
 
@@ -261,6 +261,8 @@ def accept_or_decline(db, current_user, details):
     get_mentor = check_mentor_stud(db, details.connect_ref)
     if get_mentor.mentor_id != user_id:
         raise BadExceptions(f"Connection request not tied to mentor")
+    
+    student = UserModel.get_user_by_id(db, get_mentor.user_id)
     
     if get_mentor.status == 'accepted':
         raise BadExceptions(f"Connection already accepted")    
@@ -278,7 +280,9 @@ def accept_or_decline(db, current_user, details):
     
     get_mentor.status = status
     
-    return f"Connection {status} successfully"
+    await connection_email(student, get_user, backtask)
+    
+    return True
 
 def get_students(db, current_user, name: str, page:int = None, page_size:int=None, current: bool= False):
     user_id = current_user.get('user_id')

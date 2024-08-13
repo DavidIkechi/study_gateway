@@ -316,11 +316,11 @@ async def get_user(db: Session = Depends(get_db), current_user: dict = Depends(v
         return exceptions.server_error(str(e))
     
 @mentor_router.patch('/accept-connection', summary="Accept or Decline Student Connection", status_code=200)
-async def accept(profile: ConnectSchema, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+async def accept(profile: ConnectSchema, backtask: BackgroundTasks, db: Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
     try:
-        user_detail = mentor_crud.accept_or_decline(db, current_user, profile)
+        await mentor_crud.accept_or_decline(db, current_user, profile, backtask)
         db.commit()
-        return success_response.success_message([], user_detail, 200)
+        return success_response.success_message([], "successful", 200)
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)

@@ -1,0 +1,125 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Mentor-Mentee Connection Invitation</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Manrope, sans-serif;
+        background-color: #f9f9f9;
+      }
+
+      /* Table Styles */
+      table {
+        border-collapse: collapse;
+        margin: auto;
+        max-width: 600px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .container {
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .header {
+        background-color: #2eb79c;
+        padding: 30px;
+      }
+
+      .header img {
+        max-width: 150px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .content p {
+        color: #333333;
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 20px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 15px 25px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #2eb79c;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer {
+        background-color: #f1f1f1;
+        padding: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <table role="presentation" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="header">
+        <img
+            src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287601/study-gateway-logo_qr4wju.png"
+            alt="study_gateway_logo"
+            width="100%"
+            height="100%"
+            style="
+              border: 0;
+              outline: none;
+              text-decoration: none;
+              display: block;
+            "
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="container">
+          <div class="content">
+            <p>Hi {{name}},</p>
+            <p>
+              We are excited to welcome you to the Study Gateway community! As part of your journey, you are invited to join our Slack workspace where you can connect with your mentor.
+            </p>
+            <p>
+              This is your space to collaborate, share ideas, ask questions, and grow together. To get started, click the button below to join the Study Gateway Slack workspace, and also join with the <b>email address: {{email_address}}</b> you used while registering on the platform.
+            </p>
+            <p>
+              <a href="{{invite_link}}" class="button" style="color: white !important">Join Slack</a>
+            </p>
+            <p>We look forward to supporting your growth and learning journey!</p><br>
+            <p>Best regards,<br />The Study Gateway Team</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+          <p>If you did not request this invitation, please disregard this email.</p>
+          <p>© 2024 Study Gateway
+            <br>100 Texas, Melbourne Homes
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

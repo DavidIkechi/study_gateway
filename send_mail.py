@@ -95,3 +95,27 @@ async def welcome_email(user: UserModel, background_tasks: BackgroundTasks):
     background_tasks.add_task(fm.send_message, message=message, template_name='welcome.html')
 
     return
+
+async def connection_email(user: UserModel, mentor: UserModel, background_tasks: BackgroundTasks):
+    # Prepare email details
+    url = "https://slack.com/intl/en-in/"
+    emails: EmailSchema  = {
+        "body": {
+            "name": user.first_name,
+            "url": url,
+            "email_address": user.email_address
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject=f"Mentor-Mentee Slack Invitation from {mentor.first_name.title()}",
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='welcome.html')
+
+    return
