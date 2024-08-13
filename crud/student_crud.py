@@ -195,7 +195,7 @@ def get_school_details(db, school_slug: str):
     # user_id = current_user.get('user_id')
     # query = UserModel.get_user_object(db).filter_by(id=user_id)
     # _ = is_mentor_admin(query.first())
-    check_uni_desc = UniversityDescription.get_descriptions_by_slug(db, school_slug)
+    check_uni_desc = UniversityDescription.get_description_by_slug(db, school_slug)
     if check_uni_desc is None:
         raise NotFoundException(f"University with such slug: {school_slug} not found") 
         
