@@ -181,8 +181,9 @@ def seed_country_and_nationality(db: Session):
 def seed_gender_prod(db: Session):
     from db.main_model import GenderModel
     gender_data = [
-        {'id': 1, 'name': 'Male', 'slug': 'male', 'status': True},
-        {'id': 2, 'name': 'Female', 'slug': 'female', 'status': True}
+        # {'id': 1, 'name': 'Male', 'slug': 'male', 'status': True},
+        # {'id': 2, 'name': 'Female', 'slug': 'female', 'status': True},
+        {'id': 3, 'name': 'Others', 'slug': 'others', 'status': True}
     ]
 
     seed_model(db, GenderModel, gender_data)
