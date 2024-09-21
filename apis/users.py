@@ -250,6 +250,9 @@ async def resend_email(details: UserConnectSchema, db: Session = Depends(get_db)
     
     except NotFoundException as e:
         return exceptions.not_found_error(detail = e.detail)
+    
+    except ForbiddenException as e:
+        return exceptions.forbidden_error(detail=e.detail)
         
     except Exception as e:
         return exceptions.server_error(str(e))

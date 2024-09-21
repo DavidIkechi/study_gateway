@@ -126,6 +126,12 @@ def send_connection(db, current_user, details):
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     _ = is_mentor_admin(query.first())
     
+    user_set = current_user.get('is_setup')
+    
+    if user_set is not True:
+        raise ForbiddenException("Please complete profile to connect with a mentor")
+    
+    
     details_dict = details.dict(exclude_none=True)
     #check if the email belongs to a mentor.
     email_address = details_dict.get('mentor_email_address')

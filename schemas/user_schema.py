@@ -103,10 +103,22 @@ class MentorSchema(BaseModel):
     def check_last_name(cls, v):
         return v.title()
     
-    @validator('birth_date')
+    @validator('birth_date', pre=True, always=True)
     def birth_date_must_be_in_past(cls, value):
-        if value and value > datetime.now():
+        if value is None:
+            return value
+        
+        # Ensure the value is parsed correctly as a datetime object if it's a string
+        if isinstance(value, str):
+            try:
+                value = datetime.strptime(value, '%Y-%m-%d')
+            except ValueError:
+                raise ValueError('Birth date must be in the format YYYY-MM-DD')
+        
+        # Check if the date is in the future
+        if value > datetime.now():
             raise ValueError('Birth date must be in the past')
+        
         return value
     
 class UserPasswordSchema(BaseModel):
