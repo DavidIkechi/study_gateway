@@ -51,9 +51,12 @@ def create_user_profile(db, user_id: int):
 
 def check_profile(db, user_id):
     user = ProfileModel.get_profile_by_user_id(db, user_id)
-    if any(value is None for value in user.__dict__.values()):
-        return UserModel.update_user(db, user_id, {'is_setup': False})
-    return UserModel.update_user(db, user_id, {'is_setup': True})
+    if user.users.is_mentor is False:
+        if any(value is None for value in user.__dict__.values()):
+            return UserModel.update_user(db, user_id, {'is_setup': False})
+        return UserModel.update_user(db, user_id, {'is_setup': True})
+    
+    return True
     
 def update_user_info(db, profile_info, current_user):
     from db.main_model import AdditionalMentors

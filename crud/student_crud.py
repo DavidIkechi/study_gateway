@@ -126,9 +126,9 @@ def send_connection(db, current_user, details):
     query = UserModel.get_user_object(db).filter_by(id=user_id)
     _ = is_mentor_admin(query.first())
     
-    user_set = current_user.get('is_setup')
+    user_set = query.first().is_setup
     
-    if user_set is not True:
+    if user_set is False:
         raise ForbiddenException("Please complete profile to connect with a mentor")
     
     
