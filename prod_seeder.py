@@ -17,7 +17,7 @@ def seed_admin_user(db: Session):
     admin_data = [
         {
             'email_address': 'adminuser@studygateway.com',
-            'password': hasher.hash('Qwertypassword@123'),  # Securely hashed password
+            'password': hasher.hash('+'),  # Securely hashed password
             'code': pyotp.random_base32(),  # Unique code for the admin
             'first_name': 'Admin',
             'last_name': 'User',
