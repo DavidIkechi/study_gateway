@@ -168,7 +168,7 @@ async def get_user(email: str, db:Session = Depends(get_db), current_user: dict 
         return exceptions.server_error(str(e)) 
     
 @admin_router.get('', summary="get admin information", status_code=200)
-async def get_user(email: str, db:Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
+async def get_user(db:Session = Depends(get_db), current_user: dict = Depends(validate_active_client)):
     try:
         user = admin_crud.get_info(db, current_user)
         return success_response.success_message(user)
