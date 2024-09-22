@@ -255,3 +255,86 @@ class UserModel(Base):
         }
 
         return school_info
+    
+    @staticmethod
+    def all_mentors_students(db: Session, is_mentor: bool = False, status: bool=None, name: str= None, page: int = None, page_size: int = 10):
+        from db.main_model import AdditionalMentors, MentorStudent, DegreeModel, CourseModel
+        # Build the query
+        query = db.query(UserModel).filter(
+            UserModel.is_mentor == is_mentor,
+            UserModel.is_admin == False
+        )
+        if status is not None:
+            query = query.filter(UserModel.is_setup == status)
+        # Apply name filter if provided
+        if name is not None:
+            name_filter = f"%{name}%"
+            query = query.filter(
+                (UserModel.first_name + ' ' + UserModel.last_name).ilike(name_filter)
+            )
+        mentors_with_status = []
+        for mentor in query.all():
+            mentor_info = {
+                'mentor_id': mentor.id,
+                'email': mentor.email_address,
+                'first_name': mentor.first_name,
+                'last_name': mentor.last_name,
+                'is_verified': mentor.is_verified,
+                'photo': mentor.photo,
+                'is_active': mentor.is_setup
+            }
+            mentors_with_status.append(mentor_info)
+
+        if page:
+            # Use fastapi-pagination to paginate the list
+            page_offset = Params(page=page, size=page_size)
+            return paginate(mentors_with_status, params=page_offset)
+
+        return mentors_with_status
+    
+    @staticmethod
+    def mentor_student_count(db: Session):
+        query = db.query(UserModel).filter(
+            UserModel.is_admin == False,
+        )
+        all_students = query.filter(
+            UserModel.is_mentor == False
+        )
+        
+        all_mentors = query.filter(
+            UserModel.is_mentor == True
+        )
+        
+        in_active_mentors = all_mentors.filter(
+            UserModel.is_setup == False
+        )
+        
+        return {
+            'all_students': all_students.count(),
+            'all_mentors': all_mentors.count(),
+            'in_active_mentors': in_active_mentors.count()
+        }
+        
+    @staticmethod
+    def user_profile(db: Session):
+        query = db.query(UserModel).filter(
+            UserModel.is_admin == False,
+        )
+        all_students = query.filter(
+            UserModel.is_mentor == False
+        )
+        
+        all_mentors = query.filter(
+            UserModel.is_mentor == True
+        )
+        
+        in_active_mentors = all_mentors.filter(
+            UserModel.is_setup == False
+        )
+        
+        return {
+            'all_students': all_students.count(),
+            'all_mentors': all_mentors.count(),
+            'in_active_mentors': in_active_mentors.count()
+        }
+        

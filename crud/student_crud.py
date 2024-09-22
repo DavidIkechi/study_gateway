@@ -120,7 +120,7 @@ def check_mentor(db, email):
     return check_user
     
 
-def send_connection(db, current_user, details):
+async def send_connection(db, current_user, details, backtask):
     from crud.settings import check_university_by_slug
     user_id = current_user.get('user_id')
     query = UserModel.get_user_object(db).filter_by(id=user_id)
@@ -135,7 +135,8 @@ def send_connection(db, current_user, details):
     details_dict = details.dict(exclude_none=True)
     #check if the email belongs to a mentor.
     email_address = details_dict.get('mentor_email_address')
-    mentor = check_mentor(db, email_address).id
+    get_mentor = check_mentor(db, email_address)
+    mentor = get_mentor.id
     
     year = details_dict.get('year')
     # get the student course
@@ -180,6 +181,8 @@ def send_connection(db, current_user, details):
     
     add_data = MentorStudent.create_ment_studs(new_ment_data)
     db.add(add_data)
+    
+    await send_mentor_request(get_mentor, query.first(), backtask)
     
     return add_data
 

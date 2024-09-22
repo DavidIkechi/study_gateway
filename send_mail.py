@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from fastapi_mail import FastMail, ConnectionConfig, MessageSchema, MessageType
 
-
 from db.main_model import UserModel
 import os
 
@@ -119,3 +118,48 @@ async def connection_email(user: UserModel, mentor: UserModel, background_tasks:
     background_tasks.add_task(fm.send_message, message=message, template_name='mentor.html')
 
     return
+
+async def send_mentor_verification_email(user: UserModel, background_tasks: BackgroundTasks):
+    # Prepare email details
+    token = []
+    emails: EmailSchema = {
+        "body": {
+            "name": user.first_name,
+            "email_address": user.email_address
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject="Account Verification",
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='mentor_acceptance.html')
+
+    return token
+
+async def send_mentor_request(user: UserModel, request: UserModel, background_tasks: BackgroundTasks):
+    # Prepare email details
+    token = []
+    emails: EmailSchema = {
+        "body": {
+            "name": request.first_name + ' ' + request.last_name,
+            "email_address": user.email_address,
+            "user": user.first_name
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject="Mentor Request From " + request.email_address,
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='mentorship_request.html')
+
+    return token

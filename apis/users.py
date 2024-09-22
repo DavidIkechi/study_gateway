@@ -235,10 +235,10 @@ async def update_contact_info(language: str = Query(default=None), discipline: s
         return exceptions.server_error(str(e))
     
 @user_router.post('/mentor-connect', summary="Connect with a mentor", status_code=200)
-async def resend_email(details: UserConnectSchema, db: Session = Depends(get_db), 
+async def resend_email(backtask: BackgroundTasks, details: UserConnectSchema, db: Session = Depends(get_db), 
                        current_user: dict = Depends(validate_active_client)):
     try:
-        connection = student_crud.send_connection(db, current_user, details)
+        await student_crud.send_connection(db, current_user, details, backtask)
         db.commit()
         return success_response.success_message([], f"Connection request sent", 200)
     

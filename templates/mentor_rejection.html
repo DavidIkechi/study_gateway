@@ -1,0 +1,301 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <title>StudyGateway Mentor Verification</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* TABLE STYLES*/
+
+      table {
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: auto;
+        max-width: 600px;
+      }
+
+      .container {
+        width: inherit;
+        margin: 0 auto !important;
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+      }
+
+      /* TABLE HEAD STYLES*/
+
+      .headerClass {
+        width: 100%;
+        display: table-cell;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      /* TABLE CONTENT STYLES*/
+
+      .content {
+        width: 100%;
+        padding: 2rem 1.5rem;
+      }
+
+      .headingText {
+        color: #081c29;
+        font-family: Manrope, sans-serif;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 38px; /* 126.667% */
+      }
+
+      .defaultP {
+        color: #525557;
+        font-family: Manrope, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+      }
+
+      .boldP {
+        color: #3c3d3e;
+        font-family: Manrope, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+      }
+
+      .divider-cell {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .divider {
+        max-width: 96px;
+        height: 1px;
+        background: #dfdfdf;
+        display: block;
+      }
+
+      .button {
+        display: inline-block;
+        outline: none;
+        border: none;
+        border-radius: 0.5rem;
+        background: #2eb79c;
+        box-shadow: 0rem 0.25rem 0.5rem 0rem rgba(0, 0, 0, 0.1);
+        padding: 0.625rem 1rem;
+        text-decoration: none;
+        gap: 0.5rem;
+
+        color: #fff;
+        font-family: Manrope, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 150% */
+      }
+
+      /* FOOTER STYLES*/
+      .footer {
+        display: flex;
+        padding: 32px 24px;
+        flex-direction: column;
+        align-items: center;
+        /* gap: 32px; */
+        margin-top: 32px;
+        align-self: stretch;
+        border-top: 1px solid #ECECEC;
+      }
+
+      .footer-media-layout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .footerP {
+        color: #6d6f70;
+        text-align: center;
+        font-family: Manrope, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px; /* 142.857% */
+      }
+    </style>
+  </head>
+  <body>
+    <table class="table" role="presentation" cellpadding="0" cellspacing="0">
+      <tr>
+        <thead>
+          <tr class="headerClass">
+            <td>
+              <img
+                src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287601/study-gateway-logo_qr4wju.png"
+                alt="study_gateway_logo"
+                width="100%"
+                height="100%"
+                style="
+                  border: 0;
+                  outline: none;
+                  text-decoration: none;
+                  display: block;
+                "
+              />
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <td class="container">
+            <tr class="" style="padding-top: 24px">
+              <td>
+                <img
+                  src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1726947378/mentor-verification_i6t4di.png"
+                  alt="welcome"
+                  width="100%"
+                  height="100%"
+                  style="
+                    border: 0;
+                    outline: none;
+                    text-decoration: none;
+                    display: block;
+                  "
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding-top: 24px">
+                <p class="headingText">Welcome to StudyGateway 🎉</p>
+
+                <p class="defaultP">
+                    Welcome onboard {{name}}, we are excited to have you as a mentor on our journey. 
+                    Feel free to visit your profile page with the button below, and email us at 
+                    hello@studygateway.io for more info or clarity on how to get started.
+                </p>
+
+                <br />
+
+                <p class="defaultP">
+                    Thank you.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <p class="defaultP">
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >Follow us on Linkedin →</a
+                  >
+                </p>
+                <p class="defaultP">
+                  Stay up-to-date with the latest announcements and jobs.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding-bottom: 32px">
+                <p class="defaultP">
+                  Thanks for signing up. If you have any questions, send us a
+                  message at
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >hello@studygateway.io</a
+                  >
+                  or on
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >Linkedin</a
+                  >. We’d love to hear from you.
+                </p>
+
+                <p class="defaultP">— The team</p>
+              </td>
+            </tr>
+
+            <tr>
+                <td style="padding-top: 12px; padding-bottom: 12px;">
+                    <span>
+                        <a href="https://www.studygateway.io/mentors/dashboard" class="button"> Visit Dashboard → </a>
+                    </span>
+                </td>
+            </tr>
+          </td>
+        </tbody>
+
+        <tfoot>
+          <td class="footer">
+            <tr class="footer-media-layout">
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287602/linkedin-01_psggmo.png" />
+                  </a>
+                </td>
+  
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287602/facebook-01_gvzcqd.png" />
+                  </a>
+                </td>
+  
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287603/mail-01_ut6her.png" />
+                  </a>
+                </td>
+            </tr>
+
+            <tr>
+              <td style="padding-top: 32px">
+                <p class="footerP" style="text-align: center">
+                  StudyGateway connects students from all around the world, to
+                  expert tutors <br />
+                  aimed to fulfll their admission dreams.
+                </p>
+                <p class="footerP" style="text-align: center">
+                  © 2024 StudyGateway <br />
+                  100 Texas, Melbourne Homes
+                </p>
+              </td>
+            </tr>
+          </td>
+        </tfoot>
+      </tr>
+    </table>
+  </body>
+</html>
