@@ -210,3 +210,29 @@ async def send_mentor_rejection_email(user: UserModel, background_tasks: Backgro
     background_tasks.add_task(fm.send_message, message=message, template_name='mentor_rejection.html')
 
     return token
+
+async def send_mentee_rejection(user: UserModel, mentor: UserModel, reason: str, background_tasks: BackgroundTasks):
+    # Prepare email details
+    url = "https://slack.com/intl/en-in/"
+    emails: EmailSchema  = {
+        "body": {
+            "name": user.first_name,
+            "mentor_name": mentor.first_name + ' ' + mentor.last_name,
+            "url": url,
+            "email_address": user.email_address,
+            "reason": reason
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject=f"Mentor-Mentee Status from {mentor.first_name.title()}",
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='mentee_rejection.html')
+
+    return

@@ -280,7 +280,10 @@ async def accept_or_decline(db, current_user, details, backtask):
     
     get_mentor.status = status
     
-    await connection_email(student, get_user, backtask)
+    if status == 'accepted':
+        await connection_email(student, get_user, backtask)
+    else:
+        await send_mentee_rejection(student, get_user, details.reason, backtask)
     
     return True
 

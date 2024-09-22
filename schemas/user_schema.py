@@ -72,6 +72,7 @@ class ChangeProfileImageSchema(BaseModel):
 class ConnectSchema(BaseModel):
     connect_ref: str
     status: bool
+    reason: Optional[str] = "Hey, I wont be available in the next coming weeks."
     
     @validator('status')
     def validate_status(cls, value):
