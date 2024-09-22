@@ -156,9 +156,16 @@ def get_user_details(db, current_user):
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.nationalities).load_only('id', 'nationality', 'slug'),
         joinedload(UserModel.mentors).joinedload(AdditionalMentors.courses).load_only('id','course_name', 'slug')
     )
-
+    
+    # get connection requests.
+    connect_count = MentorStudent.get_ment_studs_object(db).filter(
+        MentorStudent.mentor_id == user_id,
+        MentorStudent.status == 'pending',
+        MentorStudent.completed == False
+    ).count()
     user_profile = {
-        'user': query.first()
+        'user': query.first(),
+        'connect_count': connect_count
     }
     
     return user_profile
