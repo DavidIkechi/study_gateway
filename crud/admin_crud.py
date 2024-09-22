@@ -160,3 +160,11 @@ def get_user_info(db, current_user, email_address: str):
     )
     
     return query.first()
+
+def get_info(db, current_user):
+    from crud.student_crud import get_user_by_email
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_admin(get_user)
+    
+    return get_user_by_email(db, get_user.email_address)

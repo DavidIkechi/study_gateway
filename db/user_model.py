@@ -81,7 +81,9 @@ class UserModel(Base):
             UserModel.id,
             UserModel.email_address,
             UserModel.is_verified,
-            UserModel.is_setup
+            UserModel.is_setup,
+            UserModel.first_name,
+            UserModel.last_name
         )
         # filter out centers
         query = query.filter(UserModel.email_address == email)
