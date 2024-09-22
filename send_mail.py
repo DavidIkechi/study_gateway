@@ -163,3 +163,27 @@ async def send_mentor_request(user: UserModel, request: UserModel, background_ta
     background_tasks.add_task(fm.send_message, message=message, template_name='mentorship_request.html')
 
     return token
+
+async def send_mentor_welcome_email(user: UserModel, background_tasks: BackgroundTasks):
+    # Prepare email details
+    url = os.getenv("HOST_URL")
+    emails: EmailSchema  = {
+        "body": {
+            "name": user.first_name,
+            "url": url,
+            "email_address": user.email_address
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject="Welcome",
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='welcome_mentor.html')
+
+    return

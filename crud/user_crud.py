@@ -102,7 +102,8 @@ async def create_user(db, user, backtasks, mentor=False):
         # send verification mail notification
         await send_verification_email(create_new_user, backtasks, mentor=mentor)
     else:
-        _ = create_mentor(db, mentor_data, create_new_user.id)    
+        _ = create_mentor(db, mentor_data, create_new_user.id)
+        await send_mentor_welcome_email(create_new_user, backtasks)    
         
     return create_new_user
 

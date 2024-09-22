@@ -10,115 +10,280 @@
     />
     <title>Mentor-Mentee Connection Invitation</title>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: Manrope, sans-serif;
-        background-color: #f9f9f9;
-      }
-
-      /* Table Styles */
-      table {
-        border-collapse: collapse;
-        margin: auto;
-        max-width: 600px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      .container {
-        width: 100%;
-        padding: 20px;
-        text-align: center;
-      }
-
-      .header {
-        background-color: #2eb79c;
-        padding: 30px;
-      }
-
-      .header img {
-        max-width: 150px;
-      }
-
-      .content {
-        padding: 20px;
-      }
-
-      .content p {
-        color: #333333;
-        font-size: 16px;
-        line-height: 24px;
-        margin-bottom: 20px;
-      }
-
-      .button {
-        display: inline-block;
-        padding: 15px 25px;
-        font-size: 16px;
-        color: #ffffff;
-        background-color: #2eb79c;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: 600;
-      }
-
-      .footer {
-        background-color: #f1f1f1;
-        padding: 20px;
-        text-align: center;
-        font-size: 12px;
-        color: #999999;
-      }
+        * {
+            box-sizing: border-box;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+          }
+    
+          /* TABLE STYLES*/
+    
+          table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: auto;
+            max-width: 600px;
+          }
+    
+          .container {
+            width: inherit;
+            margin: 0 auto !important;
+            max-width: 100%;
+            padding: 2rem 1.5rem;
+          }
+    
+          /* TABLE HEAD STYLES*/
+    
+          .headerClass {
+            width: 100%;
+            display: table-cell;
+            display: flex;
+            padding: 0 35%;
+            text-align: center;
+          }
+    
+          /* TABLE CONTENT STYLES*/
+    
+          .content {
+            width: 100%;
+            padding: 2rem 1.5rem;
+          }
+    
+          .headingText {
+            color: #081c29;
+            font-family: Manrope, sans-serif;
+            font-size: 30px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 38px; /* 126.667% */
+          }
+    
+          .defaultP {
+            color: #525557;
+            font-family: Manrope, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px; /* 150% */
+          }
+    
+          .boldP {
+            color: #3c3d3e;
+            font-family: Manrope, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+          }
+    
+          .divider-cell {
+            padding-top: 24px;
+            padding-bottom: 24px;
+          }
+    
+          .divider {
+            max-width: 96px;
+            height: 1px;
+            background: #dfdfdf;
+            display: block;
+          }
+    
+          .button {
+            display: inline-block;
+            outline: none;
+            border: none;
+            border-radius: 0.5rem;
+            background: #2eb79c;
+            box-shadow: 0rem 0.25rem 0.5rem 0rem rgba(0, 0, 0, 0.1);
+            padding: 0.625rem 1rem;
+            text-decoration: none;
+            gap: 0.5rem;
+    
+            color: #fff;
+            font-family: Manrope, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px; /* 150% */
+          }
+    
+          /* FOOTER STYLES*/
+          .footer {
+            display: flex;
+            padding: 32px 24px;
+            flex-direction: column;
+            align-items: center;
+            /* gap: 32px; */
+            margin-top: 32px;
+            align-self: stretch;
+            border-top: 1px solid #ECECEC;
+          }
+    
+          .footer-media-layout {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0.5rem;
+            padding: 0 35%;
+          }
+          .footer-media-layout td{
+            padding: 0.7em;
+          }
+    
+          .footerP {
+            color: #6d6f70;
+            text-align: center;
+            font-family: Manrope, sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 20px; /* 142.857% */
+          }
     </style>
   </head>
   <body>
-    <table role="presentation" cellpadding="0" cellspacing="0">
+    <table class="table" role="presentation" cellpadding="0" cellspacing="0">
       <tr>
-        <td class="header">
-        <img
-            src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287601/study-gateway-logo_qr4wju.png"
-            alt="study_gateway_logo"
-            width="100%"
-            height="100%"
-            style="
-              border: 0;
-              outline: none;
-              text-decoration: none;
-              display: block;
-            "
-          />
-        </td>
-      </tr>
-      <tr>
-        <td class="container">
-          <div class="content">
-            <p>Hi {{name}},</p>
-            <p>
-              We are excited to welcome you to the Study Gateway community! As part of your journey, you are invited to join our Slack workspace where you can connect with your mentor.
-            </p>
-            <p>
-              This is your space to collaborate, share ideas, ask questions, and grow together. To get started, click the button below to join the Study Gateway Slack workspace, and also join with the <b>email address: {{email_address}}</b> you used while registering on the platform.
-            </p>
-            <p>
-              <a href="{{invite_link}}" class="button" style="color: white !important">Join Slack</a>
-            </p>
-            <p>We look forward to supporting your growth and learning journey!</p><br>
-            <p>Best regards,<br />The Study Gateway Team</p>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="footer">
-          <p>If you did not request this invitation, please disregard this email.</p>
-          <p>© 2024 Study Gateway
-            <br>100 Texas, Melbourne Homes
-          </p>
-        </td>
+        <thead>
+          <tr class="headerClass">
+            <td>
+              <img
+                src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287601/study-gateway-logo_qr4wju.png"
+                alt="study_gateway_logo"
+                width="100%"
+                height="100%"
+                style="
+                  border: 0;
+                  outline: none;
+                  text-decoration: none;
+                  display: block;
+                "
+              />
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <td class="container">
+            <tr class="" style="padding-top: 24px">
+              <td>
+                <img
+                  src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1726947378/mentor-verification_i6t4di.png"
+                  alt="welcome"
+                  width="100%"
+                  height="100%"
+                  style="
+                    border: 0;
+                    outline: none;
+                    text-decoration: none;
+                    display: block;
+                  "
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding-top: 24px">
+                <p class="headingText">Welcome to StudyGateway 🎉</p>
+
+                <p class="defaultP">
+                    Welcome onboard {{name}}, We are excited to welcome you to the Study Gateway community! As part of your journey, you are invited to join our Slack workspace where you can connect with your mentor. <br> 
+                    Feel free to visit your profile page with the button below, and email us at 
+                    hello@studygateway.io for more info or clarity on how to get started.
+                </p>
+
+                <br />
+
+                <p class="defaultP">
+                    Thank you.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <p class="defaultP">
+                  <a
+                    href="mailto:hello@studygateway.io"
+                    style="color: #2eb79c; text-decoration: none"
+                    >Follow us on Linkedin →</a
+                  >
+                </p>
+                <p class="defaultP">
+                  Stay up-to-date with the latest announcements and jobs.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="divider-cell">
+                <span class="divider"></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding-bottom: 32px">
+                <p class="defaultP">
+                  This is your space to collaborate, share ideas, ask questions, and grow together. To get started, click the button below to join the Study Gateway Slack workspace, and also join with the <b>email address: {{email_address}}</b> you used while registering on the platform.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+                <td style="padding-top: 12px; padding-bottom: 12px;">
+                    <span>
+                        <a href="https://studygatewayllc.slack.com/archives/C07KCQ3LCPP" class="button" style="color: white !important"> Join Slack → </a>
+                    </span>
+                </td>
+            </tr>
+          </td>
+        </tbody>
+
+        <tfoot>
+          <td class="footer">
+            <tr class="footer-media-layout">
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287602/linkedin-01_psggmo.png" />
+                  </a>
+                </td>
+  
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287602/facebook-01_gvzcqd.png" />
+                  </a>
+                </td>
+  
+                <td>
+                  <a href="/">
+                    <img src="https://res.cloudinary.com/dcpvnm5v0/image/upload/v1723287603/mail-01_ut6her.png" />
+                  </a>
+                </td>
+            </tr>
+
+            <tr>
+              <td style="padding-top: 32px">
+                <p class="footerP" style="text-align: center">
+                  StudyGateway connects students from all around the world, to
+                  expert tutors <br />
+                  aimed to fulfll their admission dreams.
+                </p>
+                <p class="footerP" style="text-align: center">
+                  © 2024 StudyGateway <br />
+                  100 Texas, Melbourne Homes
+                </p>
+              </td>
+            </tr>
+          </td>
+        </tfoot>
       </tr>
     </table>
   </body>
