@@ -187,3 +187,26 @@ async def send_mentor_welcome_email(user: UserModel, background_tasks: Backgroun
     background_tasks.add_task(fm.send_message, message=message, template_name='welcome_mentor.html')
 
     return
+
+async def send_mentor_rejection_email(user: UserModel, background_tasks: BackgroundTasks, reason: str):
+    # Prepare email details
+    token = []
+    emails: EmailSchema = {
+        "body": {
+            "name": user.first_name,
+            "email_address": user.email_address,
+            "reason": reason
+        } 
+    }
+    # Define message structure
+    message = MessageSchema(
+        subject="Account Verification Status",
+        recipients=[user.email_address],  # Send to single address
+        template_body=emails.get('body'),
+        subtype=MessageType.html
+    )
+    # Send email in background task
+    fm = FastMail(conf)
+    background_tasks.add_task(fm.send_message, message=message, template_name='mentor_rejection.html')
+
+    return token

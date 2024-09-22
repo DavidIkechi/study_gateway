@@ -22,7 +22,8 @@ from schemas.user_schema import (
     refreshTokenSchema, 
     ResendEmailSchema,
     ChangeProfileImageSchema,
-    ConnectSchema
+    ConnectSchema,
+    ReasonSchema
 )
 from schemas.profile_schema import (
     UserInfoSchema, 
@@ -75,6 +76,23 @@ async def get_user(backtask: BackgroundTasks, email_address: str = Query(default
         await admin_crud.activate_mentors(db, current_user, backtask, email_address)
         db.commit()
         return success_response.success_message("activated successfully")
+    
+    except BadExceptions as e:
+        return exceptions.bad_request_error(detail=e.detail)
+    
+    except NotFoundException as e:
+        return exceptions.not_found_error(detail = e.detail)
+    
+    except Exception as e:
+        return exceptions.server_error(str(e)) 
+    
+@admin_router.patch('/mentors/rejection', summary="Reject mentors", status_code=200)
+async def get_user(backtask: BackgroundTasks, mentor: ReasonSchema, db:Session = Depends(get_db),
+                   current_user: dict = Depends(validate_active_client)):
+    try:
+        await admin_crud.reject_mentor(db, current_user, backtask, mentor)
+        db.commit()
+        return success_response.success_message("Rejected successfully")
     
     except BadExceptions as e:
         return exceptions.bad_request_error(detail=e.detail)

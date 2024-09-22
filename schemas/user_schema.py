@@ -147,6 +147,10 @@ class NameSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     
+class ReasonSchema(BaseModel):
+    email_address: EmailStr
+    reason: Optional[str] = None
+    
 class StudentUpdateSchema(BaseModel):
     university: Optional[str] = None
     completed: Optional[bool] = None

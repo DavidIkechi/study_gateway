@@ -27,6 +27,7 @@ class UserModel(Base):
     is_lock = Column(Boolean, default=False)
     status = Column(Boolean, default=True)
     photo = Column(TEXT, nullable=True)  # Add photo column
+    reason = Column(TEXT, nullable=True) 
 
     is_setup = Column(Boolean, default=False)
     lock_count = Column(Integer, default=0)

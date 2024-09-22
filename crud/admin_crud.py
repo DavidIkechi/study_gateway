@@ -66,6 +66,30 @@ async def activate_mentor(db, email_address, backtasks):
 
     return check_mentor
 
+async def reject_mentor(db, current_user, backtasks, mentor_reason):
+    from crud.mentor_crud import is_mentor
+    user_id = current_user.get('user_id')
+    get_user = UserModel.get_user_by_id(db, user_id)
+    _ = is_admin(get_user)
+    
+    check_user = check_mail(db, mentor_reason.email_address)
+    check_mentor = is_mentor(check_user)
+    
+    if check_mentor.is_setup:
+        raise BadExceptions(f"mentor {email_address} already verified!")
+
+    check_mentor.is_setup = False
+    if check_mentor.reason is None:
+        check_mentor.reason = ""
+        
+    if mentor_reason.reason is None:
+        mentor_reason.reason = ""
+        
+    check_mentor.reason += "<br>" + mentor_reason.reason
+    await send_mentor_rejection_email(check_user, backtasks, mentor_reason.reason)
+
+    return check_mentor
+
 async def activate_mentors(db, current_user,  backtasks, email_address: str = None):
     user_id = current_user.get('user_id')
     get_user = UserModel.get_user_by_id(db, user_id)
